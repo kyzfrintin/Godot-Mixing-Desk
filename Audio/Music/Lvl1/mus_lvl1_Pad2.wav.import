@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mus_lvl1_Pad2.wav-b43ed3b3c4896f4e41006a6826e56108.sample"
+
+[deps]
+
+source_file="res://Audio/Music/Lvl1/mus_lvl1_Pad2.wav"
+source_md5="545254b54bd3633a963eaf13cdf3aa82"
+
+dest_files=[ "res://.import/mus_lvl1_Pad2.wav-b43ed3b3c4896f4e41006a6826e56108.sample" ]
+dest_md5="3472022ec9254e14454365def30368ec"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

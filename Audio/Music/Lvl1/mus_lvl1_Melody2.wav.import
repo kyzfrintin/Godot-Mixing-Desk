@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mus_lvl1_Melody2.wav-1ef654b6d78047ad448f7b9ece25c374.sample"
+
+[deps]
+
+source_file="res://Audio/Music/Lvl1/mus_lvl1_Melody2.wav"
+source_md5="e2d67cc0fbd6a9d35dd2dcbdcc3b4328"
+
+dest_files=[ "res://.import/mus_lvl1_Melody2.wav-1ef654b6d78047ad448f7b9ece25c374.sample" ]
+dest_md5="2ff80d0e7cb121f40ef001cda22efa34"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

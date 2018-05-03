@@ -1,0 +1,98 @@
+[gd_resource type="AudioBusLayout" load_steps=5 format=2]
+
+[sub_resource type="AudioEffectChorus" id=1]
+
+resource_name = "Chorus"
+voice_count = 4
+dry = 0.4
+wet = 0.9
+voice/1/delay_ms = 15.0
+voice/1/rate_hz = 0.8
+voice/1/depth_ms = 2.0
+voice/1/level_db = 0.0
+voice/1/cutoff_hz = 8000.0
+voice/1/pan = -0.5
+voice/2/delay_ms = 20.0
+voice/2/rate_hz = 1.2
+voice/2/depth_ms = 3.0
+voice/2/level_db = 0.0
+voice/2/cutoff_hz = 8000.0
+voice/2/pan = 0.5
+voice/3/delay_ms = 12.0
+voice/3/rate_hz = 1.0
+voice/3/depth_ms = 0.0
+voice/3/level_db = 0.0
+voice/3/cutoff_hz = 16000.0
+voice/3/pan = 0.0
+voice/4/delay_ms = 12.0
+voice/4/rate_hz = 1.0
+voice/4/depth_ms = 0.0
+voice/4/level_db = 0.0
+voice/4/cutoff_hz = 16000.0
+voice/4/pan = 0.0
+
+[sub_resource type="AudioEffectReverb" id=2]
+
+resource_name = "Reverb"
+predelay_msec = 150.0
+predelay_feedback = 0.4
+room_size = 0.75
+damping = 0.5
+spread = 1.0
+hipass = 0.0
+dry = 0.3
+wet = 0.6
+
+[sub_resource type="AudioEffectCompressor" id=3]
+
+resource_name = "Compressor"
+threshold = -0.6
+ratio = 4.0
+gain = 0.0
+attack_us = 20.0
+release_ms = 250.0
+mix = 1.0
+sidechain = ""
+
+[sub_resource type="AudioEffectReverb" id=4]
+
+resource_name = "Reverb"
+predelay_msec = 20.0
+predelay_feedback = 0.2
+room_size = 0.3
+damping = 0.0
+spread = 1.0
+hipass = 0.0
+dry = 1.0
+wet = 0.3
+_sections_unfolded = [ "Predelay" ]
+
+[resource]
+
+bus/0/name = "Master"
+bus/0/solo = false
+bus/0/mute = false
+bus/0/bypass_fx = false
+bus/0/volume_db = 0.0
+bus/0/send = ""
+bus/1/name = "Boop"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = -42.9
+bus/1/send = "Master"
+bus/1/effect/0/effect = SubResource( 1 )
+bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource( 2 )
+bus/1/effect/1/enabled = true
+bus/2/name = "Music"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = -0.1
+bus/2/send = "Master"
+bus/2/effect/0/effect = SubResource( 3 )
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource( 4 )
+bus/2/effect/1/enabled = true
+
