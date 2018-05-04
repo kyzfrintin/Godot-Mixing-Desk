@@ -25,7 +25,7 @@ layer8 = ExtResource( 9 )
 tempo = 130
 bars = 64
 beats_in_bar = 4.0
-transition_beats = 1.0
+transition_beats = 4.0
 
 [node name="Tween" type="Tween" parent="." index="0"]
 

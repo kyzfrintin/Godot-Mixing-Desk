@@ -39,7 +39,7 @@ signal bar
 
 func _ready():
 	beats_in_sec = 60000.0/tempo
-	
+	transition_beats = (beats_in_sec*4)/10000
 	for i in layers:
 		var player = audioplayer.instance()
 		var bus = AudioServer.get_bus_count()
@@ -51,9 +51,10 @@ func _ready():
 		AudioServer.set_bus_name(bus,"layer" + str(num))
 		AudioServer.set_bus_send(bus, "Music")
 		player.set_bus("layer" + str(num))
+		add_child(player,true)
+		add_child(tween,true)
 		num += 1
-		add_child(player)
-		add_child(tween)
+		
 	
 func _process(delta):
 	time = players[0].get_playback_position()
@@ -113,7 +114,7 @@ func _fadeIn(layer):
 func _fadeOut(layer):
 	var target = players[layer]
 	var in_from = target.get_volume_db()
-	tweens[layer].interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats*1.5, Tween.TRANS_SINE, Tween.EASE_IN)
+	tweens[layer].interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
 	tweens[layer].start()
 
 func _queueBarTransition(faders):
