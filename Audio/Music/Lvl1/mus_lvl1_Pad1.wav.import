@@ -7,10 +7,7 @@ path="res://.import/mus_lvl1_Pad1.wav-0fec8bdffc3f6bd2a63fc77c452293f9.sample"
 [deps]
 
 source_file="res://Audio/Music/Lvl1/mus_lvl1_Pad1.wav"
-source_md5="c9d84fbbca23473266bf927fbf6bed4b"
-
 dest_files=[ "res://.import/mus_lvl1_Pad1.wav-0fec8bdffc3f6bd2a63fc77c452293f9.sample" ]
-dest_md5="61724e27c72a5ea29415a0998939a28d"
 
 [params]
 

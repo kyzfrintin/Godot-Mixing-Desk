@@ -7,10 +7,7 @@ path="res://.import/mus_lvl1_Drums Light.wav-700e79734285ab94bd244587f9dd3d1e.sa
 [deps]
 
 source_file="res://Audio/Music/Lvl1/mus_lvl1_Drums Light.wav"
-source_md5="28303f02ad093b1726f842a456b5992b"
-
 dest_files=[ "res://.import/mus_lvl1_Drums Light.wav-700e79734285ab94bd244587f9dd3d1e.sample" ]
-dest_md5="8e5850c41d870f9fe57803caefea7bd3"
 
 [params]
 

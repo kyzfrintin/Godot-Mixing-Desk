@@ -7,16 +7,14 @@ path="res://.import/index.png-2a744f20d538e21680a5f784594a6ec4.stex"
 [deps]
 
 source_file="res://WEB/index.png"
-source_md5="299da75e49286e888450cf32a391ba86"
-
 dest_files=[ "res://.import/index.png-2a744f20d538e21680a5f784594a6ec4.stex" ]
-dest_md5="8d750247939fc85ff59e34547119dea2"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=true
@@ -26,6 +24,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=true

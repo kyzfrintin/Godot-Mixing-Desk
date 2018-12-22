@@ -7,10 +7,7 @@ path="res://.import/mus_lvl1_Drums Heavy.wav-ed1c30f77cf14b7a0176e51fe468b696.sa
 [deps]
 
 source_file="res://Audio/Music/Lvl1/mus_lvl1_Drums Heavy.wav"
-source_md5="a74efa5f2102b35c62f9e59f98fd93c6"
-
 dest_files=[ "res://.import/mus_lvl1_Drums Heavy.wav-ed1c30f77cf14b7a0176e51fe468b696.sample" ]
-dest_md5="a5021d44c8f4631ab0de780840dbf353"
 
 [params]
 

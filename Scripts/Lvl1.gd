@@ -5,9 +5,7 @@ extends Node2D
 # var b = "textvar"
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
+	set_process(true)
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):

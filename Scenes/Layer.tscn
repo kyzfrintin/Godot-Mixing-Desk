@@ -1,11 +1,5 @@
 [gd_scene format=2]
 
 [node name="Layer1" type="AudioStreamPlayer"]
-
-stream = null
 volume_db = 0.3
-autoplay = false
-mix_target = 0
-bus = "Master"
-
 

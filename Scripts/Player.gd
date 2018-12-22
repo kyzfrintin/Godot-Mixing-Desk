@@ -1,7 +1,6 @@
 extends KinematicBody2D
 
-export var thrust = 300
-export var max_spd = 6
+export var thrust = 100
 export var turn_spd = 2.6
 
 onready var view_size = get_viewport_rect().size
@@ -14,26 +13,39 @@ var acc = Vector2()
 
 
 func _ready():
-	pos = view_size / 2
-	pass
+	pos = position
+	rot = rotation
+	
+	set_process(true)
+	set_process_input(true)
 
 func _process(delta):
 
-	if Input.is_action_pressed("gp_turn_left"):
+	if Input.is_action_pressed("ui_left"):
 		rot -= turn_spd * delta
 		
-	if Input.is_action_pressed("gp_turn_right"):
+	if Input.is_action_pressed("ui_right"):
 		rot += turn_spd * delta
 	
 		
-	if Input.is_action_pressed("gp_forwards"):
+	if Input.is_action_pressed("ui_up"):
 		acc = Vector2(thrust, 0).rotated(rot)
-		#smoke.emitting = 1
+		smoke.emitting = 1
+#		smoke.rotation_degrees = 0
+#		smoke.rotate(rot)
+	elif Input.is_action_pressed("ui_down"):
+		acc = -Vector2(thrust, 0).rotated(rot)		
+		smoke.emitting = 1
+#		smoke.rotation_degrees = 180
+#		smoke.rotate(rot)
 	else:
-		acc = Vector2(0,0)
-		#smoke.emitting = 0
+		if(vel.length() >0):
+			vel -= vel
+		smoke.emitting = 0
+#		smoke.rotation = 0
+		
 	
 	rotation = rot
 	vel += acc * delta
-	pos += vel * delta
-	position = pos
+
+	move_and_slide(vel)
