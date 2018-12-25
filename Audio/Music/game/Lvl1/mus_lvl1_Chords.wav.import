@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mus_lvl1_Chords.wav-709682ed9182bfd6e7853c93c97b1a94.sample"
+
+[deps]
+
+source_file="res://Audio/Music/game/Lvl1/mus_lvl1_Chords.wav"
+dest_files=[ "res://.import/mus_lvl1_Chords.wav-709682ed9182bfd6e7853c93c97b1a94.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

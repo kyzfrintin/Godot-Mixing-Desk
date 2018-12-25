@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/am_wind_constant.wav-13ccdde140bb5aff9ced74efa82859e2.sample"
+
+[deps]
+
+source_file="res://Audio/sound/amb/room/world/wind/am_wind_constant.wav"
+dest_files=[ "res://.import/am_wind_constant.wav-13ccdde140bb5aff9ced74efa82859e2.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=14000.0
+edit/trim=false
+edit/normalize=true
+edit/loop=true
+compress/mode=0

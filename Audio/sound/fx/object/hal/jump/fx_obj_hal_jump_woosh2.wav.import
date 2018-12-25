@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/fx_obj_hal_jump_woosh2.wav-2c85c9b390ac1b5c4302518a81634220.sample"
+
+[deps]
+
+source_file="res://Audio/sound/fx/object/hal/jump/fx_obj_hal_jump_woosh2.wav"
+dest_files=[ "res://.import/fx_obj_hal_jump_woosh2.wav-2c85c9b390ac1b5c4302518a81634220.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

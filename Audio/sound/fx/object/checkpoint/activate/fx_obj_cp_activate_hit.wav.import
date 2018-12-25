@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/fx_obj_cp_activate_hit.wav-132697c395d478a208712eea9b34cdfc.sample"
+
+[deps]
+
+source_file="res://Audio/sound/fx/object/checkpoint/activate/fx_obj_cp_activate_hit.wav"
+dest_files=[ "res://.import/fx_obj_cp_activate_hit.wav-132697c395d478a208712eea9b34cdfc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=true
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

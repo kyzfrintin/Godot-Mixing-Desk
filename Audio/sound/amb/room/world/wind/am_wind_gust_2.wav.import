@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/am_wind_gust_2.wav-26c5d19e3a5480921dabe4abb96a537b.sample"
+
+[deps]
+
+source_file="res://Audio/sound/amb/room/world/wind/am_wind_gust_2.wav"
+dest_files=[ "res://.import/am_wind_gust_2.wav-26c5d19e3a5480921dabe4abb96a537b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=14000.0
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0

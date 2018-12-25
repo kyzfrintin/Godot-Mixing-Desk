@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/fx_obj_hal_walk3.wav-9ed970b9f29981bccaa1815bd5c14554.sample"
+
+[deps]
+
+source_file="res://Audio/sound/fx/object/hal/walk/fx_obj_hal_walk3.wav"
+dest_files=[ "res://.import/fx_obj_hal_walk3.wav-9ed970b9f29981bccaa1815bd5c14554.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=true
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

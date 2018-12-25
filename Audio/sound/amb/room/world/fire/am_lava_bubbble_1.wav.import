@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/am_lava_bubbble_1.wav-52a0ccecf3fa1cb8b4b7f3d1c5f9d427.sample"
+
+[deps]
+
+source_file="res://Audio/sound/amb/room/world/fire/am_lava_bubbble_1.wav"
+dest_files=[ "res://.import/am_lava_bubbble_1.wav-52a0ccecf3fa1cb8b4b7f3d1c5f9d427.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=true
+force/max_rate=false
+force/max_rate_hz=14000.0
+edit/trim=false
+edit/normalize=true
+edit/loop=false
+compress/mode=0
