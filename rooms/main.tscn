@@ -53,7 +53,6 @@ play_mode = 1
 [node name="Songs" type="Node2D" parent="MDM"]
 
 [node name="orange" type="Node2D" parent="MDM/Songs"]
-editor/display_folded = true
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -67,7 +66,6 @@ volume_db = -10.0
 bus = "Music"
 
 [node name="blue" type="Node2D" parent="MDM/Songs"]
-editor/display_folded = true
 script = ExtResource( 3 )
 tempo = 120
 bars = 4

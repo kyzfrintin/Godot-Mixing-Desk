@@ -276,7 +276,12 @@ func _beat():
 	if can_beat:
 		if beat_tran:
 			for i in current_song.get_child_count():
-				_fade_out(i)
+				if transition_beats > 1:
+					_fade_out(i)
+				else:
+					_mute(i)
+					yield(get_tree(), "idle_frame")
+					current_song.get_child(0).get_child(0).emit_signal('tween_completed')
 			if play_overlays:
 				_stop_overlays()
 			_play(new_song)
