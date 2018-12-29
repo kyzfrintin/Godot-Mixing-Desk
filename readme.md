@@ -1,3 +1,4 @@
+
 # Mixing Desk for Godot
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
@@ -58,3 +59,6 @@ First, pick a play mode. It's an export int in `mixing_desk_music.gd`.
 
 Now, in your scene, simply call `_init(track)` to load the track ready to play.
 Then, call `_play(track)` - track in both cases being the index of the song you want to play, counting from 0.
+
+# Mixing Desk: Sound
+Documentation coming soon...
