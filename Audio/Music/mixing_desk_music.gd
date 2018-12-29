@@ -41,7 +41,7 @@ func _ready():
 	randomize()
 
 #loads a song and gets ready to play
-func _init_song(track, will_loop):
+func _init_song(track):
 	var song = songs[track]
 	var inum = 0
 	for i in song.get_children():
@@ -60,7 +60,7 @@ func _init_song(track, will_loop):
 	song.get_child(0).connect("finished", self, "_song_finished")
 	tempo = song.tempo
 	bars = song.bars
-	loop = will_loop
+	loop = song.loop
 	beats_in_bar = song.beats_in_bar
 	transition_beats = song.transition_beats
 	play_overlays = song.play_overlays
@@ -206,14 +206,14 @@ func _fade_out(layer):
 	tween.start()
 
 #change to the specified song at the next bar
-func _queue_bar_transition(song, loop):
-	_init_song(song, loop)
+func _queue_bar_transition(song):
+	_init_song(song)
 	new_song = song
 	bar_tran = true
 
 #change to the specified song at the next beat
-func _queue_beat_transition(song, loop):
-	_init_song(song, loop)
+func _queue_beat_transition(song):
+	_init_song(song)
 	new_song = song
 	beat_tran = true
 
@@ -275,7 +275,7 @@ func _shuffle_songs():
 	_clear_song(current_song_num)
 	randomize()
 	var song = randi() % (songs.size() - 1)
-	_init_song(song, false)
+	_init_song(song)
 	_play(song)
 	emit_signal("shuffle")
 	can_shuffle = true

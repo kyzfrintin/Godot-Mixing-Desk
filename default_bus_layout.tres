@@ -1,18 +1,18 @@
 [gd_resource type="AudioBusLayout" load_steps=8 format=2]
 
-[sub_resource type="AudioEffectReverb" id=2]
+[sub_resource type="AudioEffectReverb" id=1]
 
 resource_name = "Reverb"
 room_size = 0.75
 dry = 0.3
 wet = 0.6
 
-[sub_resource type="AudioEffectCompressor" id=3]
+[sub_resource type="AudioEffectCompressor" id=2]
 
 resource_name = "Compressor"
 threshold = -0.6
 
-[sub_resource type="AudioEffectReverb" id=4]
+[sub_resource type="AudioEffectReverb" id=3]
 
 resource_name = "Reverb"
 predelay_msec = 20.0
@@ -21,15 +21,15 @@ room_size = 0.3
 damping = 0.0
 wet = 0.3
 
-[sub_resource type="AudioEffectCompressor" id=7]
+[sub_resource type="AudioEffectCompressor" id=4]
 
 resource_name = "Compressor"
 
-[sub_resource type="AudioEffectCompressor" id=8]
+[sub_resource type="AudioEffectCompressor" id=5]
 
 resource_name = "Compressor"
 
-[sub_resource type="AudioEffectChorus" id=5]
+[sub_resource type="AudioEffectChorus" id=6]
 
 resource_name = "Chorus"
 voice_count = 4
@@ -48,7 +48,7 @@ voice/4/level_db = 0.0
 voice/4/cutoff_hz = 16000.0
 voice/4/pan = 0.0
 
-[sub_resource type="AudioEffectDelay" id=6]
+[sub_resource type="AudioEffectDelay" id=7]
 
 resource_name = "Delay"
 
@@ -60,7 +60,7 @@ bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = -42.9
 bus/1/send = "Master"
-bus/1/effect/0/effect = SubResource( 2 )
+bus/1/effect/0/effect = SubResource( 1 )
 bus/1/effect/0/enabled = true
 bus/2/name = "Music"
 bus/2/solo = false
@@ -68,9 +68,9 @@ bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = -0.1
 bus/2/send = "Master"
-bus/2/effect/0/effect = SubResource( 3 )
+bus/2/effect/0/effect = SubResource( 2 )
 bus/2/effect/0/enabled = true
-bus/2/effect/1/effect = SubResource( 4 )
+bus/2/effect/1/effect = SubResource( 3 )
 bus/2/effect/1/enabled = true
 bus/3/name = "FX"
 bus/3/solo = false
@@ -78,7 +78,7 @@ bus/3/mute = false
 bus/3/bypass_fx = false
 bus/3/volume_db = 0.0
 bus/3/send = "Master"
-bus/3/effect/0/effect = SubResource( 7 )
+bus/3/effect/0/effect = SubResource( 4 )
 bus/3/effect/0/enabled = true
 bus/4/name = "UI"
 bus/4/solo = false
@@ -86,7 +86,7 @@ bus/4/mute = false
 bus/4/bypass_fx = false
 bus/4/volume_db = 0.0
 bus/4/send = "Master"
-bus/4/effect/0/effect = SubResource( 8 )
+bus/4/effect/0/effect = SubResource( 5 )
 bus/4/effect/0/enabled = true
 bus/5/name = "AMB"
 bus/5/solo = false
@@ -94,8 +94,8 @@ bus/5/mute = false
 bus/5/bypass_fx = false
 bus/5/volume_db = 0.0
 bus/5/send = "Master"
-bus/5/effect/0/effect = SubResource( 5 )
+bus/5/effect/0/effect = SubResource( 6 )
 bus/5/effect/0/enabled = true
-bus/5/effect/1/effect = SubResource( 6 )
+bus/5/effect/1/effect = SubResource( 7 )
 bus/5/effect/1/enabled = true
 
