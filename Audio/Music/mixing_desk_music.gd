@@ -16,8 +16,6 @@ onready var ran_roots = get_node("Overlays").get_children()
 const default_vol = -10
 
 var players = []
-var fadeins = []
-var fadeouts = []
 var time = 0.0
 var beat = 1.0
 var bar = 1.0
@@ -62,10 +60,9 @@ func _init_song(track):
 	bars = song.bars
 	loop = song.loop
 	beats_in_bar = song.beats_in_bar
-	transition_beats = song.transition_beats
 	play_overlays = song.play_overlays
 	beats_in_sec = 60000.0/tempo
-	transition_beats = (beats_in_sec*4)/1000
+	transition_beats = (beats_in_sec*song.transition_beats)/1000
 
 #unloads a song
 func _clear_song(track):
@@ -134,7 +131,6 @@ func _play(track):
 	repeats = 0
 	current_song_num = track
 	current_song = songs[track]
-	
 	
 	if !playing:
 		playing = true
@@ -215,9 +211,10 @@ func _queue_bar_transition(song):
 	bar_tran = true
 	yield(current_song.get_child(0).get_child(0), 'tween_completed')
 	print('restting volume and clearing')
+	_clear_song(old_song)
 	for i in songs[old_song].get_children():
 		i.set_volume_db(default_vol)
-	_clear_song(old_song)
+	
 
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
@@ -227,9 +224,10 @@ func _queue_beat_transition(song):
 	beat_tran = true
 	yield(current_song.get_child(0).get_child(0), 'tween_completed')
 	print('restting volume and clearing')
+	_clear_song(old_song)
 	for i in songs[old_song].get_children():
 		i.set_volume_db(default_vol)
-	_clear_song(old_song)
+	
 	
 
 #stops playing
