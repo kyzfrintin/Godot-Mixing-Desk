@@ -38,5 +38,19 @@ MDM (mixing_desk_music.gd)
 ```
 ### You *must* fill in the properties in `songprops.gd`!
 ![Typical properties in songprops.gd](https://i.imgur.com/nqxhFaN.png)
+
 If you don't know the tempo of the music you're using, ask the composer. If you don't know the composer, check the website where you downloaded the music, or the readme in the sample pack you downloaded. If in doubt, try out BPM detection software such as here: https://www.conversion-tool.com/bpmdetector/?lang=en
 Similar process for bars and the other properties.
+
+### Loading and hitting play
+
+Once your nodetree is setup, you're all ready to play your music in Godot.
+
+First, pick a play mode. It's an export int in `mixing_desk_music.gd`.
+
+> 0: play once
+> 1: loop
+> 2: shuffle
+
+Now, in your scene, simply call _init(track)` to load the track ready to play.
+Then, call `_play(track)` - track in both cases being the index of the song you want to play, counting from 0.
