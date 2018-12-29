@@ -75,6 +75,8 @@ func _clear_song(track):
 	for i in song.get_children():
 		var bus = AudioServer.get_bus_index("layer" + str(inum))
 		AudioServer.remove_bus(bus)
+		i.get_child(0).queue_free()
+		i.stop()
 	song.get_child(0).disconnect("finished", self, "_song_finished")
 		
 #updates place in song and detects beats/bars
@@ -207,15 +209,28 @@ func _fade_out(layer):
 
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
+	var old_song = current_song_num
 	_init_song(song)
 	new_song = song
 	bar_tran = true
+	yield(current_song.get_child(0).get_child(0), 'tween_completed')
+	print('restting volume and clearing')
+	for i in songs[old_song].get_children():
+		i.set_volume_db(default_vol)
+	_clear_song(old_song)
 
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
+	var old_song = current_song_num
 	_init_song(song)
 	new_song = song
 	beat_tran = true
+	yield(current_song.get_child(0).get_child(0), 'tween_completed')
+	print('restting volume and clearing')
+	for i in songs[old_song].get_children():
+		i.set_volume_db(default_vol)
+	_clear_song(old_song)
+	
 
 #stops playing
 func _stop():
@@ -284,12 +299,5 @@ func _song_finished():
 	if play_mode == 2 and can_shuffle:
 		$shuffle_timer.start(rand_range(0,2))
 		can_shuffle = false
-
-func tween_completed():
-	if beat_tran or bar_tran:
-		for i in current_song.get_children:
-			i.set_volume_db(default_vol)
-		_clear_song(current_song_num)
-	
 
 

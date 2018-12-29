@@ -19,10 +19,6 @@ config/name="musicPlayerTest"
 run/main_scene="res://rooms/main.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-MusicPlayer="*res://Scenes/MusicPlayer.tscn"
-
 [input]
 
 gp_up={

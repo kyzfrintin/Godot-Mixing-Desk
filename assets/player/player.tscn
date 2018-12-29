@@ -16,6 +16,6 @@ texture = ExtResource( 1 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="playerbody" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
