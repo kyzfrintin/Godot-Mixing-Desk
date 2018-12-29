@@ -17,7 +17,7 @@ MDM can fade individual tracks in and out using the `_fade_in(track)` or `_fade_
 ### **Horizontal Resequencing**
 MDM comes with the ability to detect beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `_queue_beat_transition(track)` or `_queue_bar_transition(track)` functions.
 
-<div style="width:100%;height:0px;position:relative;padding-bottom:56.250%;"><iframe src="https://streamable.com/s/1cx2w/cszovt" frameborder="0" width="100%" height="100%" allowfullscreen style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden;"></iframe></div>
+[Video Example](https://streamable.com/1cx2w)
 
 ### Setting up MDM
 
