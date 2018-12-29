@@ -1,327 +1,123 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://addons/adv_music_player/music_player.gd" type="Script" id=1]
-[ext_resource path="res://addons/adv_music_player/songprops.gd" type="Script" id=2]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_Perc.ogg" type="AudioStream" id=3]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_LeadBass.ogg" type="AudioStream" id=4]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_SubBass.ogg" type="AudioStream" id=5]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_AtmoLead.ogg" type="AudioStream" id=6]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_Arp.ogg" type="AudioStream" id=7]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_Pads.ogg" type="AudioStream" id=8]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_FX.ogg" type="AudioStream" id=9]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_HighLead.ogg" type="AudioStream" id=10]
-[ext_resource path="res://assets/music/core/data_trail/mus_main_Space.ogg" type="AudioStream" id=11]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_Perc.ogg" type="AudioStream" id=12]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_LeadBass.ogg" type="AudioStream" id=13]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_Arp.ogg" type="AudioStream" id=14]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_FX.ogg" type="AudioStream" id=15]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_LeadClean.ogg" type="AudioStream" id=16]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_LeadGlitch.ogg" type="AudioStream" id=17]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_NerfSaw.ogg" type="AudioStream" id=18]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_Sub.ogg" type="AudioStream" id=19]
-[ext_resource path="res://assets/music/core/motherboard/mus_main_Space.ogg" type="AudioStream" id=20]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_Perc.ogg" type="AudioStream" id=21]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_LeadBass.ogg" type="AudioStream" id=22]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_Arp.ogg" type="AudioStream" id=23]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_FX.ogg" type="AudioStream" id=24]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_Solo.ogg" type="AudioStream" id=25]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_TwinkleLead.ogg" type="AudioStream" id=26]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_VampLead.ogg" type="AudioStream" id=27]
-[ext_resource path="res://assets/music/core/alternating_current/mus_main_Space.ogg" type="AudioStream" id=28]
-[ext_resource path="res://assets/music/stings/mus_game_end.ogg" type="AudioStream" id=29]
+[ext_resource path="res://Audio/Music/mixing_desk_music.gd" type="Script" id=1]
+[ext_resource path="res://Audio/Music/songprops.gd" type="Script" id=2]
+[ext_resource path="res://Audio/Music/game/orange/orange.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Audio/Music/game/blue/blue.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Audio/Music/game/red/red.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Audio/Music/game/purple/purple.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Audio/Music/game/yellow/yellow.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Audio/Music/game/green/green.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Audio/Music/game/pink/pink.ogg" type="AudioStream" id=9]
 
-[sub_resource type="GDScript" id=1]
-
-script/source = "extends Node
-
-export(int) var tempo
-export(int) var bars
-export(int) var beats_in_bar
-export(int) var transition_beats
-export(bool) var loop
-export(bool) var play_overlays"
-
-[node name="MusicPlayer" type="Node2D"]
+[node name="MDM" type="Node2D"]
 pause_mode = 2
+editor/display_folded = true
 script = ExtResource( 1 )
-play_mode = 2
+play_mode = 1
 
 [node name="Songs" type="Node2D" parent="."]
 
-[node name="data_trail" type="Node2D" parent="Songs"]
-editor/display_folded = true
+[node name="orange" type="Node2D" parent="Songs"]
 script = ExtResource( 2 )
-tempo = 84
-bars = 101
-beats_in_bar = 4
-transition_beats = 4
-
-[node name="perc" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 3 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/perc"]
-
-[node name="lead_bass" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 4 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/lead_bass"]
-
-[node name="sub_bass" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 5 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/sub_bass"]
-
-[node name="atmo_lead" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 6 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/atmo_lead"]
-
-[node name="arp" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 7 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/arp"]
-
-[node name="pads" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 8 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/pads"]
-
-[node name="fx" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 9 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/fx"]
-
-[node name="high_lead" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 10 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/high_lead"]
-
-[node name="space" type="AudioStreamPlayer" parent="Songs/data_trail"]
-editor/display_folded = true
-stream = ExtResource( 11 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/data_trail/space"]
-
-[node name="motherboard" type="Node2D" parent="Songs"]
-editor/display_folded = true
-script = ExtResource( 2 )
-tempo = 84
-bars = 74
-beats_in_bar = 4
-transition_beats = 4
-
-[node name="perc" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 12 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/perc"]
-
-[node name="leadbass" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 13 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/leadbass"]
-
-[node name="arp" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 14 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/arp"]
-
-[node name="fx" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 15 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/fx"]
-
-[node name="leadclean" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 16 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/leadclean"]
-
-[node name="leadglitch" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 17 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/leadglitch"]
-
-[node name="nerfsaw" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 18 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/nerfsaw"]
-
-[node name="sub" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 19 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/sub"]
-
-[node name="space" type="AudioStreamPlayer" parent="Songs/motherboard"]
-editor/display_folded = true
-stream = ExtResource( 20 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/motherboard/space"]
-
-[node name="alternating_current" type="Node2D" parent="Songs"]
-editor/display_folded = true
-script = SubResource( 1 )
-tempo = 84
-bars = 50
-beats_in_bar = 4
-transition_beats = 4
-
-[node name="perc" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 21 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/perc"]
-
-[node name="leadbass" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 22 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/leadbass"]
-
-[node name="arp" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 23 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/arp"]
-
-[node name="bass" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 23 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/bass"]
-
-[node name="fx" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 24 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/fx"]
-
-[node name="solo" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 25 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/solo"]
-
-[node name="twinklelead" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 26 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/twinklelead"]
-
-[node name="vamplead" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 27 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/vamplead"]
-
-[node name="space" type="AudioStreamPlayer" parent="Songs/alternating_current"]
-editor/display_folded = true
-stream = ExtResource( 28 )
-volume_db = -10.0
-
-[node name="Tween" type="Tween" parent="Songs/alternating_current/space"]
-
-[node name="end" type="Node2D" parent="Songs"]
-editor/display_folded = true
-script = ExtResource( 2 )
-tempo = 84
+tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4
+transition_beats = 4.0
+loop = true
 
-[node name="game_end" type="AudioStreamPlayer" parent="Songs/end"]
-editor/display_folded = true
-stream = ExtResource( 29 )
+[node name="1" type="AudioStreamPlayer" parent="Songs/orange"]
+stream = ExtResource( 3 )
 volume_db = -10.0
+bus = "Music"
 
-[node name="Tween" type="Tween" parent="Songs/end/game_end"]
+[node name="blue" type="Node2D" parent="Songs"]
+script = ExtResource( 2 )
+tempo = 120
+bars = 4
+beats_in_bar = 4
+transition_beats = 4.0
+loop = true
+
+[node name="1" type="AudioStreamPlayer" parent="Songs/blue"]
+stream = ExtResource( 4 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="red" type="Node2D" parent="Songs"]
+editor/display_folded = true
+script = ExtResource( 2 )
+tempo = 120
+bars = 4
+beats_in_bar = 4
+transition_beats = 4.0
+loop = true
+
+[node name="1" type="AudioStreamPlayer" parent="Songs/red"]
+stream = ExtResource( 5 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="purple" type="Node2D" parent="Songs"]
+editor/display_folded = true
+script = ExtResource( 2 )
+tempo = 120
+bars = 4
+beats_in_bar = 4
+transition_beats = 4.0
+loop = true
+
+[node name="1" type="AudioStreamPlayer" parent="Songs/purple"]
+stream = ExtResource( 6 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="yellow" type="Node2D" parent="Songs"]
+editor/display_folded = true
+script = ExtResource( 2 )
+tempo = 120
+bars = 4
+beats_in_bar = 4
+transition_beats = 4.0
+loop = true
+
+[node name="1" type="AudioStreamPlayer" parent="Songs/yellow"]
+stream = ExtResource( 7 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="green" type="Node2D" parent="Songs"]
+editor/display_folded = true
+script = ExtResource( 2 )
+tempo = 120
+bars = 4
+beats_in_bar = 4
+transition_beats = 4.0
+loop = true
+
+[node name="1" type="AudioStreamPlayer" parent="Songs/green"]
+stream = ExtResource( 8 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="pink" type="Node2D" parent="Songs"]
+editor/display_folded = true
+script = ExtResource( 2 )
+tempo = 120
+bars = 4
+beats_in_bar = 4
+transition_beats = 4.0
+loop = true
+
+[node name="1" type="AudioStreamPlayer" parent="Songs/pink"]
+stream = ExtResource( 9 )
+volume_db = -10.0
+bus = "Music"
 
 [node name="Overlays" type="Node2D" parent="."]
-
-[node name="kill_beat" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-
-[node name="kill_bar" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
 
 [node name="shuffle_timer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
 
-[node name="timefx" type="Node" parent="."]
-
-[node name="tick" type="AudioStreamPlayer" parent="timefx"]
-
-[connection signal="tween_completed" from="Songs/data_trail/perc/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/lead_bass/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/sub_bass/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/atmo_lead/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/arp/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/pads/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/fx/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/high_lead/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/data_trail/space/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/perc/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/leadbass/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/arp/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/fx/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/leadclean/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/leadglitch/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/nerfsaw/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/sub/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/motherboard/space/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/perc/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/leadbass/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/arp/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/bass/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/fx/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/solo/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/twinklelead/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/vamplead/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/alternating_current/space/Tween" to="." method="tween_completed"]
-[connection signal="tween_completed" from="Songs/end/game_end/Tween" to="." method="tween_completed"]
-[connection signal="timeout" from="kill_beat" to="." method="_reenable_beat"]
-[connection signal="timeout" from="kill_bar" to="." method="_reenable_bar"]
 [connection signal="timeout" from="shuffle_timer" to="." method="_shuffle_songs"]
