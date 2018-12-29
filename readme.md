@@ -49,8 +49,12 @@ Once your nodetree is setup, you're all ready to play your music in Godot.
 First, pick a play mode. It's an export int in `mixing_desk_music.gd`.
 
 > 0: play once
+
 > 1: loop
+
 > 2: shuffle
 
-Now, in your scene, simply call _init(track)` to load the track ready to play.
+	note: all vertical/horizontal adaptive features are available in all play modes!
+
+Now, in your scene, simply call `_init(track)` to load the track ready to play.
 Then, call `_play(track)` - track in both cases being the index of the song you want to play, counting from 0.
