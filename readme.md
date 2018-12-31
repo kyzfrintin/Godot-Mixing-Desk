@@ -14,7 +14,7 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 
 ### Setting up MDM
 
-![Typical MDM instance](https://i.imgur.com/iVSwKZY.png)
+![Typical MDM instance](https://i.imgur.com/uDxTeh5.png)
 
 Instance MDM into your scene, or build a node tree similar to the one in the image above.
 Here's a sample layout if you wish to delete the example songs and create your own:

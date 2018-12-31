@@ -1987,7 +1987,7 @@ angular_velocity = 63.7931
 colour = Color( 1, 0.603922, 0.25098, 1 )
 
 [node name="orange_ball4" parent="balls" instance=ExtResource( 16 )]
-position = Vector2( 672, 1216 )
+position = Vector2( 2944, 192 )
 linear_velocity = Vector2( -2.95506, -294.461 )
 angular_velocity = 42.4781
 colour = Color( 1, 0.603922, 0.25098, 1 )

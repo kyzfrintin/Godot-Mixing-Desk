@@ -53,6 +53,9 @@ func _init_song(track):
 		AudioServer.set_bus_name(bus,"layer" + str(inum))
 		AudioServer.set_bus_send(bus, "Music")
 		i.set_bus("layer" + str(inum))
+		if i.get_child(0).is_active():
+			i.get_child(0).stop(i)
+			i.set_volume_db(default_vol)
 		players.append(i)
 		inum += 1
 	if play_overlays:
