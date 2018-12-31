@@ -27,6 +27,7 @@ var current_song_num = 0
 var current_song
 var beat_tran = false
 var bar_tran = false
+var old_song
 var new_song = 0
 var repeats = 0
 
@@ -80,17 +81,13 @@ func _clear_song(track):
 #updates place in song and detects beats/bars
 func _process(delta):
 	if playing:
-		
 		time = current_song.get_child(0).get_playback_position()
 		beat = ((time/beats_in_sec) * 1000.0) + 1.0
 		bar = beat/beats_in_bar + 0.75
-		
 		if fmod(beat, 1.0) < 0.1:
-			
 			if fmod(bar, 1.0) < 0.24:
 				bar = floor(bar)
 				_bar()
-			
 			_beat()
 			beat = floor(beat)
 
@@ -211,7 +208,7 @@ func _fade_out(track, layer):
 
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
-	var old_song = current_song_num
+	old_song = current_song_num
 	var last_track = current_song.get_child(current_song.get_child_count() - 1)
 	_init_song(song)
 	new_song = song
@@ -223,7 +220,7 @@ func _queue_bar_transition(song):
 	
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
-	var old_song = current_song_num
+	old_song = current_song_num
 	var last_track = current_song.get_child(current_song.get_child_count() - 1)
 	_init_song(song)
 	new_song = song
@@ -247,13 +244,13 @@ func _stop():
 func _bar():
 	if can_bar:
 		if bar_tran:
-			for i in current_song.get_child_count():
-				if transition_beats > 1:
-					_fade_out(current_song_num, i)
+			for i in songs[old_song].get_child_count():
+				if transition_beats >= 1:
+					_fade_out(old_song, i)
 				else:
-					_mute(current_song_num, i)
+					_mute(old_song, i)
 					yield(get_tree(), "idle_frame")
-					current_song.get_child(0).get_child(0).emit_signal('tween_completed')
+					songs[old_song].get_child(0).get_child(0).emit_signal('tween_completed')
 			if play_overlays:
 				_stop_overlays()
 			_play(new_song)
@@ -280,13 +277,13 @@ func _bar():
 func _beat():
 	if can_beat:
 		if beat_tran:
-			for i in current_song.get_child_count():
-				if transition_beats > 1:
-					_fade_out(current_song_num, i)
+			for i in (songs[old_song].get_child_count()):
+				if transition_beats >= 1:
+					_fade_out(old_song, i)
 				else:
-					_mute(current_song_num, i)
+					_mute(old_song, i)
 					yield(get_tree(), "idle_frame")
-					current_song.get_child(0).get_child(0).emit_signal('tween_completed')
+					songs[old_song].get_child(0).get_child(0).emit_signal('tween_completed')
 			if play_overlays:
 				_stop_overlays()
 			_play(new_song)

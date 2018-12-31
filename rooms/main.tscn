@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://rooms/main.gd" type="Script" id=1]
 [ext_resource path="res://Audio/Music/mixing_desk_music.gd" type="Script" id=2]
@@ -15,38 +15,34 @@
 [ext_resource path="res://assets/wall/wall.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/player/player.tscn" type="PackedScene" id=14]
 [ext_resource path="res://assets/player/player.gd" type="Script" id=15]
-[ext_resource path="res://assets/ball/1024px-Circle_-_black_simple.svg.png" type="Texture" id=16]
+[ext_resource path="res://assets/ball/ball.tscn" type="PackedScene" id=16]
 [ext_resource path="res://rooms/area.gd" type="Script" id=17]
 
-[sub_resource type="CircleShape2D" id=1]
-
-radius = 21.6634
-
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 
 extents = Vector2( 384, 416 )
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=2]
 
 extents = Vector2( 480, 320 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 
 extents = Vector2( 448, 704 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=4]
 
 extents = Vector2( 1152, 416 )
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=5]
 
 extents = Vector2( 448, 416 )
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=6]
 
 extents = Vector2( 512, 384 )
 
-[sub_resource type="RectangleShape2D" id=8]
+[sub_resource type="RectangleShape2D" id=7]
 
 extents = Vector2( 704, 256 )
 
@@ -61,13 +57,12 @@ play_mode = 1
 [node name="Songs" type="Node2D" parent="MDM"]
 
 [node name="orange" type="Node2D" parent="MDM/Songs"]
-editor/display_folded = true
 position = Vector2( 1344, -192 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4.0
+transition_beats = 2.0
 loop = true
 
 [node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/orange"]
@@ -92,7 +87,7 @@ script = ExtResource( 3 )
 tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4.0
+transition_beats = 2.0
 loop = true
 
 [node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/blue"]
@@ -107,7 +102,7 @@ script = ExtResource( 3 )
 tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4.0
+transition_beats = 2.0
 loop = true
 
 [node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/red"]
@@ -122,7 +117,7 @@ script = ExtResource( 3 )
 tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4.0
+transition_beats = 2.0
 loop = true
 
 [node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/purple"]
@@ -137,7 +132,7 @@ script = ExtResource( 3 )
 tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4.0
+transition_beats = 2.0
 loop = true
 
 [node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/yellow"]
@@ -152,7 +147,7 @@ script = ExtResource( 3 )
 tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4.0
+transition_beats = 2.0
 loop = true
 
 [node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/green"]
@@ -167,7 +162,7 @@ script = ExtResource( 3 )
 tempo = 120
 bars = 4
 beats_in_bar = 4
-transition_beats = 4.0
+transition_beats = 2.0
 loop = true
 
 [node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/pink"]
@@ -1985,43 +1980,17 @@ script = ExtResource( 15 )
 
 [node name="balls" type="Node2D" parent="."]
 
-[node name="or_ball1" type="RigidBody2D" parent="balls"]
-editor/display_folded = true
-position = Vector2( 2880, 102.4 )
-collision_layer = 3
-collision_mask = 3
-mass = 0.218367
-gravity_scale = 0.0
-linear_damp = 0.0
-angular_damp = 0.0
+[node name="orange_ball3" parent="balls" instance=ExtResource( 16 )]
+position = Vector2( 601.6, 1280 )
+linear_velocity = Vector2( 395.846, -459.663 )
+angular_velocity = 63.7931
+colour = Color( 1, 0.603922, 0.25098, 1 )
 
-[node name="Sprite" type="Sprite" parent="balls/or_ball1"]
-modulate = Color( 1, 0.603922, 0.25098, 1 )
-scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 16 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="balls/or_ball1"]
-visible = false
-shape = SubResource( 1 )
-
-[node name="or_ball2" type="RigidBody2D" parent="balls"]
-editor/display_folded = true
-position = Vector2( 544, 1312 )
-collision_layer = 3
-collision_mask = 3
-mass = 0.218367
-gravity_scale = 0.0
-linear_damp = 0.0
-angular_damp = 0.0
-
-[node name="Sprite" type="Sprite" parent="balls/or_ball2"]
-modulate = Color( 1, 0.603922, 0.25098, 1 )
-scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 16 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="balls/or_ball2"]
-visible = false
-shape = SubResource( 1 )
+[node name="orange_ball4" parent="balls" instance=ExtResource( 16 )]
+position = Vector2( 672, 1216 )
+linear_velocity = Vector2( -2.95506, -294.461 )
+angular_velocity = 42.4781
+colour = Color( 1, 0.603922, 0.25098, 1 )
 
 [node name="areas" type="Node2D" parent="."]
 visible = false
@@ -2041,7 +2010,7 @@ script = ExtResource( 17 )
 prefix = "or"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/orange"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="blue" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2054,7 +2023,7 @@ script = ExtResource( 17 )
 prefix = "blu"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/blue"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="red" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2067,7 +2036,7 @@ script = ExtResource( 17 )
 prefix = "red"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/red"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="purple" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2080,7 +2049,7 @@ script = ExtResource( 17 )
 prefix = "pur"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/purple"]
-shape = SubResource( 5 )
+shape = SubResource( 4 )
 
 [node name="yellow" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2093,7 +2062,7 @@ script = ExtResource( 17 )
 prefix = "yel"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/yellow"]
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="green" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2106,7 +2075,7 @@ script = ExtResource( 17 )
 prefix = "gre"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/green"]
-shape = SubResource( 7 )
+shape = SubResource( 6 )
 
 [node name="pink" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2119,6 +2088,6 @@ script = ExtResource( 17 )
 prefix = "pin"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/pink"]
-shape = SubResource( 8 )
+shape = SubResource( 7 )
 
 [connection signal="timeout" from="MDM/shuffle_timer" to="MDM" method="_shuffle_songs"]
