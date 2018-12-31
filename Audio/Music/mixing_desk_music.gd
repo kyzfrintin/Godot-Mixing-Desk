@@ -126,6 +126,13 @@ func _stop_overlays():
 		for o in i.get_children():
 			o.stop()
 
+func _iplay(track):
+	var trk = track.duplicate()
+	track.add_child(trk)
+	trk.play()
+	yield(trk, "finished")
+	trk.queue_free()
+
 #play a song
 func _play(track):
 	time = 0

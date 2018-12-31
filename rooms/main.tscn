@@ -22,31 +22,31 @@
 
 radius = 21.6634
 
-[sub_resource type="RectangleShape2D" id=8]
+[sub_resource type="RectangleShape2D" id=2]
 
 extents = Vector2( 384, 416 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 
 extents = Vector2( 480, 320 )
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=4]
 
 extents = Vector2( 448, 704 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=5]
 
 extents = Vector2( 1152, 416 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=6]
 
 extents = Vector2( 448, 416 )
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=7]
 
 extents = Vector2( 512, 384 )
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=8]
 
 extents = Vector2( 704, 256 )
 
@@ -61,6 +61,8 @@ play_mode = 1
 [node name="Songs" type="Node2D" parent="MDM"]
 
 [node name="orange" type="Node2D" parent="MDM/Songs"]
+editor/display_folded = true
+position = Vector2( 1344, -192 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -85,6 +87,7 @@ bus = "Music"
 
 [node name="blue" type="Node2D" parent="MDM/Songs"]
 editor/display_folded = true
+position = Vector2( 480, 256 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -99,6 +102,7 @@ bus = "Music"
 
 [node name="red" type="Node2D" parent="MDM/Songs"]
 editor/display_folded = true
+position = Vector2( -512, 44.8 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -112,6 +116,8 @@ volume_db = -10.0
 bus = "Music"
 
 [node name="purple" type="Node2D" parent="MDM/Songs"]
+editor/display_folded = true
+position = Vector2( 224, -960 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -126,6 +132,7 @@ bus = "Music"
 
 [node name="yellow" type="Node2D" parent="MDM/Songs"]
 editor/display_folded = true
+position = Vector2( 800, 928 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -140,6 +147,7 @@ bus = "Music"
 
 [node name="green" type="Node2D" parent="MDM/Songs"]
 editor/display_folded = true
+position = Vector2( 2176, 1024 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -154,6 +162,7 @@ bus = "Music"
 
 [node name="pink" type="Node2D" parent="MDM/Songs"]
 editor/display_folded = true
+position = Vector2( 2432, 160 )
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -2032,7 +2041,7 @@ script = ExtResource( 17 )
 prefix = "or"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/orange"]
-shape = SubResource( 8 )
+shape = SubResource( 2 )
 
 [node name="blue" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2045,7 +2054,7 @@ script = ExtResource( 17 )
 prefix = "blu"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/blue"]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="red" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2058,7 +2067,7 @@ script = ExtResource( 17 )
 prefix = "red"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/red"]
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="purple" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2071,7 +2080,7 @@ script = ExtResource( 17 )
 prefix = "pur"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/purple"]
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="yellow" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2084,7 +2093,7 @@ script = ExtResource( 17 )
 prefix = "yel"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/yellow"]
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="green" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2097,7 +2106,7 @@ script = ExtResource( 17 )
 prefix = "gre"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/green"]
-shape = SubResource( 6 )
+shape = SubResource( 7 )
 
 [node name="pink" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -2110,6 +2119,6 @@ script = ExtResource( 17 )
 prefix = "pin"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/pink"]
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [connection signal="timeout" from="MDM/shuffle_timer" to="MDM" method="_shuffle_songs"]
