@@ -9,6 +9,8 @@ extents = Vector2( 32, 32 )
 [node name="block1" type="StaticBody2D"]
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 32, 32 )
+collision_layer = 2
+collision_mask = 2
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

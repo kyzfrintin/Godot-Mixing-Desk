@@ -1,0 +1,22 @@
+extends Area2D
+
+var balls : int = 0
+var areanum : int
+
+export(String) var prefix
+
+onready var game = get_parent().get_parent()
+
+func _ready():
+	areanum = self.get_index()
+	connect("body_entered",self,"on_room_entered")
+
+func on_room_entered(body):
+	if body.name.begins_with(prefix):
+		balls += 1
+	if body.name != 'player':
+		return
+	if game.colour != areanum:
+		game.mdm._queue_bar_transition(areanum)
+		game.colour = areanum
+		game.mdm._mute_above_layer(areanum,balls)

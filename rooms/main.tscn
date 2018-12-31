@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://rooms/main.gd" type="Script" id=1]
 [ext_resource path="res://Audio/Music/mixing_desk_music.gd" type="Script" id=2]
@@ -15,8 +15,14 @@
 [ext_resource path="res://assets/wall/wall.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/player/player.tscn" type="PackedScene" id=14]
 [ext_resource path="res://assets/player/player.gd" type="Script" id=15]
+[ext_resource path="res://assets/ball/1024px-Circle_-_black_simple.svg.png" type="Texture" id=16]
+[ext_resource path="res://rooms/area.gd" type="Script" id=17]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=1]
+
+radius = 21.6634
+
+[sub_resource type="RectangleShape2D" id=8]
 
 extents = Vector2( 384, 416 )
 
@@ -78,6 +84,7 @@ volume_db = -10.0
 bus = "Music"
 
 [node name="blue" type="Node2D" parent="MDM/Songs"]
+editor/display_folded = true
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -91,6 +98,7 @@ volume_db = -10.0
 bus = "Music"
 
 [node name="red" type="Node2D" parent="MDM/Songs"]
+editor/display_folded = true
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -117,6 +125,7 @@ volume_db = -10.0
 bus = "Music"
 
 [node name="yellow" type="Node2D" parent="MDM/Songs"]
+editor/display_folded = true
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -130,6 +139,7 @@ volume_db = -10.0
 bus = "Music"
 
 [node name="green" type="Node2D" parent="MDM/Songs"]
+editor/display_folded = true
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -143,6 +153,7 @@ volume_db = -10.0
 bus = "Music"
 
 [node name="pink" type="Node2D" parent="MDM/Songs"]
+editor/display_folded = true
 script = ExtResource( 3 )
 tempo = 120
 bars = 4
@@ -1959,10 +1970,52 @@ position = Vector2( 1760, -416 )
 position = Vector2( -96, -416 )
 
 [node name="player" parent="." instance=ExtResource( 14 )]
-position = Vector2( 1376, 64 )
+position = Vector2( 1376, 32 )
+collision_layer = 3
 script = ExtResource( 15 )
 
+[node name="balls" type="Node2D" parent="."]
+
+[node name="or_ball1" type="RigidBody2D" parent="balls"]
+editor/display_folded = true
+position = Vector2( 2880, 102.4 )
+collision_layer = 3
+collision_mask = 3
+mass = 0.218367
+gravity_scale = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
+
+[node name="Sprite" type="Sprite" parent="balls/or_ball1"]
+modulate = Color( 1, 0.603922, 0.25098, 1 )
+scale = Vector2( 0.05, 0.05 )
+texture = ExtResource( 16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="balls/or_ball1"]
+visible = false
+shape = SubResource( 1 )
+
+[node name="or_ball2" type="RigidBody2D" parent="balls"]
+editor/display_folded = true
+position = Vector2( 544, 1312 )
+collision_layer = 3
+collision_mask = 3
+mass = 0.218367
+gravity_scale = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
+
+[node name="Sprite" type="Sprite" parent="balls/or_ball2"]
+modulate = Color( 1, 0.603922, 0.25098, 1 )
+scale = Vector2( 0.05, 0.05 )
+texture = ExtResource( 16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="balls/or_ball2"]
+visible = false
+shape = SubResource( 1 )
+
 [node name="areas" type="Node2D" parent="."]
+visible = false
 __meta__ = {
 "_edit_group_": true,
 "_edit_lock_": true
@@ -1975,9 +2028,11 @@ gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
+script = ExtResource( 17 )
+prefix = "or"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/orange"]
-shape = SubResource( 1 )
+shape = SubResource( 8 )
 
 [node name="blue" type="Area2D" parent="areas"]
 editor/display_folded = true
@@ -1986,6 +2041,8 @@ gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
+script = ExtResource( 17 )
+prefix = "blu"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/blue"]
 shape = SubResource( 2 )
@@ -1997,6 +2054,8 @@ gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
+script = ExtResource( 17 )
+prefix = "red"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/red"]
 shape = SubResource( 3 )
@@ -2008,6 +2067,8 @@ gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
+script = ExtResource( 17 )
+prefix = "pur"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/purple"]
 shape = SubResource( 4 )
@@ -2019,6 +2080,8 @@ gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
+script = ExtResource( 17 )
+prefix = "yel"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/yellow"]
 shape = SubResource( 5 )
@@ -2030,6 +2093,8 @@ gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
+script = ExtResource( 17 )
+prefix = "gre"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/green"]
 shape = SubResource( 6 )
@@ -2041,6 +2106,8 @@ gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
+script = ExtResource( 17 )
+prefix = "pin"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/pink"]
 shape = SubResource( 7 )
