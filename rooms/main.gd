@@ -8,7 +8,6 @@ func _ready():
 	mdm._init_song(0)
 	mdm._play(0)
 	for i in $areas.get_children():
-		var areanum = i.get_index()
 		i.connect('body_entered', self, 'on_room_entered', [i])
 		
 func on_room_entered(body, i):

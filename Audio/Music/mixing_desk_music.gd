@@ -74,6 +74,7 @@ func _clear_song(track):
 		AudioServer.remove_bus(bus)
 		i.get_child(0).queue_free()
 		i.stop()
+		i.set_volume_db(default_vol)
 	song.get_child(0).disconnect("finished", self, "_song_finished")
 		
 #updates place in song and detects beats/bars
@@ -206,27 +207,27 @@ func _fade_out(layer):
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
 	var old_song = current_song_num
+	var last_track = current_song.get_child(current_song.get_child_count() - 1)
 	_init_song(song)
 	new_song = song
 	bar_tran = true
-	yield(current_song.get_child(0).get_child(0), 'tween_completed')
-	print('restting volume and clearing')
+	yield(last_track.get_child(0), 'tween_completed')
+	print('clearing')
 	_clear_song(old_song)
-	for i in songs[old_song].get_children():
-		i.set_volume_db(default_vol)
+	
+		
 	
 
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
 	var old_song = current_song_num
+	var last_track = current_song.get_child(current_song.get_child_count() - 1)
 	_init_song(song)
 	new_song = song
 	beat_tran = true
-	yield(current_song.get_child(0).get_child(0), 'tween_completed')
-	print('restting volume and clearing')
+	yield(last_track.get_child(0), 'tween_completed')
+	print('clearing')
 	_clear_song(old_song)
-	for i in songs[old_song].get_children():
-		i.set_volume_db(default_vol)
 	
 	
 

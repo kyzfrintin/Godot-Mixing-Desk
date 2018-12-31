@@ -2,13 +2,14 @@
 
 [ext_resource path="res://Audio/Music/mixing_desk_music.gd" type="Script" id=1]
 [ext_resource path="res://Audio/Music/songprops.gd" type="Script" id=2]
-[ext_resource path="res://Audio/Music/game/orange/orange.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Audio/Music/game/orange/orange_epiano.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Audio/Music/game/blue/blue.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Audio/Music/game/red/red.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Audio/Music/game/purple/purple.ogg" type="AudioStream" id=6]
 [ext_resource path="res://Audio/Music/game/yellow/yellow.ogg" type="AudioStream" id=7]
 [ext_resource path="res://Audio/Music/game/green/green.ogg" type="AudioStream" id=8]
 [ext_resource path="res://Audio/Music/game/pink/pink.ogg" type="AudioStream" id=9]
+
 
 [node name="MDM" type="Node2D"]
 pause_mode = 2

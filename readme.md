@@ -10,15 +10,7 @@ That's where Mixing Desk comes in. A modular plugin, allowing for procedural aud
 
 ## Mixing Desk: Music
 
-Based on implementations of interactive music in [FMOD](https://www.fmod.com/) and [Wwise](https://www.audiokinetic.com/products/wwise/),  the MDM neatly covers the two major branches of adaptive music outlined by [Michael Sweet](https://www.designingmusicnow.com/2016/06/13/advantages-disadvantages-common-interactive-music-techniques-used-video-games/).
-
-### **Vertical Remixing/Layering**
-MDM can fade individual tracks in and out using the `_fade_in(track)` or `_fade_out(track)` functions. It can also fade multiple tracks in/out at once with the `_mute_below_layer(track)` and `_mute_above_layer(track)` functions. To begin a track with a base layer only, the `_start_alone(track, layer)` function can be used.
-
-### **Horizontal Resequencing**
-MDM comes with the ability to detect beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `_queue_beat_transition(track)` or `_queue_bar_transition(track)` functions.
-
-[Video Example](https://streamable.com/1cx2w)
+The MDM was designed to make adaptive,interactive music easier to design within Godot.
 
 ### Setting up MDM
 
@@ -60,5 +52,21 @@ First, pick a play mode. It's an export int in `mixing_desk_music.gd`.
 Now, in your scene, simply call `_init(track)` to load the track ready to play.
 Then, call `_play(track)` - track in both cases being the index of the song you want to play, counting from 0.
 
-# Mixing Desk: Sound
+### Adapting the music in code
+
+Based on implementations of interactive music in [FMOD](https://www.fmod.com/) and [Wwise](https://www.audiokinetic.com/products/wwise/),  the MDM neatly covers the two major branches of adaptive music outlined by [Michael Sweet](https://www.designingmusicnow.com/2016/06/13/advantages-disadvantages-common-interactive-music-techniques-used-video-games/).
+
+### **Vertical Remixing/Layering**
+MDM can fade individual tracks in and out using the `_fade_in(track)` or `_fade_out(track)` functions. It can also fade multiple tracks in/out at once with the `_mute_below_layer(track)` and `_mute_above_layer(track)` functions. To begin a track with a base layer only, the `_start_alone(track, layer)` function can be used.
+
+### **Horizontal Resequencing**
+MDM comes with the ability to detect beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `_queue_beat_transition(track)` or `_queue_bar_transition(track)` functions.
+
+[Video Example](https://streamable.com/1cx2w)
+
+### Overlays
+
+
+
+## Mixing Desk: Sound
 Documentation coming soon...
