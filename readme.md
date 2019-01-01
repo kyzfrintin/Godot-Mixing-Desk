@@ -88,7 +88,7 @@ MDM consistently keeps track of beats and bars, and output signals accordingly. 
 
 ## Mixing Desk: Sound
 
-The MDS is a fully-featured sound-playing plugin, allowing procedural playback of multiple layered and combined sounds.
+The MDS is a fully-featured sound-playing plugin, allowing procedural playback of multiple layered and combined sounds through the gratuitous use of the _iplay(sound) function!
 
 
 ### Setting up MDS
