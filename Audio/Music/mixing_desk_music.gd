@@ -57,10 +57,11 @@ func _init_song(track):
 		AudioServer.add_bus(bus)
 		AudioServer.set_bus_name(bus,"layer" + str(inum))
 		AudioServer.set_bus_send(bus, "Music")
-		i.set_bus("layer" + str(inum))
-		if i.get_child(0).is_active():
+		if song.fading_out:
 			i.get_child(0).stop(i)
+			song.fading_out = false
 			i.set_volume_db(default_vol)
+		i.set_bus("layer" + str(inum))
 		players.append(i)
 		inum += 1
 	root.get_child(0).connect("finished", self, "_song_finished")
@@ -74,13 +75,12 @@ func _init_song(track):
 #unloads a song
 func _clear_song(track):
 	players.clear()
+	print('clearing song "' + str(songs[track].name) + '"')
 	var song = songs[track].get_node("core")
 	var inum = 0
 	for i in song.get_children():
 		var bus = AudioServer.get_bus_index("layer" + str(inum))
 		AudioServer.remove_bus(bus)
-		i.stop()
-		i.set_volume_db(default_vol)
 	song.get_child(0).disconnect("finished", self, "_song_finished")
 		
 #updates place in song and detects beats/bars
@@ -145,7 +145,7 @@ func _play(track):
 func _mute_above_layer(track, layer):
 	if songs[track].get_node("core").get_child_count() < 2:
 		return
-	for i in range(0, layer + 1):
+	for i in range(0, layer):
 		_fade_in(track, i)
 		print('fading in song ' + str(track) + ', track ' + str(i))
 	for i in range(layer + 1, songs[track].get_node("core").get_child_count()):
@@ -183,7 +183,7 @@ func _unmute(track, layer):
 #slowly bring in the specified layer
 func _fade_in(track, layer):
 	var target = songs[track].get_node("core").get_child(layer)
-	var tween = target.get_child(0)
+	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, default_vol, transition_beats, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.start()
@@ -191,7 +191,7 @@ func _fade_in(track, layer):
 #slowly take out the specified layer
 func _fade_out(track, layer):
 	var target = songs[track].get_node("core").get_child(layer)
-	var tween = target.get_child(0)
+	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
 	tween.start()
@@ -199,6 +199,7 @@ func _fade_out(track, layer):
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
 	old_song = current_song_num
+	songs[old_song].fading_out = true
 	new_song = song
 	bar_tran = true
 	
@@ -207,16 +208,12 @@ func _queue_bar_transition(song):
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
 	old_song = current_song_num
-	var last_track = current_song.get_child(current_song.get_child_count() - 1)
-	_init_song(song)
+	songs[old_song].fading_out = true
 	new_song = song
 	beat_tran = true
-	yield(last_track.get_child(0), 'tween_completed')
-	emit_signal("song_changed")
-	print('clearing')
-	_clear_song(old_song)
 	
 func _change_song(song):
+	_clear_song(old_song)
 	_init_song(song)
 	for i in songs[old_song].get_children():
 		if i.name == 'core':
@@ -227,6 +224,7 @@ func _change_song(song):
 				_mute(old_song, i)
 				yield(get_tree(), "idle_frame")
 				songs[old_song].get_node("core").get_child(0).get_child(0).emit_signal('tween_completed')
+				songs[old_song].fading_out = false
 		if 'ran' in i.name:
 			for o in i.get_children():
 				o.stop()
@@ -252,11 +250,12 @@ func _bar():
 		emit_signal("bar")
 		
 		if bar_tran:
-			_change_song(new_song)
-			emit_signal("song_changed")
-			yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
+			if current_song_num != new_song:
+				_change_song(new_song)
+				emit_signal("song_changed")
+				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
 			#print('clearing song "' + str(songs[old_song].name) + '"')
-			_clear_song(old_song)
+			
 		
 		#at end of song
 		if bar >= bars + 1:
@@ -273,14 +272,10 @@ func _bar():
 func _beat():
 	if can_beat:
 		if beat_tran:
-			for i in (songs[old_song].get_node("core").get_child_count()):
-				if transition_beats >= 1:
-					_fade_out(old_song, i)
-				else:
-					_mute(old_song, i)
-					yield(get_tree(), "idle_frame")
-					songs[old_song].get_node("core").get_child(0).get_child(0).emit_signal('tween_completed')
-			_play(new_song)
+			if current_song_num != new_song:
+				_change_song(new_song)
+				emit_signal("song_changed")
+				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
 		can_beat = false
 		emit_signal("beat")
 		yield(get_tree(), "idle_frame")
