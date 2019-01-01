@@ -99,7 +99,8 @@ Similarly to setting up MDM, you can either instance and localise the MDS.tscn i
 
 ### Playing back sound
 
-MDS comes with many functions to handle any sound or groupings of sounds nested within it. 
+MDS comes with many functions to handle any sound or groupings of sounds nested within it.
+These are two you may use more often than most:
 
 	_play_sound_full(sound, ran)
 	>Plays all sounds under child 'sound' 
@@ -107,11 +108,8 @@ MDS comes with many functions to handle any sound or groupings of sounds nested 
 	_play_sound_random(sound, num, ran)
 	>Plays 'num' number of random sounds under child 'sound'
 	
-	_play_base_and_random(sound, num, ran):
-	>Plays sound 0 under child 'sound', with 'num' number of random sounds
-
 In all functions, 'sound' is the number of the sound to play (counting from 0).
-'Num is how many sounds to play under the node 'sound' (counting from 1).
+'Num' is how many sounds to play under the node 'sound' (counting from 1).
 'Ran' is a bool, dictating whether or not to randomise pitch and volume. Leave blank to default to true.
 
 ### Sound scattering
@@ -130,3 +128,7 @@ At the point you want to begin scattering - if for ambience, this will likely be
 This will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'tmin' and 'tmax'.
 At each timer's timeout, it will call `_play_sound_random()` on the specified sound, and begin again, its timeout once more randomised.
 This will continue indefinitely, randomised timers calling randomised sounds, until you call `_end_scatter(sound)`. This will delete all the timers.
+
+---
+
+Feel free to contact me here on Github with any questions, or on Discord at Irmoz=8586
