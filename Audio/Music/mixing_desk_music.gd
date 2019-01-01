@@ -145,7 +145,7 @@ func _play(track):
 func _mute_above_layer(track, layer):
 	if songs[track].get_node("core").get_child_count() < 2:
 		return
-	for i in range(0, layer):
+	for i in range(0, layer + 1):
 		_fade_in(track, i)
 		print('fading in song ' + str(track) + ', track ' + str(i))
 	for i in range(layer + 1, songs[track].get_node("core").get_child_count()):
