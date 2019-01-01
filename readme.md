@@ -17,7 +17,7 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 
 **Core Tracks**
 
-Instance MDM into your scene and `right click>make local`, or build a node tree similar to the one in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song title. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
+Instance and localise MDM into your scene, or build a node tree similar to the one in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song title. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
 ```
 MDM (mixing_desk_music.gd)
 >SONGS
@@ -87,4 +87,46 @@ MDM consistently keeps track of beats and bars, and output signals accordingly. 
 
 
 ## Mixing Desk: Sound
-Documentation coming soon...
+
+The MDS is a fully-featured sound-playing plugin, allowing procedural playback of multiple layered and combined sounds.
+
+
+### Setting up MDS
+
+Similarly to setting up MDM, you can either instance and localise the MDS.tscn included in the example project, or build a nodetree with mixing_desk_sound.gd at the root, and sound_props.gd on the root of each sound.
+
+![An instance of MDS](https://i.imgur.com/Pix1LuO.png)
+
+### Playing back sound
+
+MDS comes with many functions to handle any sound or groupings of sounds nested within it. 
+
+	_play_sound_full(sound, ran)
+	>Plays all sounds under child 'sound' 
+	
+	_play_sound_random(sound, num, ran)
+	>Plays 'num' number of random sounds under child 'sound'
+	
+	_play_base_and_random(sound, num, ran):
+	>Plays sound 0 under child 'sound', with 'num' number of random sounds
+
+In all functions, 'sound' is the number of the sound to play (counting from 0).
+'Num is how many sounds to play under the node 'sound' (counting from 1).
+'Ran' is a bool, dictating whether or not to randomise pitch and volume. Leave blank to default to true.
+
+### Sound scattering
+
+Scattering sounds is great for ambience. Load up all the sounds you can imagine randomly occuring in a place - animal calls in a forest, shouting and cars in a city - and let MDS do the rest.
+
+[An example of sound scattering in Hell Hal](https://streamable.com/l5sxx)
+
+Achieved by calling the scatter function once in _ready()!
+
+To scatter a group of sounds, arrange them nested in a node like usual.
+At the point you want to begin scattering - if for ambience, this will likely be `_ready()` - simply call:
+
+	_play_sound_scattered(sound, voices, tmin, tmax, ran)
+	
+This will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'tmin' and 'tmax'.
+At each timer's timeout, it will call `_play_sound_random()` on the specified sound, and begin again, its timeout once more randomised.
+This will continue indefinitely, randomised timers calling randomised sounds, until you call `_end_scatter(sound)`. This will delete all the timers.
