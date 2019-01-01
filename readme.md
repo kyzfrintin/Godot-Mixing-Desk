@@ -12,9 +12,10 @@ That's where Mixing Desk comes in. A modular plugin, allowing for procedural aud
 The MDM was designed to make adaptive,interactive music easier to design within Godot.
 
 ### Setting up MDM
-**Core Tracks**
+
 ![Typical MDM instance](https://i.imgur.com/DvY1zy8.png)
 
+**Core Tracks**
 Instance MDM into your scene, or build a node tree similar to the one in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song title. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
 ```
 MDM (mixing_desk_music.gd)
