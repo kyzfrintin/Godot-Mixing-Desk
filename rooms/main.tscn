@@ -2024,13 +2024,13 @@ script = ExtResource( 18 )
 
 [node name="orange_ball3" parent="balls" instance=ExtResource( 19 )]
 position = Vector2( 1280, -864 )
-linear_velocity = Vector2( -546.613, -142.106 )
+linear_velocity = Vector2( -54.6613, -14.2106 )
 angular_velocity = 20.2393
 colour = Color( 1, 0.603922, 0.25098, 1 )
 
 [node name="orange_ball4" parent="balls" instance=ExtResource( 19 )]
 position = Vector2( 1248, 576 )
-linear_velocity = Vector2( -589.915, 379.95 )
+linear_velocity = Vector2( -58.9915, 37.995 )
 angular_velocity = 31.1773
 colour = Color( 1, 0.603922, 0.25098, 1 )
 

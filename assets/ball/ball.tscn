@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/ball/ball_mat.tres" type="PhysicsMaterial" id=1]
 [ext_resource path="res://assets/ball/ball.gd" type="Script" id=2]
 [ext_resource path="res://assets/ball/1024px-Circle_-_black_simple.svg.png" type="Texture" id=3]
+[ext_resource path="res://Audio/sound/mixing_desk_sound.gd" type="Script" id=4]
+[ext_resource path="res://Audio/sound/sound_props.gd" type="Script" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -34,4 +36,12 @@ texture_mode = -1087272314
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource( 1 )
+
+[node name="sounds" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="sound1" type="Node2D" parent="sounds"]
+script = ExtResource( 5 )
+
+[node name="boop" type="AudioStreamPlayer2D" parent="sounds/sound1"]
 
