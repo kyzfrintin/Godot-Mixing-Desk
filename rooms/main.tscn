@@ -54,6 +54,7 @@ script = ExtResource( 1 )
 
 [node name="MDM" type="Node2D" parent="."]
 pause_mode = 2
+editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="Songs" type="Node2D" parent="MDM"]
@@ -2024,17 +2025,18 @@ script = ExtResource( 18 )
 
 [node name="orange_ball3" parent="balls" instance=ExtResource( 19 )]
 position = Vector2( 1280, -864 )
-linear_velocity = Vector2( -54.6613, -14.2106 )
-angular_velocity = 20.2393
+linear_velocity = Vector2( 60.1346, 69.8051 )
+angular_velocity = 15.5162
 colour = Color( 1, 0.603922, 0.25098, 1 )
 
 [node name="orange_ball4" parent="balls" instance=ExtResource( 19 )]
 position = Vector2( 1248, 576 )
-linear_velocity = Vector2( -58.9915, 37.995 )
-angular_velocity = 31.1773
+linear_velocity = Vector2( 24.8316, 51.5216 )
+angular_velocity = 23.0684
 colour = Color( 1, 0.603922, 0.25098, 1 )
 
 [node name="areas" type="Node2D" parent="."]
+editor/display_folded = true
 visible = false
 __meta__ = {
 "_edit_group_": true,

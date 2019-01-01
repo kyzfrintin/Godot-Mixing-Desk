@@ -16,6 +16,7 @@ func _physics_process(delta):
 	if colliders.size() > 0:
 		if !collided:
 			print('boop')
+			$sounds._play_sound_full(0)
 			collided = true
 	else:
 		collided = false
