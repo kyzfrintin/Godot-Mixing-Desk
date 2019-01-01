@@ -5,13 +5,11 @@ var bars
 var beats_in_bar
 var transition_beats
 var loop
-var play_overlays
 var can_shuffle = true
 
 export(int) var play_mode = 1
 
 onready var songs = get_node("Songs").get_children()
-onready var ran_roots = get_node("Overlays").get_children()
 
 const default_vol = -10
 
@@ -40,15 +38,21 @@ signal song_changed
 func _ready():
 	for track in songs:
 		for i in track.get_children():
-			var tween = Tween.new()
-			tween.name = 'Tween'
-			i.add_child(tween)
-			
+			if i.name == 'core':
+				for o in i.get_children():
+					var tween = Tween.new()
+					tween.name = 'Tween'
+					o.add_child(tween)
+				
 #loads a song and gets ready to play
 func _init_song(track):
 	var song = songs[track]
+	var root = song.get_node("core")
+	current_song_num = track
+	current_song = songs[track].get_node("core")
 	var inum = 0
-	for i in song.get_children():
+	repeats= 0
+	for i in root.get_children():
 		var bus = AudioServer.get_bus_count()
 		AudioServer.add_bus(bus)
 		AudioServer.set_bus_name(bus,"layer" + str(inum))
@@ -59,10 +63,7 @@ func _init_song(track):
 			i.set_volume_db(default_vol)
 		players.append(i)
 		inum += 1
-	play_overlays = song.play_overlays
-	if play_overlays:
-		var rans = ran_roots[track]
-	song.get_child(0).connect("finished", self, "_song_finished")
+	root.get_child(0).connect("finished", self, "_song_finished")
 	tempo = song.tempo
 	bars = song.bars
 	loop = song.loop
@@ -73,7 +74,7 @@ func _init_song(track):
 #unloads a song
 func _clear_song(track):
 	players.clear()
-	var song = songs[track]
+	var song = songs[track].get_node("core")
 	var inum = 0
 	for i in song.get_children():
 		var bus = AudioServer.get_bus_index("layer" + str(inum))
@@ -98,34 +99,11 @@ func _process(delta):
 #start a song with only one track playing
 func _start_alone(track, layer):
 	current_song_num = track
-	current_song = songs[track]
+	current_song = songs[track].get_node("core")
 	for i in current_song.get_children():
 		i.set_volume_db(-60.0)
 	current_song.get_child(layer).set_volume_db(default_vol)
 	_play(track)
-
-#play random and sequence tracks
-func _play_overlays():
-	randomize()
-	var tracks = ran_roots[current_song_num].get_children()
-	for i in tracks:
-		if 'ran' in i.name:
-			var rantrk = floor(rand_range(0, i.get_child_count() + current_song.random_padding))
-			if rantrk <= i.get_child_count() - 1:
-				i.get_child(rantrk).play(0.0)
-		if 'seq' in i.name:
-			var seqtrk = repeats
-			if repeats == i.get_child_count():
-				seqtrk = 0
-				repeats = 0
-			i.get_child(seqtrk).play()
-
-#stop random/sequence tracks
-func _stop_overlays(song_num):
-	var tracks = ran_roots[song_num].get_children()
-	for i in tracks:
-		for o in i.get_children():
-			o.stop()
 
 func _iplay(track):
 	var trk = track.duplicate()
@@ -137,16 +115,23 @@ func _iplay(track):
 #play a song
 func _play(track):
 	time = 0
-	repeats = 0
-	current_song_num = track
-	current_song = songs[track]
-	
 	if !playing:
 		playing = true
-	for i in current_song.get_children():
-			i.play()
-	if play_overlays:
-		_play_overlays()
+	for i in songs[track].get_children():
+		if i.name == 'core':
+			print('playing song "' + str(songs[track].name) + '"')
+			for o in i.get_children():
+				o.play()
+		if 'ran' in i.name:
+			var rantrk = floor(rand_range(0, i.get_child_count() + songs[track].random_padding))
+			if rantrk <= i.get_child_count() - 1:
+				i.get_child(rantrk).play(0.0)
+		if 'seq' in i.name:
+			var seqtrk = repeats
+			if repeats == i.get_child_count():
+				seqtrk = 0
+				repeats = 0
+			i.get_child(seqtrk).play()
 	if bar_tran:
 		bar_tran = false
 	else:
@@ -158,17 +143,18 @@ func _play(track):
 
 #mute all layers above specified layer, and fade in all below
 func _mute_above_layer(track, layer):
-	if songs[track].get_child_count() < 2:
+	if songs[track].get_node("core").get_child_count() < 2:
 		return
-	for i in range(0, layer):
-        _fade_in(track, i)
-	for i in range(layer + 1, songs[track].get_child_count()):
-        _fade_out(track, i)
+	for i in range(0, layer + 1):
+		_fade_in(track, i)
+		print('fading in song ' + str(track) + ', track ' + str(i))
+	for i in range(layer + 1, songs[track].get_node("core").get_child_count()):
+		_fade_out(track, i)
 
 #mute all layers below specified layer, and fade in all below
 #use _mute_below_layer(0) to fade all tracks in
 func _mute_below_layer(track, layer):
-	for i in range(layer, songs[track].get_child_count()):
+	for i in range(layer, songs[track].get_node("core").get_child_count()):
         _fade_in(track, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
@@ -178,7 +164,7 @@ func _mute_below_layer(track, layer):
 			
 #mute all layers aside from specified layer
 func _solo(track, layer):
-	for i in range(layer + 1, songs[track].get_child_count()):
+	for i in range(layer + 1, songs[track].get_node("core").get_child_count()):
         _fade_out(track, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
@@ -188,15 +174,15 @@ func _solo(track, layer):
 
 #mute only the specified layer
 func _mute(track, layer):
-	songs[track].get_child(layer).set_volume_db(-60.0)
+	songs[track].get_node("core").get_child(layer).set_volume_db(-60.0)
 
 #unmute only the specified layer
 func _unmute(track, layer):
-	songs[track].get_child(layer).set_volume_db(default_vol)
+	songs[track].get_node("core").get_child(layer).set_volume_db(default_vol)
 
 #slowly bring in the specified layer
 func _fade_in(track, layer):
-	var target = songs[track].get_child(layer)
+	var target = songs[track].get_node("core").get_child(layer)
 	var tween = target.get_child(0)
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, default_vol, transition_beats, Tween.TRANS_QUAD, Tween.EASE_OUT)
@@ -204,7 +190,7 @@ func _fade_in(track, layer):
 
 #slowly take out the specified layer
 func _fade_out(track, layer):
-	var target = songs[track].get_child(layer)
+	var target = songs[track].get_node("core").get_child(layer)
 	var tween = target.get_child(0)
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
@@ -213,14 +199,10 @@ func _fade_out(track, layer):
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
 	old_song = current_song_num
-	var last_track = current_song.get_child(current_song.get_child_count() - 1)
-	_init_song(song)
 	new_song = song
 	bar_tran = true
-	yield(last_track.get_child(0), 'tween_completed')
-	emit_signal("song_changed")
-	print('clearing')
-	_clear_song(old_song)
+	
+	
 	
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
@@ -234,64 +216,71 @@ func _queue_beat_transition(song):
 	print('clearing')
 	_clear_song(old_song)
 	
-	
+func _change_song(song):
+	_init_song(song)
+	for i in songs[old_song].get_children():
+		if i.name == 'core':
+			if transition_beats >= 1:
+				for o in i.get_child_count():
+					_fade_out(old_song, o)
+			else:
+				_mute(old_song, i)
+				yield(get_tree(), "idle_frame")
+				songs[old_song].get_node("core").get_child(0).get_child(0).emit_signal('tween_completed')
+		if 'ran' in i.name:
+			for o in i.get_children():
+				o.stop()
+		if 'seq' in i.name:
+			for o in i.get_children():
+				o.stop()
+	_play(song)
+
 
 #stops playing
-func _stop():
+func _stop(track):
 	if playing:
 		playing = false
-		for i in players:
-			i.stop()
+		for i in songs[track].get_children():
+			for o in i.get_children():
+				o.stop()
 	_clear_song(current_song_num)
 
 #called every bar
 func _bar():
 	if can_bar:
-		if bar_tran:
-			for i in songs[old_song].get_child_count():
-				if transition_beats >= 1:
-					_fade_out(old_song, i)
-				else:
-					_mute(old_song, i)
-					yield(get_tree(), "idle_frame")
-					songs[old_song].get_child(0).get_child(0).emit_signal('tween_completed')
-			if songs[old_song].play_overlays:
-				_stop_overlays(old_song)
-			_play(new_song)
-		
 		can_bar = false
 		emit_signal("bar")
+		
+		if bar_tran:
+			_change_song(new_song)
+			emit_signal("song_changed")
+			yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
+			#print('clearing song "' + str(songs[old_song].name) + '"')
+			_clear_song(old_song)
 		
 		#at end of song
 		if bar >= bars + 1:
 			if play_mode == 1 and loop:
-				print('Restarting music...')
-				for i in current_song.get_children():
-					i.play(0.0)
+				#print('Restarting music...')
+				_play(current_song_num)
 				repeats += 1
-				if play_overlays:
-					_play_overlays()
 				bar = 0
 			emit_signal("end")
-		
-		yield(get_tree(), "idle_frame")
+		yield(get_tree().create_timer(0.5), "timeout")
 		can_bar = true
 	
 #called every beat
 func _beat():
 	if can_beat:
 		if beat_tran:
-			for i in (songs[old_song].get_child_count()):
+			for i in (songs[old_song].get_node("core").get_child_count()):
 				if transition_beats >= 1:
 					_fade_out(old_song, i)
 				else:
 					_mute(old_song, i)
 					yield(get_tree(), "idle_frame")
-					songs[old_song].get_child(0).get_child(0).emit_signal('tween_completed')
-			if songs[old_song].play_overlays:
-				_stop_overlays(old_song)
+					songs[old_song].get_node("core").get_child(0).get_child(0).emit_signal('tween_completed')
 			_play(new_song)
-			
 		can_beat = false
 		emit_signal("beat")
 		yield(get_tree(), "idle_frame")
@@ -300,7 +289,7 @@ func _beat():
 #choose new song randomly
 func _shuffle_songs():
 	if playing:
-		_stop()
+		_stop(current_song)
 	_clear_song(current_song_num)
 	randomize()
 	var song = randi() % (songs.size() - 1)

@@ -15,13 +15,13 @@ func _ready():
 func on_room_entered(body):
 	if body.name.begins_with(prefix):
 		balls += 1
+		print('new ball! now ' + str(balls) + ' balls!')
 		game.mdm._mute_above_layer(areanum,balls)
-	if body.name != 'player':
-		return
-	if game.colour != areanum:
-		game.mdm._queue_bar_transition(areanum)
-		game.colour = areanum
-		game.mdm._mute_above_layer(areanum,balls)
+	if body.name == 'player':
+		if game.colour != areanum:
+			game.mdm._queue_bar_transition(areanum)
+			game.colour = areanum
+			game.mdm._mute_above_layer(areanum,balls)
 
 func on_room_exited(body):
 	if body.name.begins_with(prefix):

@@ -6,15 +6,15 @@
 [ext_resource path="res://Audio/Music/game/orange/orange_epiano.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Audio/Music/game/orange/orange_SpookPad.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Audio/Music/game/orange/orange_Arp.ogg" type="AudioStream" id=6]
-[ext_resource path="res://Audio/Music/game/blue/blue.ogg" type="AudioStream" id=7]
-[ext_resource path="res://Audio/Music/game/red/red.ogg" type="AudioStream" id=8]
-[ext_resource path="res://Audio/Music/game/purple/purple.ogg" type="AudioStream" id=9]
-[ext_resource path="res://Audio/Music/game/yellow/yellow.ogg" type="AudioStream" id=10]
-[ext_resource path="res://Audio/Music/game/green/green.ogg" type="AudioStream" id=11]
-[ext_resource path="res://Audio/Music/game/pink/pink.ogg" type="AudioStream" id=12]
-[ext_resource path="res://Audio/Music/game/orange/orange_ranhats_1.ogg" type="AudioStream" id=13]
-[ext_resource path="res://Audio/Music/game/orange/orange_ranhats_2.ogg" type="AudioStream" id=14]
-[ext_resource path="res://Audio/Music/game/orange/orange_ranhats_3.ogg" type="AudioStream" id=15]
+[ext_resource path="res://Audio/Music/game/orange/orange_ranhats_1.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Audio/Music/game/orange/orange_ranhats_2.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Audio/Music/game/orange/orange_ranhats_3.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Audio/Music/game/blue/blue.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Audio/Music/game/red/red.ogg" type="AudioStream" id=11]
+[ext_resource path="res://Audio/Music/game/purple/purple.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Audio/Music/game/yellow/yellow.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Audio/Music/game/green/green.ogg" type="AudioStream" id=14]
+[ext_resource path="res://Audio/Music/game/pink/pink.ogg" type="AudioStream" id=15]
 [ext_resource path="res://assets/wall/wall.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/player/player.tscn" type="PackedScene" id=17]
 [ext_resource path="res://assets/player/player.gd" type="Script" id=18]
@@ -59,7 +59,6 @@ script = ExtResource( 2 )
 [node name="Songs" type="Node2D" parent="MDM"]
 
 [node name="orange" type="Node2D" parent="MDM/Songs"]
-editor/display_folded = true
 position = Vector2( 1344, -192 )
 script = ExtResource( 3 )
 tempo = 120
@@ -68,20 +67,40 @@ beats_in_bar = 4
 random_padding = 3
 transition_beats = 2.0
 loop = true
-play_overlays = true
 
-[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/orange"]
+[node name="core" type="Node2D" parent="MDM/Songs/orange"]
+
+[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/orange/core"]
 stream = ExtResource( 4 )
 volume_db = -10.0
 bus = "Music"
 
-[node name="pad" type="AudioStreamPlayer" parent="MDM/Songs/orange"]
+[node name="pad" type="AudioStreamPlayer" parent="MDM/Songs/orange/core"]
 stream = ExtResource( 5 )
 volume_db = -10.0
 bus = "Music"
 
-[node name="arp" type="AudioStreamPlayer" parent="MDM/Songs/orange"]
+[node name="arp" type="AudioStreamPlayer" parent="MDM/Songs/orange/core"]
 stream = ExtResource( 6 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="ranhats" type="Node2D" parent="MDM/Songs/orange"]
+editor/display_folded = true
+position = Vector2( -1344, 192 )
+
+[node name="ranhat1" type="AudioStreamPlayer" parent="MDM/Songs/orange/ranhats"]
+stream = ExtResource( 7 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="ranhat2" type="AudioStreamPlayer" parent="MDM/Songs/orange/ranhats"]
+stream = ExtResource( 8 )
+volume_db = -10.0
+bus = "Music"
+
+[node name="ranhat3" type="AudioStreamPlayer" parent="MDM/Songs/orange/ranhats"]
+stream = ExtResource( 9 )
 volume_db = -10.0
 bus = "Music"
 
@@ -95,8 +114,11 @@ beats_in_bar = 4
 transition_beats = 2.0
 loop = true
 
-[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/blue"]
-stream = ExtResource( 7 )
+[node name="core" type="Node2D" parent="MDM/Songs/blue"]
+editor/display_folded = true
+
+[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/blue/core"]
+stream = ExtResource( 10 )
 volume_db = -10.0
 bus = "Music"
 
@@ -110,8 +132,12 @@ beats_in_bar = 4
 transition_beats = 2.0
 loop = true
 
-[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/red"]
-stream = ExtResource( 8 )
+[node name="core" type="Node2D" parent="MDM/Songs/red"]
+editor/display_folded = true
+position = Vector2( 992, 211.2 )
+
+[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/red/core"]
+stream = ExtResource( 11 )
 volume_db = -10.0
 bus = "Music"
 
@@ -125,8 +151,12 @@ beats_in_bar = 4
 transition_beats = 2.0
 loop = true
 
-[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/purple"]
-stream = ExtResource( 9 )
+[node name="core" type="Node2D" parent="MDM/Songs/purple"]
+editor/display_folded = true
+position = Vector2( 256, 1216 )
+
+[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/purple/core"]
+stream = ExtResource( 12 )
 volume_db = -10.0
 bus = "Music"
 
@@ -140,8 +170,12 @@ beats_in_bar = 4
 transition_beats = 2.0
 loop = true
 
-[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/yellow"]
-stream = ExtResource( 10 )
+[node name="core" type="Node2D" parent="MDM/Songs/yellow"]
+editor/display_folded = true
+position = Vector2( -320, -672 )
+
+[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/yellow/core"]
+stream = ExtResource( 13 )
 volume_db = -10.0
 bus = "Music"
 
@@ -155,8 +189,11 @@ beats_in_bar = 4
 transition_beats = 2.0
 loop = true
 
-[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/green"]
-stream = ExtResource( 11 )
+[node name="core" type="Node2D" parent="MDM/Songs/green"]
+editor/display_folded = true
+
+[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/green/core"]
+stream = ExtResource( 14 )
 volume_db = -10.0
 bus = "Music"
 
@@ -170,28 +207,10 @@ beats_in_bar = 4
 transition_beats = 2.0
 loop = true
 
-[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/pink"]
-stream = ExtResource( 12 )
-volume_db = -10.0
-bus = "Music"
+[node name="core" type="Node2D" parent="MDM/Songs/pink"]
+editor/display_folded = true
 
-[node name="Overlays" type="Node2D" parent="MDM"]
-
-[node name="orange" type="Node2D" parent="MDM/Overlays"]
-
-[node name="ranhats" type="Node2D" parent="MDM/Overlays/orange"]
-
-[node name="ranhat1" type="AudioStreamPlayer" parent="MDM/Overlays/orange/ranhats"]
-stream = ExtResource( 13 )
-volume_db = -10.0
-bus = "Music"
-
-[node name="ranhat2" type="AudioStreamPlayer" parent="MDM/Overlays/orange/ranhats"]
-stream = ExtResource( 14 )
-volume_db = -10.0
-bus = "Music"
-
-[node name="ranhat3" type="AudioStreamPlayer" parent="MDM/Overlays/orange/ranhats"]
+[node name="epiano" type="AudioStreamPlayer" parent="MDM/Songs/pink/core"]
 stream = ExtResource( 15 )
 volume_db = -10.0
 bus = "Music"
@@ -2005,7 +2024,7 @@ script = ExtResource( 18 )
 [node name="balls" type="Node2D" parent="."]
 
 [node name="orange_ball3" parent="balls" instance=ExtResource( 19 )]
-position = Vector2( 601.6, 1280 )
+position = Vector2( 1312, -480 )
 linear_velocity = Vector2( -546.613, -142.106 )
 angular_velocity = 20.2393
 colour = Color( 1, 0.603922, 0.25098, 1 )
@@ -2096,7 +2115,7 @@ gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
 script = ExtResource( 20 )
-prefix = "gre"
+prefix = "gr"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/green"]
 shape = SubResource( 6 )
@@ -2109,7 +2128,7 @@ gravity = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
 script = ExtResource( 20 )
-prefix = "pin"
+prefix = "pn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="areas/pink"]
 shape = SubResource( 7 )

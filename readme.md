@@ -1,8 +1,3 @@
-
-
-
-
-
 # Mixing Desk for Godot
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
@@ -17,27 +12,45 @@ That's where Mixing Desk comes in. A modular plugin, allowing for procedural aud
 The MDM was designed to make adaptive,interactive music easier to design within Godot.
 
 ### Setting up MDM
+**Core Tracks**
+![Typical MDM instance](https://i.imgur.com/DvY1zy8.png)
 
-![Typical MDM instance](https://i.imgur.com/uDxTeh5.png)
-
-Instance MDM into your scene, or build a node tree similar to the one in the image above.
-Here's a sample layout if you wish to delete the example songs and create your own:
+Instance MDM into your scene, or build a node tree similar to the one in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song title. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
 ```
 MDM (mixing_desk_music.gd)
 >SONGS
 >>SONG1 (songprops.gd)
->>>LAYER1.OGG
->>>LAYER2.OGG
+>>>core
+>>>>LAYER1.OGG
+>>>>LAYER2.OGG
+>>>ranperc
+>>>>HATS1.OGG
+>>>>HATS2.OGG
+>>>>TOMS.OGG
 >>SONG2 (songprops.gd)
->>>LAYER1.OGG
->>>LAYER2.OGG
->>>LAYER3.OGG
+>>>core
+>>>>LAYER1.OGG
+>>>>LAYER2.OGG
+>>>>LAYER3.OGG
 ```
+
 ### You *must* fill in the properties in `songprops.gd`!
-![Typical properties in songprops.gd](https://i.imgur.com/fTLXahd.png)
+![Typical properties in songprops.gd](https://i.imgur.com/5qV3Urm.png)
 
 If you don't know the tempo of the music you're using, ask the composer. If you don't know the composer, check the website where you downloaded the music, or the readme in the sample pack you downloaded. If in doubt, try out BPM detection software such as here: https://www.conversion-tool.com/bpmdetector/?lang=en
 Similar process for bars and the other properties.
+
+
+### Overlays (random & sequence tracks)
+
+![Example of an overlay setup](https://i.imgur.com/DX0wTpg.png)
+
+Overlays are set up in much the same way as core tracks. Create a node folder with `ran` in its name, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random padding`.
+	
+	The 'random padding' is added to a random integer that picks which track plays.
+	If the number is too high (has no corresponding audio track), nothing plays.
+	
+A node folder with `seq` in its name plays in order, from top to bottom, and over again. Overlays must be equal length or shorter than the corresponding core tracks. 
 
 ### Loading and hitting play
 
@@ -68,22 +81,6 @@ MDM consistently keeps track of beats and bars, and output signals accordingly. 
 
 [Video Example](https://streamable.com/1cx2w)
 
-### Overlays
-
-![Example of an overlay setup](https://i.imgur.com/IqBaKqC.png)
-
-Overlays are set up in much the same way as core tracks. Although, as you can see in the screenshot, there is an extra step in the node tree. Make sure to enable `play overlays` on the core song node, as displayed in the following screenshot.
-
-![Tick 'play overlays!'](https://i.imgur.com/fTLXahd.png)
-
-Create a node folder with `ran` in its name, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random padding`.
-	
-	The 'random padding' is added to a random integer that picks which track plays.
-	If the number is too high (has no corresponding audio track), nothing plays.
-	
-A node folder with `seq` in its name plays in order, from top to bottom, and over again.
-
-Overlays must be equal length or shorter than the corresponding core tracks. It's not essential that you name the song folders after their core counterparts - but it will certainly save you some confusion later on.
 
 ## Mixing Desk: Sound
 Documentation coming soon...
