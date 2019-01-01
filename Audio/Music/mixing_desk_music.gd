@@ -8,7 +8,7 @@ var loop
 var play_overlays
 var can_shuffle = true
 
-export(int) var play_mode
+export(int) var play_mode = 1
 
 onready var songs = get_node("Songs").get_children()
 onready var ran_roots = get_node("Overlays").get_children()
@@ -269,7 +269,7 @@ func _bar():
 				for i in current_song.get_children():
 					i.play(0.0)
 				repeats += 1
-				if songs[old_song].play_overlays:
+				if play_overlays:
 					_play_overlays()
 				bar = 0
 			emit_signal("end")
@@ -288,7 +288,7 @@ func _beat():
 					_mute(old_song, i)
 					yield(get_tree(), "idle_frame")
 					songs[old_song].get_child(0).get_child(0).emit_signal('tween_completed')
-			if play_overlays:
+			if songs[old_song].play_overlays:
 				_stop_overlays(old_song)
 			_play(new_song)
 			
