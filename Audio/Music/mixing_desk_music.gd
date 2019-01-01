@@ -43,6 +43,7 @@ func _ready():
 			var tween = Tween.new()
 			tween.name = 'Tween'
 			i.add_child(tween)
+			
 #loads a song and gets ready to play
 func _init_song(track):
 	var song = songs[track]
@@ -58,6 +59,7 @@ func _init_song(track):
 			i.set_volume_db(default_vol)
 		players.append(i)
 		inum += 1
+	play_overlays = song.play_overlays
 	if play_overlays:
 		var rans = ran_roots[track]
 	song.get_child(0).connect("finished", self, "_song_finished")
@@ -65,7 +67,6 @@ func _init_song(track):
 	bars = song.bars
 	loop = song.loop
 	beats_in_bar = song.beats_in_bar
-	play_overlays = song.play_overlays
 	beats_in_sec = 60000.0/tempo
 	transition_beats = (beats_in_sec*song.transition_beats)/1000
 
@@ -109,7 +110,7 @@ func _play_overlays():
 	var tracks = ran_roots[current_song_num].get_children()
 	for i in tracks:
 		if 'ran' in i.name:
-			var rantrk = floor(rand_range(0, i.get_child_count() + 3))
+			var rantrk = floor(rand_range(0, i.get_child_count() + current_song.random_padding))
 			if rantrk <= i.get_child_count() - 1:
 				i.get_child(rantrk).play(0.0)
 		if 'seq' in i.name:
@@ -120,8 +121,8 @@ func _play_overlays():
 			i.get_child(seqtrk).play()
 
 #stop random/sequence tracks
-func _stop_overlays():
-	var tracks = ran_roots[current_song_num].get_children()
+func _stop_overlays(song_num):
+	var tracks = ran_roots[song_num].get_children()
 	for i in tracks:
 		for o in i.get_children():
 			o.stop()
@@ -254,8 +255,8 @@ func _bar():
 					_mute(old_song, i)
 					yield(get_tree(), "idle_frame")
 					songs[old_song].get_child(0).get_child(0).emit_signal('tween_completed')
-			if play_overlays:
-				_stop_overlays()
+			if songs[old_song].play_overlays:
+				_stop_overlays(old_song)
 			_play(new_song)
 		
 		can_bar = false
@@ -268,7 +269,7 @@ func _bar():
 				for i in current_song.get_children():
 					i.play(0.0)
 				repeats += 1
-				if play_overlays:
+				if songs[old_song].play_overlays:
 					_play_overlays()
 				bar = 0
 			emit_signal("end")
@@ -288,7 +289,7 @@ func _beat():
 					yield(get_tree(), "idle_frame")
 					songs[old_song].get_child(0).get_child(0).emit_signal('tween_completed')
 			if play_overlays:
-				_stop_overlays()
+				_stop_overlays(old_song)
 			_play(new_song)
 			
 		can_beat = false

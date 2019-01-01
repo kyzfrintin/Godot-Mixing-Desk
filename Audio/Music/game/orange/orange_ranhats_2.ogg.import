@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/orange_ranhats_2.ogg-59641e3384f31f1fb98cba21727dbb5b.oggstr"
+
+[deps]
+
+source_file="res://Audio/Music/game/orange/orange_ranhats_2.ogg"
+dest_files=[ "res://.import/orange_ranhats_2.ogg-59641e3384f31f1fb98cba21727dbb5b.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
