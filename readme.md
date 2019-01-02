@@ -131,4 +131,4 @@ This will continue indefinitely, randomised timers calling randomised sounds, un
 
 ---
 
-Feel free to contact me here on Github with any questions, or on Discord at Irmoz=8586
+Feel free to contact me here on Github with any questions, or on Discord at Irmoz#8586
