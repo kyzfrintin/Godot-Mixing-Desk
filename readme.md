@@ -97,6 +97,12 @@ Similarly to setting up MDM, you can either instance and localise the MDS.tscn i
 
 ![An instance of MDS](https://i.imgur.com/Pix1LuO.png)
 
+Also note that each instance of mixing_desk_sound.gd has two export variables - volume range, and pitch range. This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
+For instance, an audioplayer set to -10db at a pitch scale of 1, under an MDS with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
+If you wish different sounds to have different volume/pitch ranges, you can simply instance more MDS nodes - it is only a souple of scripts, after all.
+
+![Volume and pitch range](https://i.imgur.com/h3fhaZr.png)
+
 ### Playing back sound
 
 MDS comes with many functions to handle any sound or groupings of sounds nested within it.
