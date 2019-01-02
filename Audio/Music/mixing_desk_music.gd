@@ -123,6 +123,7 @@ func _play(track):
 			for o in i.get_children():
 				o.play()
 		if 'ran' in i.name:
+			randomize()
 			var rantrk = floor(rand_range(0, i.get_child_count() + songs[track].random_padding))
 			if rantrk <= i.get_child_count() - 1:
 				i.get_child(rantrk).play(0.0)

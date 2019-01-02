@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/yellow_ranperc_Bonk_1.ogg-c46dd0d3106a7b4ec746a17c49ad6dd4.oggstr"
+
+[deps]
+
+source_file="res://Audio/Music/game/yellow/yellow_ranperc_Bonk_1.ogg"
+dest_files=[ "res://.import/yellow_ranperc_Bonk_1.ogg-c46dd0d3106a7b4ec746a17c49ad6dd4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
