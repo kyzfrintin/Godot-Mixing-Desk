@@ -39,6 +39,7 @@ func _ready():
 	var shuff = Timer.new()
 	shuff.name = 'shuffle_timer'
 	add_child(shuff)
+	#yeahh
 	shuff.connect("timeout", self, "_shuffle_songs")
 	for track in songs:
 		for i in track.get_children():
