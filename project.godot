@@ -15,9 +15,12 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Mixing Desk Example Project"
-run/main_scene="res://rooms/main.tscn"
+config/name="Mixing Desk"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "mixing_desk" )
 
 [input]
 
