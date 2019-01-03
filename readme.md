@@ -13,15 +13,15 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 
 ### Setting up MDM
 
-![Typical MDM instance](https://i.imgur.com/DvY1zy8.png)
+![Typical MDM instance](https://i.imgur.com/3OdKtLd.png)
 
 **Core Tracks**
 
-Instance and localise MDM into your scene, or build a node tree similar to the one in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song title. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
+Create a MixingDeskMusic, and build a node tree similar to the one in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song node. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
 ```
-MDM (mixing_desk_music.gd)
->SONGS
->>SONG1 (songprops.gd)
+
+>MDM
+>>SONG1
 >>>core
 >>>>LAYER1.OGG
 >>>>LAYER2.OGG
@@ -29,15 +29,15 @@ MDM (mixing_desk_music.gd)
 >>>>HATS1.OGG
 >>>>HATS2.OGG
 >>>>TOMS.OGG
->>SONG2 (songprops.gd)
+>>SONG2
 >>>core
 >>>>LAYER1.OGG
 >>>>LAYER2.OGG
 >>>>LAYER3.OGG
 ```
 
-### You *must* fill in the properties in `songprops.gd`!
-![Typical properties in songprops.gd](https://i.imgur.com/5qV3Urm.png)
+### You *must* fill in the properties in the song node!
+![Typical properties](https://i.imgur.com/5qV3Urm.png)
 
 If you don't know the tempo of the music you're using, ask the composer. If you don't know the composer, check the website where you downloaded the music, or the readme in the sample pack you downloaded. If in doubt, try out BPM detection software such as here: https://www.conversion-tool.com/bpmdetector/?lang=en
 Similar process for bars and the other properties.
@@ -93,9 +93,9 @@ The MDS is a fully-featured sound-playing plugin, allowing procedural playback o
 
 ### Setting up MDS
 
-Similarly to setting up MDM, you can either instance and localise the MDS.tscn included in the example project, or build a nodetree with mixing_desk_sound.gd at the root, and sound_props.gd on the root of each sound.
+Similarly to setting up MDM, create a MixingDeskSound, and build a nodetree with mixing_desk_sound.gd at the root, and sound_props.gd on the root of each sound.
 
-![An instance of MDS](https://i.imgur.com/Pix1LuO.png)
+![An instance of MDS](https://i.imgur.com/YfiBTg4.png)
 
 Also note that each instance of mixing_desk_sound.gd has two export variables - volume range, and pitch range. This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
 For instance, an audioplayer set to -10db at a pitch scale of 1, under an MDS with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
@@ -137,4 +137,4 @@ This will continue indefinitely, randomised timers calling randomised sounds, un
 
 ---
 
-Feel free to contact me here on Github with any questions, or on Discord at Irmoz#8586
+Feel free to contact me here on Github with any questions, or on Discord at Irmoz#8586.
