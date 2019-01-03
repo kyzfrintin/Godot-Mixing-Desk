@@ -110,6 +110,7 @@ func _start_alone(track, layer):
 	current_song.get_child(layer).set_volume_db(default_vol)
 	_play(track)
 
+#play in isolation - to be integrated
 func _iplay(track):
 	var trk = track.duplicate()
 	track.add_child(trk)
@@ -208,15 +209,14 @@ func _queue_bar_transition(song):
 	new_song = song
 	bar_tran = true
 	
-	
-	
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
 	old_song = current_song_num
 	songs[old_song].fading_out = true
 	new_song = song
 	beat_tran = true
-	
+
+#unload and stops the current song, then initialises and plays the new one
 func _change_song(song):
 	_clear_song(old_song)
 	_init_song(song)
@@ -237,7 +237,6 @@ func _change_song(song):
 			for o in i.get_children():
 				o.stop()
 	_play(song)
-
 
 #stops playing
 func _stop(track):
@@ -300,5 +299,3 @@ func _song_finished():
 	if play_mode == 2 and can_shuffle:
 		$shuffle_timer.start(rand_range(0,2))
 		can_shuffle = false
-
-

@@ -126,11 +126,22 @@ func get_ransnd(sound, ran=true):
 		_randomise_pitch_and_vol(ransnd)
 	return ransnd
 
+# checks if sound is 2d
+
+func is_2d(sound):
+	if sound.is_class("AudioStreamPlayer2D"):
+		return true
+	
+
+# checks if the sound is 3d
+
 func is_3d(sound):
 	if sound.is_class("AudioStreamPlayer3D"):
 		return true
 
+# checks if sound is currently scattering
+
 func is_scattering(sound):
 	for i in sound.get_children():
-		if 'time' in i.name:
+		if 'timero' in i.name:
 			return true
