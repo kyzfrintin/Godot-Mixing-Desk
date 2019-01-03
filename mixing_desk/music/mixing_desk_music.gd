@@ -152,7 +152,6 @@ func _mute_above_layer(track, layer):
 		return
 	for i in range(0, layer + 1):
 		_fade_in(track, i)
-		print('fading in song ' + str(track) + ', track ' + str(i))
 	for i in range(layer + 1, songs[track].get_node("core").get_child_count()):
 		_fade_out(track, i)
 
@@ -259,13 +258,11 @@ func _bar():
 				_change_song(new_song)
 				emit_signal("song_changed")
 				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
-			#print('clearing song "' + str(songs[old_song].name) + '"')
 			
 		
 		#at end of song
 		if bar >= bars + 1:
 			if play_mode == 1 and loop:
-				#print('Restarting music...')
 				_play(current_song_num)
 				repeats += 1
 				bar = 0
