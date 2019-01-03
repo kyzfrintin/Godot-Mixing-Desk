@@ -1,4 +1,4 @@
-# Mixing Desk for Godot 3.1
+# Mixing Desk for Godot
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -7,7 +7,7 @@ But for some more advanced features, a bit of coding is required.
 
 That's where Mixing Desk comes in. A modular plugin, allowing for procedural audio and adaptive music in games, with just a couple of nodes and a line of code for each implementation.
 
-## Mixing Desk: Music
+# Mixing Desk: Music
 
 The MDM was designed to make adaptive,interactive music easier to design within Godot.
 
@@ -85,8 +85,9 @@ MDM consistently keeps track of beats and bars, and output signals accordingly. 
 
 [Video Example](https://streamable.com/1cx2w)
 
+---
 
-## Mixing Desk: Sound
+# Mixing Desk: Sound
 
 The MDS is a fully-featured sound-playing plugin, allowing procedural playback of multiple layered and combined sounds through the gratuitous use of the _iplay(sound) function!
 
