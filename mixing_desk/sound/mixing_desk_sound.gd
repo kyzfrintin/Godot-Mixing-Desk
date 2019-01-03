@@ -18,31 +18,20 @@ func _play_sound_full(sound, ran=true):
 func _play_sound_random(sound, num, ran=true):
 	var snd = get_child(sound)
 	if num > 1:
-		for i in range(1, num):
+		for i in range(0, num):
 			var ransnd = get_ransnd(sound)
 			_iplay(ransnd)
 	else:
 		var ransnd = get_ransnd(sound)
 		_iplay(ransnd)
 	
-func get_ransnd(sound, ran=true):
-	var scat = is_scattering(sound)
-	var children = snd.get_child_count() - 1
-	if scat:
-		children -= 1
-	var chance = randi() % children
-	var ransnd = snd.get_child(chance)
-	if ran:
-		_randomise_pitch_and_vol(ransnd)
-	return ransnd
-
 # play sound 0 under child 'sound', with 'num' number of random sounds
 
 func _play_base_and_random(sound, num, ran=true):
 	var snd = get_child(sound)
 	_randomise_pitch_and_vol(snd)
 	snd.get_child(0).play()
-	for i in range(1, num):
+	for i in range(0, num):
 		var ransnd = get_ransnd(sound)
 		_iplay(ransnd)
 
@@ -72,13 +61,15 @@ func _scatter_timeout(sound, timer, tmin, tmax):
 func _end_scatter(sound):
 	get_child(sound).timeroot.queue_free()
 
-func _play_ranseq(sound, num, ran):
-	var snd = get_child(sound)
+# plays 'num' number of random sounds in sequence
+
+func _play_ranseq(sound, num, ran=true):
 	randomize()
-	for i in range(1, num):
+	for i in range(0, num):
+		print(i)
 		var ransnd = get_ransnd(sound)
 		ransnd.play()
-		yield(ransnd, "timeout")
+		yield(ransnd, "finished")
 		
 
 # play multiple sounds together
@@ -120,7 +111,21 @@ func _randomise_pitch_and_vol(sound):
 	else:
 		sound.volume_db = newvol
 	sound.pitch_scale = newpitch
-		
+
+# gets and returns a random sample under child 'sound'
+
+func get_ransnd(sound, ran=true):
+	var snd = get_child(sound)
+	var scat = is_scattering(snd)
+	var children = snd.get_child_count()
+	if scat:
+		children -= 1
+	var chance = randi() % children
+	var ransnd = snd.get_child(chance)
+	if ran:
+		_randomise_pitch_and_vol(ransnd)
+	return ransnd
+
 func is_3d(sound):
 	if sound.is_class("AudioStreamPlayer3D"):
 		return true
