@@ -11,32 +11,30 @@ func _play_sound_full(sound, ran=true):
 	for i in snd.get_children():
 		if ran:
 			_randomise_pitch_and_vol(i)
-		#i.play()
 		_iplay(i)
 		
 # play 'num' number of random sounds under child 'sound'
 
 func _play_sound_random(sound, num, ran=true):
 	var snd = get_child(sound)
-	var scat = is_scattering(snd)
+	if num > 1:
+		for i in range(1, num):
+			var ransnd = get_ransnd(sound)
+			_iplay(ransnd)
+	else:
+		var ransnd = get_ransnd(sound)
+		_iplay(ransnd)
+	
+func get_ransnd(sound, ran=true):
+	var scat = is_scattering(sound)
 	var children = snd.get_child_count() - 1
 	if scat:
 		children -= 1
-	if num > 1:
-		for i in range(1, num):
-			var chance = randi() % children
-			var ransnd = snd.get_child(chance)
-			if ran:
-				_randomise_pitch_and_vol(ransnd)
-			#ransnd.play()
-			_iplay(ransnd)
-	else:
-		var chance = randi() % children
-		var ransnd = snd.get_child(chance)
-		if ran:
-			_randomise_pitch_and_vol(ransnd)
-		#ransnd.play()
-		_iplay(ransnd)
+	var chance = randi() % children
+	var ransnd = snd.get_child(chance)
+	if ran:
+		_randomise_pitch_and_vol(ransnd)
+	return ransnd
 
 # play sound 0 under child 'sound', with 'num' number of random sounds
 
@@ -45,12 +43,8 @@ func _play_base_and_random(sound, num, ran=true):
 	_randomise_pitch_and_vol(snd)
 	snd.get_child(0).play()
 	for i in range(1, num):
-		var chance = randi() % snd.get_child_count()
-		var ransnd = snd.get_child(chance)
-		if ran:
-			_randomise_pitch_and_vol(ransnd)
-		#snd.get_child(chance).play()
-		_iplay(snd.get_child(chance))
+		var ransnd = get_ransnd(sound)
+		_iplay(ransnd)
 
 # creates 'voices' number of timers for a group of sounds, with timeout range of tmin-tmax, and starts them
 
@@ -77,6 +71,15 @@ func _scatter_timeout(sound, timer, tmin, tmax):
 
 func _end_scatter(sound):
 	get_child(sound).timeroot.queue_free()
+
+func _play_ranseq(sound, num, ran):
+	var snd = get_child(sound)
+	randomize()
+	for i in range(1, num):
+		var ransnd = get_ransnd(sound)
+		ransnd.play()
+		yield(ransnd, "timeout")
+		
 
 # play multiple sounds together
 
