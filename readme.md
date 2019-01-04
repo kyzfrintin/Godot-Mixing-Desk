@@ -37,7 +37,7 @@ Create a MixingDeskMusic, and place Song nodes for each of your songs, similar t
 ```
 
 ### You *must* fill in the properties in the song node!
-![Typical properties](https://i.imgur.com/5qV3Urm.png)
+![Typical properties](https://i.imgur.com/DS97YEI.png)
 
 If you don't know the tempo of the music you're using, ask the composer. If you don't know the composer, check the website where you downloaded the music, or the readme in the sample pack you downloaded. If in doubt, try out BPM detection software such as here: https://www.conversion-tool.com/bpmdetector/?lang=en
 Similar process for bars and the other properties.
@@ -45,7 +45,7 @@ Similar process for bars and the other properties.
 
 ### Overlays (random & sequence tracks)
 
-![Example of an overlay setup](https://i.imgur.com/DX0wTpg.png)
+![Example of an overlay setup](https://i.imgur.com/zrlGx7k.png)
 
 Overlays are set up in much the same way as core tracks. Create a node folder with `ran` in its name, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random_chance` - if the random number generated each time song plays is lower than the value of `random_chance`, the track plays.
 	
