@@ -260,7 +260,7 @@ func _stop(track):
 func _bar():
 	if can_bar:
 		can_bar = false
-		emit_signal("bar")
+		emit_signal("bar", bar)
 		
 		if bar_tran:
 			if current_song_num != new_song:
@@ -288,10 +288,10 @@ func _beat():
 		if beat_tran:
 			if current_song_num != new_song:
 				_change_song(new_song)
-				emit_signal("song_changed")
+				emit_signal("song_changed", new_song)
 				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
 		can_beat = false
-		emit_signal("beat")
+		emit_signal("beat", beat)
 		yield(get_tree(), "idle_frame")
 		can_beat = true
 
