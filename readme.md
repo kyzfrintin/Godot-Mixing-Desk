@@ -17,7 +17,7 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 
 **Core Tracks**
 
-Create a MixingDeskMusic, and build a node tree similar to the one in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song node. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
+Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song node. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
 ```
 
 >MDM
@@ -47,12 +47,11 @@ Similar process for bars and the other properties.
 
 ![Example of an overlay setup](https://i.imgur.com/DX0wTpg.png)
 
-Overlays are set up in much the same way as core tracks. Create a node folder with `ran` in its name, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random padding`.
+Overlays are set up in much the same way as core tracks. Create a node folder with `ran` in its name, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random_chance` - if the random number generated each time song plays is lower than the value of `random_chance`, the track plays.
 	
-	The 'random padding' is added to a random integer that picks which track plays.
-	If the number is too high (has no corresponding audio track), nothing plays.
-	
-A node folder with `seq` in its name plays in order, from top to bottom, and over again. Overlays must be equal length or shorter than the corresponding core tracks. 
+A node folder with `seq` in its name plays in order, from top to bottom, and over again. Overlays must be equal length or shorter than the corresponding core tracks.
+
+Put `concat` in the name if you have a group of short tracks, particularly percussion, that you wish to play in random order over the top of the song. These tracks will be chosen randomly and each will immediately follow the previous. Good for randomising drums by the measure, or whichever length samples you choose to throw in.
 
 ### Loading and hitting play
 
@@ -94,7 +93,7 @@ The MDS is a fully-featured sound-playing plugin, allowing procedural playback o
 
 ### Setting up MDS
 
-Similarly to setting up MDM, create a MixingDeskSound, and build a nodetree with mixing_desk_sound.gd at the root, and sound_props.gd on the root of each sound.
+Similarly to setting up MDM, create a MixingDeskSound, and add in Sound nodes for each sound cue you want to use.
 
 ![An instance of MDS](https://i.imgur.com/YfiBTg4.png)
 
