@@ -130,9 +130,9 @@ func _play(track):
 				o.play()
 		if 'ran' in i.name:
 			randomize()
-			var rantrk = floor(rand_range(0, i.get_child_count() + songs[track].random_padding))
-			if rantrk <= i.get_child_count() - 1:
-				i.get_child(rantrk).play(0.0)
+			var rantrk = get_rantrk(i)
+			if rand_range(0,1) <= songs[track].random_chance:
+				rantrk.play()
 		if 'seq' in i.name:
 			var seqtrk = repeats
 			if repeats == i.get_child_count():
@@ -140,7 +140,8 @@ func _play(track):
 				repeats = 0
 			i.get_child(seqtrk).play()
 		if 'concat' in i.name:
-			play_concat(i)
+			play_concat(i, null)
+			songs[track].concats.append(i)
 	if bar_tran:
 		bar_tran = false
 	else:
@@ -150,14 +151,14 @@ func _play(track):
 	else:
 		_beat()
 
+#play short random tracks in sequence in 'song'
 func play_concat(song, rantrk):
-	if rantrk.is_connected('finished',self,'play_concat'):
+	if rantrk != null:
 		rantrk.disconnect('finished',self,'play_concat')
 	rantrk = get_rantrk(song)
-	var nutrk = rantrk
+	rantrk.connect("finished", self, "play_concat", [song, rantrk])
+	print(rantrk.name)
 	rantrk.play()
-	conn
-	nutrk.connect('finished',self, 'play_concat',[nutrk])
 
 #mute all layers above specified layer, and fade in all below
 func _mute_above_layer(track, layer):
@@ -241,10 +242,7 @@ func _change_song(song):
 				yield(get_tree(), "idle_frame")
 				songs[old_song].get_node("core").get_child(0).get_child(0).emit_signal('tween_completed')
 				songs[old_song].fading_out = false
-		if 'ran' in i.name:
-			for o in i.get_children():
-				o.stop()
-		if 'seq' in i.name:
+		if 'ran' or 'seq' or 'concat' in i.name:
 			for o in i.get_children():
 				o.stop()
 	_play(song)
@@ -273,6 +271,9 @@ func _bar():
 		
 		#at end of song
 		if bar >= bars + 1:
+			for i in songs[current_song_num].concats:
+				for o in i.get_children():
+					o.stop()
 			if play_mode == 1 and loop:
 				_play(current_song_num)
 				repeats += 1
