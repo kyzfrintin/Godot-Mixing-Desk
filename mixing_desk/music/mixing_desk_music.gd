@@ -295,6 +295,7 @@ func _beat():
 		yield(get_tree(), "idle_frame")
 		can_beat = true
 
+#gets a random track from a song and returns it
 func get_rantrk(song):
 	var chance = randi() % song.get_child_count()
 	var rantrk = song.get_child(chance)
@@ -312,6 +313,7 @@ func _shuffle_songs():
 	emit_signal("shuffle")
 	can_shuffle = true
 
+#called when the song finishes
 func _song_finished():
 	if play_mode == 2 and can_shuffle:
 		$shuffle_timer.start(rand_range(0,2))
