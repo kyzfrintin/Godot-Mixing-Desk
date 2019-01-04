@@ -139,6 +139,8 @@ func _play(track):
 				seqtrk = 0
 				repeats = 0
 			i.get_child(seqtrk).play()
+		if 'concat' in i.name:
+			play_concat(i)
 	if bar_tran:
 		bar_tran = false
 	else:
@@ -147,6 +149,15 @@ func _play(track):
 		beat_tran = false
 	else:
 		_beat()
+
+func play_concat(song, rantrk):
+	if rantrk.is_connected('finished',self,'play_concat'):
+		rantrk.disconnect('finished',self,'play_concat')
+	rantrk = get_rantrk(song)
+	var nutrk = rantrk
+	rantrk.play()
+	conn
+	nutrk.connect('finished',self, 'play_concat',[nutrk])
 
 #mute all layers above specified layer, and fade in all below
 func _mute_above_layer(track, layer):
@@ -282,7 +293,12 @@ func _beat():
 		emit_signal("beat")
 		yield(get_tree(), "idle_frame")
 		can_beat = true
-	
+
+func get_rantrk(song):
+	var chance = randi() % song.get_child_count()
+	var rantrk = song.get_child(chance)
+	return rantrk
+		
 #choose new song randomly
 func _shuffle_songs():
 	if playing:
