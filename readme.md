@@ -84,6 +84,12 @@ MDM consistently keeps track of beats and bars, and output signals accordingly. 
 
 [Video Example](https://streamable.com/1cx2w)
 
+### Integrating the music and game
+
+![MDM signals](https://i.imgur.com/3azVGMe.png)
+
+MDM outputs beat and bar signals which can easily be connected to any other node in the scene. This way, you can time events in the game to the music. For example, a `yield(mdm, 'bar')` can delay actions until they're in sync with the next bar.
+
 ---
 
 # Mixing Desk: Sound

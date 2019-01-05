@@ -66,7 +66,6 @@ func _end_scatter(sound):
 func _play_ranseq(sound, num, ran=true):
 	randomize()
 	for i in range(0, num):
-		print(i)
 		var ransnd = get_ransnd(sound)
 		ransnd.play()
 		yield(ransnd, "finished")
