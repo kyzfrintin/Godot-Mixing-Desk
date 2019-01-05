@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 export var volume_range = 1.0
 export var pitch_range = 0.1
