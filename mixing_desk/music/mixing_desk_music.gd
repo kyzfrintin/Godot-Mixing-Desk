@@ -29,6 +29,9 @@ var old_song
 var new_song = 0
 var repeats = 0
 
+var binds = []
+var params = []
+
 signal beat
 signal bar
 signal end
@@ -213,6 +216,26 @@ func _fade_out(track, layer):
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
 	tween.start()
+	
+#binds a track's volume to an object's parameter
+func _bind_to_param(track,param):
+	binds.append(track)
+	params.append(param)
+
+#remove selected track's bindings
+func _unbind_track(track):
+	var bind = binds.find(track,0)
+	binds.remove(bind)
+	params.remove(bind)
+
+#fade track volume to match bound parameter
+func _fade_binds():
+	if binds.size() > 0:
+		for i in params:
+			i = (i*60) - 60
+		for i in binds:
+			if current_song.get_child(i).volume_db != params[i]:
+				current_song.get_child(i).volume_db = params[i]
 
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
@@ -290,6 +313,7 @@ func _beat():
 				_change_song(new_song)
 				emit_signal("song_changed", new_song)
 				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
+		_fade_binds()
 		can_beat = false
 		emit_signal("beat", beat)
 		yield(get_tree(), "idle_frame")
