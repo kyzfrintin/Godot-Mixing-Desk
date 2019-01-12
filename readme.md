@@ -79,6 +79,8 @@ MDM can fade individual tracks in and out using the `_fade_in(track)` or `_fade_
 
 [Video Example](https://streamable.com/csjyi)
 
+To control an individual track's volume constantly based on a parameter, however, is only slightly more tricky. The `_bind_to_param(track,param)` is called to initialise the process. Of course, 'track' refers to which musical layer to control. 'Param' is the initial value to initialise with. For example, you may use it to fade a layer in and out over distance. To keep this up, you will need to call the `_feed_param(param,val)` function in a process function in your game's code. 'Param' is the index of the parameter you wish to modulate, which will be in the order which you set up the parameters. If it is the first, then it would be index 0. 'Val' is the value to send to MDM to affect the volume. This has to be a normalised value between 0 and 1 - 0 being silent, 1 being full volume. To achieve this, simply divide the current value by the max possible value - for example, the max range from an enemy at which to apply tension.
+
 ### **Horizontal Resequencing**
 MDM consistently keeps track of beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `_queue_beat_transition(track)` or `_queue_bar_transition(track)` functions.
 
