@@ -237,8 +237,9 @@ func _unbind_track(track):
 func _fade_binds():
 	if binds.size() > 0:
 		for i in binds:
+			var num = binds.find(i)
 			var target = current_song.get_child(i)
-			target.volume_db = params[i]
+			target.volume_db = params[num]
 			print('vol: ' + str(target.volume_db))
 
 #change to the specified song at the next bar
