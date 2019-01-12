@@ -225,7 +225,7 @@ func _bind_to_param(track,param):
 #called externally. used to input a normalised value and convert to volume_db for bindings.
 func _feed_param(param, val):
 	params[param] = (val*60) - 60
-	print('fade val: ' + str(params[param]))
+#	print('fade val: ' + str(params[param]))
 
 #remove selected track's bindings
 func _unbind_track(track):
@@ -240,7 +240,7 @@ func _fade_binds():
 			var num = binds.find(i)
 			var target = current_song.get_child(i)
 			target.volume_db = params[num]
-			print('vol: ' + str(target.volume_db))
+#			print('vol: ' + str(target.volume_db))
 
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
