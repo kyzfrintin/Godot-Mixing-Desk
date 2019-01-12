@@ -222,6 +222,7 @@ func _bind_to_param(track,param):
 	binds.append(track)
 	params.append(param)
 
+#called externally. used to input a normalised value and convert to volume_db for bindings.
 func _feed_param(param, val):
 	params[param] = (val*-1) * 60
 	print('fade val: ' + str(params[param]))
