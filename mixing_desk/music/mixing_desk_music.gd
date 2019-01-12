@@ -16,6 +16,7 @@ const default_vol = -10
 var players = []
 var time = 0.0
 var beat = 1.0
+var b2bar = 0
 var bar = 1.0
 var beats_in_sec = 0.0
 var can_beat = true
@@ -96,14 +97,12 @@ func _process(delta):
 	if playing:
 		time = current_song.get_child(0).get_playback_position()
 		beat = ((time/beats_in_sec) * 1000.0) + 1.0
-		bar = beat/beats_in_bar + 0.75
 		_fade_binds()
 		if fmod(beat, 1.0) < 0.1:
-			if fmod(bar, 1.0) < 0.24:
-				bar = floor(bar)
-				_bar()
 			_beat()
 			beat = floor(beat)
+			
+			
 
 #start a song with only one track playing
 func _start_alone(track, layer):
@@ -125,6 +124,8 @@ func _iplay(track):
 #play a song
 func _play(track):
 	time = 0
+	bar = 1
+	beat = 1
 	if !playing:
 		playing = true
 	for i in songs[track].get_children():
@@ -148,12 +149,8 @@ func _play(track):
 			songs[track].concats.append(i)
 	if bar_tran:
 		bar_tran = false
-	else:
-		_bar()
 	if beat_tran:
 		beat_tran = false
-	else:
-		_beat()
 
 #play short random tracks in sequence in 'song'
 func play_concat(song, rantrk):
@@ -266,7 +263,8 @@ func _change_song(song):
 				for o in i.get_child_count():
 					_fade_out(old_song, o)
 			else:
-				_mute(old_song, i)
+				for o in i.get_child_count():
+					_mute(old_song, o)
 				yield(get_tree(), "idle_frame")
 				songs[old_song].get_node("core").get_child(0).get_child(0).emit_signal('tween_completed')
 				songs[old_song].fading_out = false
@@ -318,9 +316,15 @@ func _beat():
 				_change_song(new_song)
 				emit_signal("song_changed", new_song)
 				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
+		if b2bar == beats_in_bar:
+			b2bar = 1
+			bar += 1
+			_bar()
+		else:
+			b2bar += 1
 		can_beat = false
 		emit_signal("beat", beat)
-		yield(get_tree(), "idle_frame")
+		yield(get_tree().create_timer((beats_in_sec/1000)*0.9), 'timeout')
 		can_beat = true
 
 #gets a random track from a song and returns it
