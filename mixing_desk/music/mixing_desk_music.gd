@@ -97,6 +97,7 @@ func _process(delta):
 		time = current_song.get_child(0).get_playback_position()
 		beat = ((time/beats_in_sec) * 1000.0) + 1.0
 		bar = beat/beats_in_bar + 0.75
+		_fade_binds()
 		if fmod(beat, 1.0) < 0.1:
 			if fmod(bar, 1.0) < 0.24:
 				bar = floor(bar)
@@ -160,7 +161,6 @@ func play_concat(song, rantrk):
 		rantrk.disconnect('finished',self,'play_concat')
 	rantrk = get_rantrk(song)
 	rantrk.connect("finished", self, "play_concat", [song, rantrk])
-	print(rantrk.name)
 	rantrk.play()
 
 #mute all layers above specified layer, and fade in all below
@@ -222,6 +222,10 @@ func _bind_to_param(track,param):
 	binds.append(track)
 	params.append(param)
 
+func _feed_param(param, val):
+	params[param] = (val*-1) * 60
+	print('fade val: ' + str(params[param]))
+
 #remove selected track's bindings
 func _unbind_track(track):
 	var bind = binds.find(track,0)
@@ -231,11 +235,10 @@ func _unbind_track(track):
 #fade track volume to match bound parameter
 func _fade_binds():
 	if binds.size() > 0:
-		for i in params:
-			i = (i*60) - 60
 		for i in binds:
-			if current_song.get_child(i).volume_db != params[i]:
-				current_song.get_child(i).volume_db = params[i]
+			var target = current_song.get_child(i)
+			target.volume_db = params[i]
+			print('vol: ' + str(target.volume_db))
 
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
@@ -313,7 +316,6 @@ func _beat():
 				_change_song(new_song)
 				emit_signal("song_changed", new_song)
 				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
-		_fade_binds()
 		can_beat = false
 		emit_signal("beat", beat)
 		yield(get_tree(), "idle_frame")
