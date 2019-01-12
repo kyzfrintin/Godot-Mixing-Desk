@@ -86,6 +86,8 @@ MDM consistently keeps track of beats and bars, and output signals accordingly. 
 
 [Video Example](https://streamable.com/1cx2w)
 
+[Video example of both horizontal and vertical techniques in action](https://streamable.com/wzaze)
+
 ### Integrating the music and game
 
 ![MDM signals](https://i.imgur.com/3azVGMe.png)
