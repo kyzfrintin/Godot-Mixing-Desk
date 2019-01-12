@@ -69,10 +69,13 @@ func _init_song(track):
 		if song.fading_out:
 			i.get_child(0).stop(i)
 			song.fading_out = false
-			i.set_volume_db(default_vol)
+		i.set_volume_db(default_vol)
 		i.set_bus("layer" + str(inum))
 		players.append(i)
 		inum += 1
+	if song.muted_tracks.size() > 0:
+		for i in song.muted_tracks:
+			_mute(current_song_num, i)
 	root.get_child(0).connect("finished", self, "_song_finished")
 	tempo = song.tempo
 	bars = song.bars
@@ -99,8 +102,8 @@ func _process(delta):
 		beat = ((time/beats_in_sec) * 1000.0) + 1.0
 		_fade_binds()
 		if fmod(beat, 1.0) < 0.1:
-			_beat()
 			beat = floor(beat)
+			_beat()
 			
 			
 
@@ -127,6 +130,7 @@ func _play(track):
 	bar = 1
 	beat = 1
 	if !playing:
+		emit_signal("bar", bar)
 		playing = true
 	for i in songs[track].get_children():
 		if i.name == 'core':
@@ -147,6 +151,7 @@ func _play(track):
 		if 'concat' in i.name:
 			play_concat(i, null)
 			songs[track].concats.append(i)
+	
 	if bar_tran:
 		bar_tran = false
 	if beat_tran:
@@ -192,11 +197,18 @@ func _solo(track, layer):
 
 #mute only the specified layer
 func _mute(track, layer):
-	songs[track].get_node("core").get_child(layer).set_volume_db(-60.0)
+	var target = songs[track].get_node("core").get_child(layer)
+	target.set_volume_db(-60.0)
+	var pos = songs[track].muted_tracks.find(layer)
+	if pos == null:
+		songs[track].muted_tracks.append(layer)
 
 #unmute only the specified layer
 func _unmute(track, layer):
-	songs[track].get_node("core").get_child(layer).set_volume_db(default_vol)
+	var target = songs[track].get_node("core").get_child(layer)
+	target.set_volume_db(default_vol)
+	var pos = songs[track].muted_tracks.find(layer)
+	songs[track].muted_tracks.remove(pos)
 
 #slowly bring in the specified layer
 func _fade_in(track, layer):
@@ -205,6 +217,8 @@ func _fade_in(track, layer):
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, default_vol, transition_beats, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.start()
+	var pos = songs[track].muted_tracks.find(layer)
+	songs[track].muted_tracks.remove(pos)
 
 #slowly take out the specified layer
 func _fade_out(track, layer):
@@ -213,6 +227,7 @@ func _fade_out(track, layer):
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
 	tween.start()
+
 	
 #binds a track's volume to an object's parameter
 func _bind_to_param(track,param):
@@ -259,15 +274,9 @@ func _change_song(song):
 	_init_song(song)
 	for i in songs[old_song].get_children():
 		if i.name == 'core':
-			if transition_beats >= 1:
+			if songs[old_song].transition_beats >= 1:
 				for o in i.get_child_count():
 					_fade_out(old_song, o)
-			else:
-				for o in i.get_child_count():
-					_mute(old_song, o)
-				yield(get_tree(), "idle_frame")
-				songs[old_song].get_node("core").get_child(0).get_child(0).emit_signal('tween_completed')
-				songs[old_song].fading_out = false
 		if 'ran' or 'seq' or 'concat' in i.name:
 			for o in i.get_children():
 				o.stop()
@@ -286,15 +295,11 @@ func _stop(track):
 func _bar():
 	if can_bar:
 		can_bar = false
-		emit_signal("bar", bar)
 		
 		if bar_tran:
 			if current_song_num != new_song:
 				_change_song(new_song)
 				emit_signal("song_changed")
-				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
-			
-		
 		#at end of song
 		if bar >= bars + 1:
 			for i in songs[current_song_num].concats:
@@ -303,7 +308,6 @@ func _bar():
 			if play_mode == 1 and loop:
 				_play(current_song_num)
 				repeats += 1
-				bar = 0
 			emit_signal("end")
 		yield(get_tree().create_timer(0.5), "timeout")
 		can_bar = true
@@ -315,11 +319,11 @@ func _beat():
 			if current_song_num != new_song:
 				_change_song(new_song)
 				emit_signal("song_changed", new_song)
-				yield(songs[old_song].get_node("core").get_child(0).get_child(0), 'tween_completed')
 		if b2bar == beats_in_bar:
 			b2bar = 1
 			bar += 1
 			_bar()
+			emit_signal("bar", bar)
 		else:
 			b2bar += 1
 		can_beat = false

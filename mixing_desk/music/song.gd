@@ -3,6 +3,7 @@ extends Node
 #internal vars
 var fading_out : bool = false
 var fading_in : bool = false
+var muted_tracks = []
 var concats : Array
 
 #external properties
