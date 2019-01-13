@@ -93,6 +93,7 @@ func _clear_song(track):
 	for i in song.get_children():
 		var bus = AudioServer.get_bus_index("layer" + str(inum))
 		AudioServer.remove_bus(bus)
+		inum += 1
 	song.get_child(0).disconnect("finished", self, "_song_finished")
 		
 #updates place in song and detects beats/bars
