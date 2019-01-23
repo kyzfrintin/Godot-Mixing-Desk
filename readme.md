@@ -57,7 +57,7 @@ Put `concat` in the name if you have a group of short tracks, particularly percu
 
 Once your nodetree is setup, you're all ready to play your music in Godot.
 
-First, pick a play mode. It's an export int in `mixing_desk_music.gd`.
+First, pick a play mode. It's a property of the MDM node`.
 
 > 0: play once
 
@@ -107,7 +107,7 @@ Similarly to setting up MDM, create a MixingDeskSound, and add in Sound nodes fo
 
 ![An instance of MDS](https://i.imgur.com/YfiBTg4.png)
 
-Also note that each instance of mixing_desk_sound.gd has two export variables - volume range, and pitch range. This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
+Also note that each instance of MDS has two export variables - volume range, and pitch range. This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
 For instance, an audioplayer set to -10db at a pitch scale of 1, under an MDS with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
 If you wish different sounds to have different volume/pitch ranges, you can simply instance more MDS nodes - it is only a souple of scripts, after all.
 
