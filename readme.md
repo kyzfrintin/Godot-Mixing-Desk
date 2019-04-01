@@ -13,28 +13,11 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 
 ### Setting up MDM
 
-![Typical MDM instance](https://i.imgur.com/3OdKtLd.png)
+![Typical MDM instance](https://i.imgur.com/nit8A97.png)
 
 **Core Tracks**
 
-Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed in a 'core' folder beneath their song node. As for the other folders, they are overlays, which we will come to shortly. Here's a sample layout if you wish to delete the example songs and create your own:
-```
-
->MDM
->>SONG1
->>>core
->>>>LAYER1.OGG
->>>>LAYER2.OGG
->>>ranperc
->>>>HATS1.OGG
->>>>HATS2.OGG
->>>>TOMS.OGG
->>SONG2
->>>core
->>>>LAYER1.OGG
->>>>LAYER2.OGG
->>>>LAYER3.OGG
-```
+Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed under a "CoreContainer", which plays all the audio nodes under it by default. As for the other nodes, they are overlays, which we will come to shortly. Here's a sample layout:
 
 ### You *must* fill in the properties in the song node!
 ![Typical properties](https://i.imgur.com/DS97YEI.png)
@@ -45,19 +28,19 @@ Similar process for bars and the other properties.
 
 ### Overlays (random & sequence tracks)
 
-![Example of an overlay setup](https://i.imgur.com/zrlGx7k.png)
+![Example of an overlay setup](https://i.imgur.com/Yr3suBT.png)
 
-Overlays are set up in much the same way as core tracks. Create a node folder with `ran` in its name, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random_chance` - if the random number generated each time song plays is lower than the value of `random_chance`, the track plays.
+Overlays are set up in much the same way as core tracks. Create a RandomContainer, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random_chance` - if the random number generated each time song plays is lower than the value of `random_chance`, the track plays.
 	
-A node folder with `seq` in its name plays in order, from top to bottom, and over again. Overlays must be equal length or shorter than the corresponding core tracks.
+SeqContainers play the audio nodes in order, from top to bottom, and over again. Overlays must be equal length or shorter than the corresponding core tracks.
 
-Put `concat` in the name if you have a group of short tracks, particularly percussion, that you wish to play in random order over the top of the song. These tracks will be chosen randomly and each will immediately follow the previous. Good for randomising drums by the measure, or whichever length samples you choose to throw in.
+Use a ConcatContainer for a group of short tracks, particularly percussion, that you wish to play in random order over the top of the song. These tracks will be chosen randomly and each will immediately follow the previous. Good for randomising drums by the measure, or whichever length samples you choose to throw in.
 
 ### Loading and hitting play
 
 Once your nodetree is setup, you're all ready to play your music in Godot.
 
-First, pick a play mode. It's a property of the MDM node`.
+First, pick a play mode. It's a property of the MDM node.
 
 > 0: play once
 
@@ -68,7 +51,7 @@ First, pick a play mode. It's a property of the MDM node`.
 	note: all vertical/horizontal adaptive features are available in all play modes!
 
 Now, in your scene, simply call `_init(track)` to load the track ready to play.
-Then, call `_play(track)` - track in both cases being the index of the song you want to play, counting from 0.
+Then, call `_play(track)` - track in both cases being either the name of the song node you wish to play, or its index, counting from 0. Either will work, though names are easier for us humans to remember, while index numbers are easier to do maths on - it's your call.
 
 ### Adapting the music in code
 
