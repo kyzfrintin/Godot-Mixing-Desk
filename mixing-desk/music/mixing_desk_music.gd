@@ -47,7 +47,7 @@ func _ready():
 	shuff.connect("timeout", self, "_shuffle_songs")
 	for track in songs:
 		for i in track.get_children():
-			if i.name == 'core':
+			if i.cont == "core":
 				for o in i.get_children():
 					var tween = Tween.new()
 					tween.name = 'Tween'
@@ -55,10 +55,11 @@ func _ready():
 				
 #loads a song and gets ready to play
 func _init_song(track):
+	track = songname_to_int(track)
 	var song = songs[track]
-	var root = song.get_node("core")
+	var root = song.get_core()
 	current_song_num = track
-	current_song = songs[track].get_node("core")
+	current_song = songs[track].get_core()
 	var inum = 0
 	repeats= 0
 	for i in root.get_children():
@@ -86,9 +87,10 @@ func _init_song(track):
 
 #unloads a song
 func _clear_song(track):
+	track = songname_to_int(track)
 	players.clear()
 	print('clearing song "' + str(songs[track].name) + '"')
-	var song = songs[track].get_node("core")
+	var song = songs[track].get_core()
 	var inum = 0
 	for i in song.get_children():
 		var bus = AudioServer.get_bus_index("layer" + str(inum))
@@ -110,8 +112,10 @@ func _process(delta):
 
 #start a song with only one track playing
 func _start_alone(track, layer):
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
 	current_song_num = track
-	current_song = songs[track].get_node("core")
+	current_song = songs[track].get_core()
 	for i in current_song.get_children():
 		i.set_volume_db(-60.0)
 	current_song.get_child(layer).set_volume_db(default_vol)
@@ -119,14 +123,30 @@ func _start_alone(track, layer):
 
 #play in isolation - to be integrated
 func _iplay(track):
+	track = songname_to_int(track)
 	var trk = track.duplicate()
 	track.add_child(trk)
 	trk.play()
 	yield(trk, "finished")
 	trk.queue_free()
 
+#check if ref is string or int
+func songname_to_int(ref):
+	if typeof(ref) == TYPE_STRING:
+		return get_node(ref).get_index()
+	else:
+		return ref
+
+func trackname_to_int(song, ref):
+	songname_to_int(song)
+	if typeof(ref) == TYPE_STRING:
+		return songs[song].get_core().get_node(ref).get_index()
+	else:
+		return ref
+	
 #play a song
 func _play(track):
+	track = songname_to_int(track)
 	time = 0
 	bar = 1
 	beat = 1
@@ -134,22 +154,22 @@ func _play(track):
 		emit_signal("bar", bar)
 		playing = true
 	for i in songs[track].get_children():
-		if i.name == 'core':
+		if i.cont == "core":
 			print('playing song "' + str(songs[track].name) + '"')
 			for o in i.get_children():
 				o.play()
-		if 'ran' in i.name:
+		if i.cont == "ran":
 			randomize()
 			var rantrk = get_rantrk(i)
 			if rand_range(0,1) <= songs[track].random_chance:
 				rantrk.play()
-		if 'seq' in i.name:
+		if i.cont == "seq":
 			var seqtrk = repeats
 			if repeats == i.get_child_count():
 				seqtrk = 0
 				repeats = 0
 			i.get_child(seqtrk).play()
-		if 'concat' in i.name:
+		if i.cont == "concat":
 			play_concat(i, null)
 			songs[track].concats.append(i)
 	
@@ -160,6 +180,7 @@ func _play(track):
 
 #play short random tracks in sequence in 'song'
 func play_concat(song, rantrk):
+	song = songname_to_int(song)
 	if rantrk != null:
 		rantrk.disconnect('finished',self,'play_concat')
 	rantrk = get_rantrk(song)
@@ -168,17 +189,21 @@ func play_concat(song, rantrk):
 
 #mute all layers above specified layer, and fade in all below
 func _mute_above_layer(track, layer):
-	if songs[track].get_node("core").get_child_count() < 2:
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
+	if songs[track].get_core().get_child_count() < 2:
 		return
 	for i in range(0, layer + 1):
 		_fade_in(track, i)
-	for i in range(layer + 1, songs[track].get_node("core").get_child_count()):
+	for i in range(layer + 1, songs[track].get_core().get_child_count()):
 		_fade_out(track, i)
 
 #mute all layers below specified layer, and fade in all below
 #use _mute_below_layer(0) to fade all tracks in
 func _mute_below_layer(track, layer):
-	for i in range(layer, songs[track].get_node("core").get_child_count()):
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
+	for i in range(layer, songs[track].get_core().get_child_count()):
         _fade_in(track, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
@@ -188,7 +213,9 @@ func _mute_below_layer(track, layer):
 			
 #mute all layers aside from specified layer
 func _solo(track, layer):
-	for i in range(layer + 1, songs[track].get_node("core").get_child_count()):
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
+	for i in range(layer + 1, songs[track].get_core().get_child_count()):
         _fade_out(track, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
@@ -198,7 +225,9 @@ func _solo(track, layer):
 
 #mute only the specified layer
 func _mute(track, layer):
-	var target = songs[track].get_node("core").get_child(layer)
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
+	var target = songs[track].get_core().get_child(layer)
 	target.set_volume_db(-60.0)
 	var pos = songs[track].muted_tracks.find(layer)
 	if pos == null:
@@ -206,14 +235,18 @@ func _mute(track, layer):
 
 #unmute only the specified layer
 func _unmute(track, layer):
-	var target = songs[track].get_node("core").get_child(layer)
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
+	var target = songs[track].get_core().get_child(layer)
 	target.set_volume_db(default_vol)
 	var pos = songs[track].muted_tracks.find(layer)
 	songs[track].muted_tracks.remove(pos)
 
 #slowly bring in the specified layer
 func _fade_in(track, layer):
-	var target = songs[track].get_node("core").get_child(layer)
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
+	var target = songs[track].get_core().get_child(layer)
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, default_vol, transition_beats, Tween.TRANS_QUAD, Tween.EASE_OUT)
@@ -223,7 +256,9 @@ func _fade_in(track, layer):
 
 #slowly take out the specified layer
 func _fade_out(track, layer):
-	var target = songs[track].get_node("core").get_child(layer)
+	track = songname_to_int(track)
+	layer = trackname_to_int(track, layer)
+	var target = songs[track].get_core().get_child(layer)
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
@@ -232,6 +267,7 @@ func _fade_out(track, layer):
 	
 #binds a track's volume to an object's parameter
 func _bind_to_param(track,param):
+	track = songname_to_int(track)
 	binds.append(track)
 	params.append(param)
 
@@ -242,6 +278,7 @@ func _feed_param(param, val):
 
 #remove selected track's bindings
 func _unbind_track(track):
+	track = songname_to_int(track)
 	var bind = binds.find(track,0)
 	binds.remove(bind)
 	params.remove(bind)
@@ -257,6 +294,7 @@ func _fade_binds():
 
 #change to the specified song at the next bar
 func _queue_bar_transition(song):
+	song = songname_to_int(song)
 	old_song = current_song_num
 	songs[old_song].fading_out = true
 	new_song = song
@@ -264,6 +302,7 @@ func _queue_bar_transition(song):
 	
 #change to the specified song at the next beat
 func _queue_beat_transition(song):
+	song = songname_to_int(song)
 	old_song = current_song_num
 	songs[old_song].fading_out = true
 	new_song = song
@@ -271,20 +310,22 @@ func _queue_beat_transition(song):
 
 #unload and stops the current song, then initialises and plays the new one
 func _change_song(song):
+	song = songname_to_int(song)
 	_clear_song(old_song)
 	_init_song(song)
 	for i in songs[old_song].get_children():
-		if i.name == 'core':
+		if i.cont == "core":
 			if songs[old_song].transition_beats >= 1:
 				for o in i.get_child_count():
 					_fade_out(old_song, o)
-		if 'ran' or 'seq' or 'concat' in i.name:
+		if 'ran' or 'seq' or 'concat' in i.cont:
 			for o in i.get_children():
 				o.stop()
 	_play(song)
 
 #stops playing
 func _stop(track):
+	track = songname_to_int(track)
 	if playing:
 		playing = false
 		for i in songs[track].get_children():
@@ -334,6 +375,7 @@ func _beat():
 
 #gets a random track from a song and returns it
 func get_rantrk(song):
+	song = songname_to_int(song)
 	var chance = randi() % song.get_child_count()
 	var rantrk = song.get_child(chance)
 	return rantrk

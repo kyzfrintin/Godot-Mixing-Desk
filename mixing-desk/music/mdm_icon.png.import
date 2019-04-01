@@ -2,12 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mdm_icon.png-480772f4fd7ff3f771fb6d20fd8f24e5.stex"
+path="res://.import/mdm_icon.png-472fc57740e9d463b3e07f80b7cd7ff4.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://addons/mixing_desk/music/mdm_icon.png"
-dest_files=[ "res://.import/mdm_icon.png-480772f4fd7ff3f771fb6d20fd8f24e5.stex" ]
+source_file="res://addons/mixing-desk/music/mdm_icon.png"
+dest_files=[ "res://.import/mdm_icon.png-472fc57740e9d463b3e07f80b7cd7ff4.stex" ]
 
 [params]
 
