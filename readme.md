@@ -86,30 +86,22 @@ The MDS is a fully-featured sound-playing plugin, allowing procedural playback o
 
 ### Setting up MDS
 
-Similarly to setting up MDM, create a MixingDeskSound, and add in Sound nodes for each sound cue you want to use.
+MDS is slightly different to MDM - there are still container nodes, but no parent Mixing Desk. There are 4 kinds of MDS container:
 
-![An instance of MDS](https://i.imgur.com/YfiBTg4.png)
+- `PolySoundContainer` plays all sounds nested within.
+- `RandomSoundContainer` plays 1 or more sounds nested within, chosen at random, the number of which is specified in the _play(num) call.
+- `ScatterSoundContainer` will 'scatter' multiple sounds at random times, by use of 1 or more timers. More on scattering below.
+- `ConcatSoundContainer` plays a random sequence of nested sounds, the number of which is specified in the call.
 
-Also note that each instance of MDS has two export variables - volume range, and pitch range. This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
-For instance, an audioplayer set to -10db at a pitch scale of 1, under an MDS with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
-If you wish different sounds to have different volume/pitch ranges, you can simply instance more MDS nodes - it is only a souple of scripts, after all.
+And, similar to the AudioStreamPlayers found natively in Godot, there is a Node (no position), 2D, and 3D type for each container.
+To play a container, simply call _play()! 
+
+![A PolySoundContainer](https://i.imgur.com/xkDToeA.png)
+
+Also note that each container two export variables - volume range, and pitch range. This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
+For instance, an audioplayer set to -10db at a pitch scale of 1, under a container with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
 
 ![Volume and pitch range](https://i.imgur.com/h3fhaZr.png)
-
-### Playing back sound
-
-MDS comes with many functions to handle any sound or groupings of sounds nested within it.
-These are two you may use more often than most:
-
-	_play_sound_full(sound, ran)
-	>Plays all sounds under child 'sound' 
-	
-	_play_sound_random(sound, num, ran)
-	>Plays 'num' number of random sounds under child 'sound'
-	
-In all functions, 'sound' is the number of the sound to play (counting from 0).
-'Num' is how many sounds to play under the node 'sound' (counting from 1).
-'Ran' is a bool, dictating whether or not to randomise pitch and volume. Leave blank to default to true.
 
 ### Sound scattering
 
@@ -119,14 +111,14 @@ Scattering sounds is great for ambience. Load up all the sounds you can imagine 
 
 Achieved by calling the scatter function once in _ready()!
 
-To scatter a group of sounds, arrange them nested in a node like usual.
+To scatter a group of sounds, arrange them nested in a container like usual.
 At the point you want to begin scattering - if for ambience, this will likely be `_ready()` - simply call:
 
-	_play_sound_scattered(sound, voices, tmin, tmax, ran)
+	_begin(voices, tmin, tmax, ran)
 	
 This will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'tmin' and 'tmax'.
-At each timer's timeout, it will call `_play_sound_random()` on the specified sound, and begin again, its timeout once more randomised.
-This will continue indefinitely, randomised timers calling randomised sounds, until you call `_end_scatter(sound)`. This will delete all the timers.
+At each timer's timeout, it will randomly play a nested sound and begin again, its timeout once more randomised.
+This will continue indefinitely, randomised timers calling randomised sounds, until you call `_end()`. This will delete all the timers.
 
 ---
 
