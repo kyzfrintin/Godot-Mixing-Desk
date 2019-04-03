@@ -13,11 +13,11 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 
 ### Setting up MDM
 
-![Typical MDM instance](https://i.imgur.com/nit8A97.png)
+![Typical MDM instance](https://i.imgur.com/1tQEzck.png)
 
 **Core Tracks**
 
-Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed under a "CoreContainer", which plays all the audio nodes under it by default. As for the other nodes, they are overlays, which we will come to shortly. Here's a sample layout:
+Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed under a "CoreContainer", which plays all the audio nodes under it by default. As for the other nodes, they are overlays, which we will come to shortly.
 
 ### You *must* fill in the properties in the song node!
 ![Typical properties](https://i.imgur.com/DS97YEI.png)
