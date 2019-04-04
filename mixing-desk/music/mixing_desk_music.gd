@@ -89,6 +89,8 @@ func _init_song(track):
 func _clear_song(track):
 	track = songname_to_int(track)
 	players.clear()
+	binds.clear()
+	params.clear()
 	print('clearing song "' + str(songs[track].name) + '"')
 	var song = songs[track].get_core()
 	var inum = 0

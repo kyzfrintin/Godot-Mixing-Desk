@@ -1,4 +1,4 @@
-# Mixing Desk 2.0.2 for Godot
+# Godot Mixing Desk 2.0.4
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -50,8 +50,8 @@ First, pick a play mode. It's a property of the MDM node.
 
 	note: all vertical/horizontal adaptive features are available in all play modes!
 
-Now, in your scene, simply call `_init(track)` to load the track ready to play.
-Then, call `_play(track)` - track in both cases being either the name of the song node you wish to play, or its index, counting from 0. Either will work, though names are easier for us humans to remember, while index numbers are easier to do maths on - it's your call.
+Now, in your scene, simply call `_init_song(song)` to load the track ready to play.
+Then, call `_play(song)` - track in both cases being either the name of the song node you wish to play, or its index, counting from 0. Either will work, though names are easier for us humans to remember, while index numbers are easier to do maths on - it's your call.
 
 ### Adapting the music in code
 
