@@ -36,7 +36,7 @@ func _scatter_timeout(timer, tmin, tmax):
 	_play(1)
 	timer.start(rand_range(tmin, tmax))
 	
-func _end(sound):
+func _end():
 	timeroot.queue_free()
 	
 func _play(num, ran=true):
