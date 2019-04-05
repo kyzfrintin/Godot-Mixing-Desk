@@ -16,10 +16,11 @@ const default_vol = -10
 var players = []
 var time = 0.0
 var beat = 1.0
+var last_beat = -1
+var suppress_beat = 0.0
 var b2bar = 0
 var bar = 1.0
 var beats_in_sec = 0.0
-var can_beat = true
 var can_bar = true
 var playing = false
 var current_song_num = 0
@@ -102,13 +103,16 @@ func _clear_song(track):
 		
 #updates place in song and detects beats/bars
 func _process(delta):
+	if suppress_beat > 0:
+		suppress_beat -= delta
+		return
 	if playing:
 		time = current_song.get_child(0).get_playback_position()
-		beat = ((time/beats_in_sec) * 1000.0) + 1.0
+		beat = int(floor(((time/beats_in_sec) * 1000.0) + 1.0))
 		_fade_binds()
-		if fmod(beat, 1.0) < 0.1:
-			beat = floor(beat)
+		if beat != last_beat && (beat - 1) % int(bars * beats_in_bar) + 1 != last_beat:
 			_beat()
+		last_beat = beat
 			
 			
 
@@ -152,8 +156,12 @@ func _play(song):
 	time = 0
 	bar = 1
 	beat = 1
+	last_beat = -1
+	suppress_beat = beats_in_sec / 1000.0 * 0.5
 	if !playing:
+		last_beat = 1
 		emit_signal("bar", bar)
+		_beat()
 		playing = true
 	for i in songs[song].get_children():
 		if i.cont == "core":
@@ -367,22 +375,18 @@ func _bar():
 	
 #called every beat
 func _beat():
-	if can_beat:
-		if beat_tran:
-			if current_song_num != new_song:
-				_change_song(new_song)
-				emit_signal("song_changed", new_song)
-		if b2bar == beats_in_bar:
-			b2bar = 1
-			bar += 1
-			_bar()
-			emit_signal("bar", bar)
-		else:
-			b2bar += 1
-		can_beat = false
-		emit_signal("beat", beat)
-		yield(get_tree().create_timer((beats_in_sec/1000)*0.9), 'timeout')
-		can_beat = true
+	if beat_tran:
+		if current_song_num != new_song:
+			_change_song(new_song)
+			emit_signal("song_changed", new_song)
+	if b2bar == beats_in_bar:
+		b2bar = 1
+		bar += 1
+		_bar()
+		emit_signal("bar", bar)
+	else:
+		b2bar += 1
+	emit_signal("beat", (beat - 1) % int(bars * beats_in_bar) + 1)
 
 #gets a random track from a song and returns it
 func get_rantrk(song):
