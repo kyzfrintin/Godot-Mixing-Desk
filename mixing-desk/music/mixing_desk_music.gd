@@ -399,7 +399,7 @@ func get_rantrk(song):
 func _shuffle_songs():
 	if playing:
 		_stop(current_song)
-	_clear_song(current_song_num)
+		_clear_song(current_song_num)
 	randomize()
 	var song = randi() % (songs.size() - 1)
 	_init_song(song)
