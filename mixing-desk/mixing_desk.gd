@@ -23,10 +23,10 @@ func _enter_tree():
 	add_custom_type("ConcatSoundContainer2D", "Node2D", preload("sound/2d/concat_cont.gd"), preload("sound/snd_icon.png"))
 
 	#sound nodes - 3d
-	add_custom_type("PolySoundContainer3D", "Spatial", preload("sound/2d/polysound.gd"), preload("sound/snd_icon.png"))
-	add_custom_type("RanSoundContainer3D", "Spatial", preload("sound/2d/ran_cont.gd"), preload("sound/snd_icon.png"))
-	add_custom_type("ScatterSoundContainer3D", "Spatial", preload("sound/2d/scatter_cont.gd"), preload("sound/snd_icon.png"))
-	add_custom_type("ConcatSoundContainer3D", "Spatial", preload("sound/2d/concat_cont.gd"), preload("sound/snd_icon.png"))
+	add_custom_type("PolySoundContainer3D", "Spatial", preload("sound/3d/polysound.gd"), preload("sound/snd_icon.png"))
+	add_custom_type("RanSoundContainer3D", "Spatial", preload("sound/3d/ran_cont.gd"), preload("sound/snd_icon.png"))
+	add_custom_type("ScatterSoundContainer3D", "Spatial", preload("sound/3d/scatter_cont.gd"), preload("sound/snd_icon.png"))
+	add_custom_type("ConcatSoundContainer3D", "Spatial", preload("sound/3d/concat_cont.gd"), preload("sound/snd_icon.png"))
 	
 func _exit_tree():
 	#music nodes
