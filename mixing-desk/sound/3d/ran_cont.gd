@@ -32,13 +32,16 @@ func _get_ransnd(ran=true):
 	var chance = randi() % children
 	var ransnd = get_child(chance)
 	if ran:
-		_randomise_pitch_and_vol(ransnd)
+		_randomise(ransnd)
 	return ransnd
 		
-func _randomise_pitch_and_vol(sound):
-	var dvol = sound.get_parent().dvols[sound.get_index()]
-	var dpitch = sound.get_parent().dpitches[sound.get_index()]
-	var newvol = (dvol + rand_range(-volume_range,volume_range))
-	var newpitch = (dpitch + rand_range(-pitch_range,pitch_range))
-	sound.unit_db = newvol
+func _randomise(sound):
+	var dvol = dvols[sound.get_index()]
+	var dpitch = dpitches[sound.get_index()]
+	var newvol = (dvol + _range(volume_range))
+	var newpitch = (dpitch + _range(pitch_range))
+	sound.volume_db = newvol
 	sound.pitch_scale = newpitch
+	
+func _range(item : float) -> float:
+	return rand_range(-item,item)
