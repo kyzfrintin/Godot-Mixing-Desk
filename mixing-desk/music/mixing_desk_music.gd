@@ -11,7 +11,7 @@ export(int) var play_mode = 1
 
 onready var songs = get_children()
 
-const default_vol = -10
+const default_vol = 0
 
 var players = []
 var time = 0.0
@@ -44,6 +44,7 @@ func _ready():
 	var shuff = Timer.new()
 	shuff.name = 'shuffle_timer'
 	add_child(shuff)
+	shuff.one_shot = true
 	#yeahh
 	shuff.connect("timeout", self, "_shuffle_songs")
 	for song in songs:
