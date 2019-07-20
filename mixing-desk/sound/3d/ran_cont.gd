@@ -18,7 +18,7 @@ func _iplay(sound):
 	yield(snd, "finished")
 	snd.queue_free()
 	
-func _play(num, ran=true):
+func play(num, ran=true):
 	if num > 1:
 		for i in range(0, num):
 			var ransnd = _get_ransnd()

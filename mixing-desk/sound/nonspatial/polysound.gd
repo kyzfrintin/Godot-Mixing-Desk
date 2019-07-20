@@ -18,7 +18,7 @@ func _iplay(sound):
 	yield(snd, "finished")
 	snd.queue_free()
 	
-func _play(ran=true):
+func play(ran=true):
 	for i in get_children():
 		if ran:
 			_randomise_pitch_and_vol(i)

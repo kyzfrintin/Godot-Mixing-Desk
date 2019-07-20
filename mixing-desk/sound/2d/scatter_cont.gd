@@ -22,7 +22,7 @@ func _iplay(sound):
 	yield(snd, "finished")
 	snd.queue_free()
 
-func _begin(voices=5, tmin=1, tmax=5, ran=true):
+func begin(voices=5, tmin=1, tmax=5, ran=true):
 	var timeroot = Node.new()
 	timeroot.name = 'timeroot' + str(get_index())
 	for i in voices:
@@ -36,7 +36,7 @@ func _scatter_timeout(timer, tmin, tmax):
 	_play(1)
 	timer.start(rand_range(tmin, tmax))
 	
-func _end():
+func end():
 	timeroot.queue_free()
 	
 func _play(num, ran=true):
