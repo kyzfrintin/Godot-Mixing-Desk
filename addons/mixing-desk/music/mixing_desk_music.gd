@@ -59,9 +59,9 @@ func _ready():
 func init_song(track):
 	track = _songname_to_int(track)
 	var song = songs[track]
-	var root = song.get_core()
+	var root = song._get_core()
 	current_song_num = track
-	current_song = songs[track].get_core()
+	current_song = songs[track]._get_core()
 	var inum = 0
 	repeats= 0
 	for i in root.get_children():
@@ -94,7 +94,7 @@ func clear_song(track):
 	binds.clear()
 	params.clear()
 	print('clearing song "' + str(songs[track].name) + '"')
-	var song = songs[track].get_core()
+	var song = songs[track]._get_core()
 	var inum = 0
 	for i in song.get_children():
 		var bus = AudioServer.get_bus_index("layer" + str(inum))
@@ -122,7 +122,7 @@ func start_alone(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	current_song_num = song
-	current_song = songs[song].get_core()
+	current_song = songs[song]._get_core()
 	for i in current_song.get_children():
 		i.set_volume_db(-60.0)
 	current_song.get_child(layer).set_volume_db(default_vol)
@@ -147,7 +147,7 @@ func _songname_to_int(ref):
 func _trackname_to_int(song, ref):
 	_songname_to_int(song)
 	if typeof(ref) == TYPE_STRING:
-		return songs[song].get_core().get_node(ref).get_index()
+		return songs[song]._get_core().get_node(ref).get_index()
 	else:
 		return ref
 	
@@ -207,11 +207,11 @@ func _concat_fin(concat):
 func mute_above_layer(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	if songs[song].get_core().get_child_count() < 2:
+	if songs[song]._get_core().get_child_count() < 2:
 		return
 	for i in range(0, layer + 1):
 		fade_in(song, i)
-	for i in range(layer + 1, songs[song].get_core().get_child_count()):
+	for i in range(layer + 1, songs[song]._get_core().get_child_count()):
 		fade_out(song, i)
 
 #mute all layers below specified layer, and fade in all below
@@ -219,7 +219,7 @@ func mute_above_layer(song, layer):
 func mute_below_layer(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	for i in range(layer, songs[song].get_core().get_child_count()):
+	for i in range(layer, songs[song]._get_core().get_child_count()):
         fade_in(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
@@ -231,7 +231,7 @@ func mute_below_layer(song, layer):
 func solo(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	for i in range(layer + 1, songs[song].get_core().get_child_count()):
+	for i in range(layer + 1, songs[song]._get_core().get_child_count()):
         fade_out(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
@@ -243,7 +243,7 @@ func solo(song, layer):
 func mute(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song].get_core().get_child(layer)
+	var target = songs[song]._get_core().get_child(layer)
 	target.set_volume_db(-60.0)
 	var pos = songs[song].muted_tracks.find(layer)
 	if pos == null:
@@ -253,7 +253,7 @@ func mute(song, layer):
 func unmute(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song].get_core().get_child(layer)
+	var target = songs[song]._get_core().get_child(layer)
 	target.set_volume_db(default_vol)
 	var pos = songs[song].muted_tracks.find(layer)
 	if pos != -1:
@@ -263,7 +263,7 @@ func unmute(song, layer):
 func fade_in(song, layer):
 	song = _songname_to_int(song)
 #	layer = _trackname_to_int(track, layer)
-	var target = songs[song].get_core().get_child(layer)
+	var target = songs[song]._get_core().get_child(layer)
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, default_vol, transition_beats, Tween.TRANS_QUAD, Tween.EASE_OUT)
@@ -276,7 +276,7 @@ func fade_in(song, layer):
 func fade_out(song, layer):
 	song = _songname_to_int(song)
 #	layer = _trackname_to_int(track, layer)
-	var target = songs[song].get_core().get_child(layer)
+	var target = songs[song]._get_core().get_child(layer)
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
