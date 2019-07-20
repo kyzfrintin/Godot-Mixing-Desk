@@ -212,7 +212,7 @@ func mute_above_layer(song, layer):
 	for i in range(0, layer + 1):
 		fade_in(song, i)
 	for i in range(layer + 1, songs[song].get_core().get_child_count()):
-		fade_out((song, i)
+		fade_out(song, i)
 
 #mute all layers below specified layer, and fade in all below
 #use mute_below_layer(0) to fade all tracks in
@@ -223,21 +223,21 @@ func mute_below_layer(song, layer):
         fade_in(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-    	    fade_out((song, i)
+    	    fade_out(song, i)
 		if layer == 1:
-			fade_out((song, 0)
+			fade_out(song, 0)
 			
 #mute all layers aside from specified layer
 func solo(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer + 1, songs[song].get_core().get_child_count()):
-        fade_out((song, i)
+        fade_out(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-    	    fade_out((song, i)
+    	    fade_out(song, i)
 		if layer == 1:
-			fade_out((song, 0)
+			fade_out(song, 0)
 
 #mute only the specified layer
 func mute(song, layer):
@@ -273,7 +273,7 @@ func fade_in(song, layer):
 		songs[song].muted_tracks.remove(pos)
 
 #slowly take out the specified layer
-func fade_out((song, layer):
+func fade_out(song, layer):
 	song = _songname_to_int(song)
 #	layer = _trackname_to_int(track, layer)
 	var target = songs[song].get_core().get_child(layer)
@@ -335,7 +335,7 @@ func _change_song(song):
 		if i.cont == "core":
 			if songs[old_song].transition_beats >= 1:
 				for o in i.get_child_count():
-					fade_out((old_song, o)
+					fade_out(old_song, o)
 		if 'ran' or 'seq' or 'concat' in i.cont:
 			for o in i.get_children():
 				o.stop()

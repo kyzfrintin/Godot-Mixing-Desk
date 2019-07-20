@@ -21,7 +21,7 @@ func _ready():
 		dpitches.append(i.pitch_scale)
 		dlocs.append(i.translation)
 	if autostart:
-		_begin()
+		begin()
 
 func _iplay(sound):
 	var snd = sound.duplicate()
