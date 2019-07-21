@@ -259,6 +259,16 @@ func unmute(song, layer):
 	if pos != -1:
 		songs[song].muted_tracks.remove(pos)
 
+#mutes a track if not mutes, or vice versa
+func toggle_mute(song, layer):
+	song = _songname_to_int(song)
+	layer = _trackname_to_int(song, layer)
+	var target = songs[song]._get_core().get_child(layer)
+	if target.volume_db < 0:
+		unmute(song, layer)
+	else:
+		mute(song, layer)
+
 #slowly bring in the specified layer
 func fade_in(song, layer):
 	song = _songname_to_int(song)
@@ -282,7 +292,14 @@ func fade_out(song, layer):
 	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
 	tween.start()
 
-	
+#fades a track in if silent, fades out if not
+func toggle_fade(song, layer):
+	song = _songname_to_int(song)
+	var target = songs[song]._get_core().get_child(layer)
+	if target.volume_db < 0:
+		fade_in(song, layer)
+	else:
+		fade_out(song, layer)
 #binds a track's volume to an object's parameter
 func bind_to_param(track,param):
 	track = _songname_to_int(track)
