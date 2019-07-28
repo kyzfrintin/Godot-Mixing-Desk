@@ -204,7 +204,7 @@ func _concat_fin(concat):
 	_play_concat(concat)
 
 #mute all layers above specified layer, and fade in all below
-func mute_above_layer(song, layer):
+func fadeout_above_layer(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	if songs[song]._get_core().get_child_count() < 2:
@@ -216,7 +216,7 @@ func mute_above_layer(song, layer):
 
 #mute all layers below specified layer, and fade in all below
 #use mute_below_layer(0) to fade all tracks in
-func mute_below_layer(song, layer):
+func fadeout_below_layer(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer, songs[song]._get_core().get_child_count()):
