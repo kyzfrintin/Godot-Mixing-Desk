@@ -343,6 +343,26 @@ func queue_beat_transition(song):
 	new_song = song
 	beat_tran = true
 
+#play two tracks in order, either ending, looping or shuffling on the second
+func queue_sequence(sequence : Array, type : String, on_end : String):
+	match type:
+		"beat":
+			queue_beat_transition(sequence[0])
+		"bar":
+			queue_bar_transition(sequence[0])
+	play_mode = 0
+	yield(self,"song_changed")
+	yield(self,"end")
+	init_song(sequence[1])
+	play(sequence[1])
+	match on_end:
+		"play_once":
+			play_mode = 0
+		"loop":
+			play_mode = 1
+		"shuffle":
+			play_mode = 3
+
 #unload and stops the current song, then initialises and plays the new one
 func _change_song(song):
 	song = _songname_to_int(song)
