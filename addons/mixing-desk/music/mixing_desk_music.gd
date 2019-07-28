@@ -137,6 +137,11 @@ func _iplay(track):
 	yield(trk, "finished")
 	trk.queue_free()
 
+#initialise and play the song immediately
+func quickplay(song)
+	init_song(song)
+	play(song)
+
 #check if ref is string or int
 func _songname_to_int(ref):
 	if typeof(ref) == TYPE_STRING:

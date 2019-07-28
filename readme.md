@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.3.2
+# Godot Mixing Desk 2.3.3
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -50,22 +50,23 @@ First, pick a play mode. It's a property of the MDM node.
 
 	note: all vertical/horizontal adaptive features are available in all play modes!
 
-Now, in your scene, simply call `_init_song(song)` to load the track ready to play.
-Then, call `_play(song)` - track in both cases being either the name of the song node you wish to play, or its index, counting from 0. Either will work, though names are easier for us humans to remember, while index numbers are easier to do maths on - it's your call.
+Now, in your scene, simply call `init_song(song)` to load the track ready to play.
+Then, call `play(song)` - track in both cases being either the name of the song node you wish to play, or its index, counting from 0. Either will work, though names are easier for us humans to remember, while index numbers are easier to do maths on - it's your call. To quickly initialise and play in one, call `quickplay(song)`.
 
 ### Adapting the music in code
 
 Based on implementations of interactive music in [FMOD](https://www.fmod.com/) and [Wwise](https://www.audiokinetic.com/products/wwise/),  the MDM neatly covers the two major branches of adaptive music outlined by [Michael Sweet](https://www.designingmusicnow.com/2016/06/13/advantages-disadvantages-common-interactive-music-techniques-used-video-games/).
 
 ### **Vertical Remixing/Layering**
-MDM can fade individual tracks in and out using the `_fade_in(track)` or `_fade_out(track)` functions. It can also fade multiple tracks in/out at once with the `_mute_below_layer(track)` and `_mute_above_layer(track)` functions. To begin a track with a base layer only, the `_start_alone(track, layer)` function can be used.
+MDM can fade individual tracks in and out using the `fade_in(track)` or `fade_out(track)` functions. It can also fade multiple tracks in/out at once with the `mute_below_layer(track)` and `mute_above_layer(track)` functions. Fading and muting both have toggles, too - `toggle_fade(song, track)` and `toggle_mute(song, track)`. To begin a track with a base layer only, the `start_alone(track, layer)` function can be used.
 
 [Video Example](https://streamable.com/csjyi)
 
-To control an individual track's volume constantly based on a parameter, however, is only slightly more tricky. The `_bind_to_param(track,param)` is called to initialise the process. Of course, 'track' refers to which musical layer to control. 'Param' is the initial value to initialise with. For example, you may use it to fade a layer in and out over distance. To keep this up, you will need to call the `_feed_param(param,val)` function in a process function in your game's code. 'Param' is the index of the parameter you wish to modulate, which will be in the order which you set up the parameters. If it is the first, then it would be index 0. 'Val' is the value to send to MDM to affect the volume. This has to be a normalised value between 0 and 1 - 0 being silent, 1 being full volume. To achieve this, simply divide the current value by the max possible value - for example, the max range from an enemy at which to apply tension.
+To control an individual track's volume constantly based on a parameter, however, is only slightly more tricky. The `bind_to_param(track,param)` is called to initialise the process. Of course, 'track' refers to which musical layer to control. 'Param' is the initial value to initialise with. For example, you may use it to fade a layer in and out over distance. To keep this up, you will need to call the `feed_param(param,val)` function in a process function in your game's code. 'Param' is the index of the parameter you wish to modulate, which will be in the order which you set up the parameters. If it is the first, then it would be index 0. 'Val' is the value to send to MDM to affect the volume. This has to be a normalised value between 0 and 1 - 0 being silent, 1 being full volume. To achieve this, simply divide the current value by the max possible value - for example, the max range from an enemy at which to apply tension.
 
 ### **Horizontal Resequencing**
-MDM consistently keeps track of beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `_queue_beat_transition(track)` or `_queue_bar_transition(track)` functions.
+MDM consistently keeps track of beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `queue_beat_transition(track)` or `queue_bar_transition(track)` functions.
+You can also insert a clip in between the source and destination songs by calling `queue_sequence(sequence, type, on_end)`. The `sequence` variable is an array of two songnames; the first being the intervening clip, and the second being the destination song. `type` is a string, either "beat" or "bar", and denotes which signal to wait for before transitioning. Lastly, `on_end` is the play_mode of the final track, and can be either "play_once", "loop", or "shuffle".
 
 [Video Example](https://streamable.com/1cx2w)
 
@@ -89,12 +90,12 @@ The MDS is a fully-featured sound-playing plugin, allowing procedural playback o
 MDS is slightly different to MDM - there are still container nodes, but no parent Mixing Desk. There are 4 kinds of MDS container:
 
 - `PolySoundContainer` plays all sounds nested within.
-- `RandomSoundContainer` plays 1 or more sounds nested within, chosen at random, the number of which is specified in the _play(num) call.
+- `RandomSoundContainer` plays 1 or more sounds nested within, chosen at random, the number of which is specified in the `play(num)` call.
 - `ScatterSoundContainer` will 'scatter' multiple sounds at random times, by use of 1 or more timers. More on scattering below.
 - `ConcatSoundContainer` plays a random sequence of nested sounds, the number of which is specified in the call.
 
 And, similar to the AudioStreamPlayers found natively in Godot, there is a Node (no position), 2D, and 3D type for each container.
-To play a container, simply call _play()! 
+To play a container, simply call `play()`! 
 
 ![A PolySoundContainer](https://i.imgur.com/xkDToeA.png)
 
@@ -112,13 +113,13 @@ Scattering sounds is great for ambience. Load up all the sounds you can imagine 
 Achieved by calling the scatter function once in _ready()!
 
 To scatter a group of sounds, arrange them nested in a container like usual.
-At the point you want to begin scattering - if for ambience, this will likely be `_ready()` - simply call:
+At the point you want to begin scattering - if for ambience, this will likely be `ready()` - simply call:
 
 	_begin(voices, tmin, tmax, ran)
 	
 This will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'tmin' and 'tmax'.
 At each timer's timeout, it will randomly play a nested sound and begin again, its timeout once more randomised.
-This will continue indefinitely, randomised timers calling randomised sounds, until you call `_end()`. This will delete all the timers.
+This will continue indefinitely, randomised timers calling randomised sounds, until you call `end()`. This will delete all the timers.
 
 ---
 
