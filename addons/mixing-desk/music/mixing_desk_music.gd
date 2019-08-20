@@ -138,7 +138,7 @@ func _iplay(track):
 	trk.queue_free()
 
 #initialise and play the song immediately
-func quickplay(song)
+func quickplay(song):
 	init_song(song)
 	play(song)
 
@@ -225,10 +225,10 @@ func fadeout_below_layer(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer, songs[song]._get_core().get_child_count()):
-        fade_in(song, i)
+		fade_in(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-    	    fade_out(song, i)
+			fade_out(song, i)
 		if layer == 1:
 			fade_out(song, 0)
 			
@@ -237,10 +237,10 @@ func solo(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer + 1, songs[song]._get_core().get_child_count()):
-        fade_out(song, i)
+		fade_out(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-    	    fade_out(song, i)
+			fade_out(song, i)
 		if layer == 1:
 			fade_out(song, 0)
 
