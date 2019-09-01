@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.3.4
+# Godot Mixing Desk 2.4
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -20,21 +20,25 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed under a "CoreContainer", which plays all the audio nodes under it by default. As for the other nodes, they are overlays, which we will come to shortly.
 
 ### You *must* fill in the properties in the song node!
-![Typical properties](https://i.imgur.com/DS97YEI.png)
+![Typical properties](https://i.imgur.com/W1cGrs8.png)
 
 If you don't know the tempo of the music you're using, ask the composer. If you don't know the composer, check the website where you downloaded the music, or the readme in the sample pack you downloaded. If in doubt, try out BPM detection software such as here: https://www.conversion-tool.com/bpmdetector/?lang=en
 Similar process for bars and the other properties.
 
 
-### Overlays (random & sequence tracks)
+### Overlays (random, sequence, concat and rollover tracks)
 
 ![Example of an overlay setup](https://i.imgur.com/Yr3suBT.png)
 
-Overlays are set up in much the same way as core tracks. Create a RandomContainer, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of `random_chance` - if the random number generated each time song plays is lower than the value of `random_chance`, the track plays.
+Overlays are set up in much the same way as core tracks. Create a RandomContainer, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of the RandomContainer's `random_chance` - if the random number generated each time song plays is lower than the value of `random_chance`, the track plays.
 	
 SeqContainers play the audio nodes in order, from top to bottom, and over again. Overlays must be equal length or shorter than the corresponding core tracks.
 
 Use a ConcatContainer for a group of short tracks, particularly percussion, that you wish to play in random order over the top of the song. These tracks will be chosen randomly and each will immediately follow the previous. Good for randomising drums by the measure, or whichever length samples you choose to throw in.
+
+Rollovers are semi-transitions within a loop. Think of a crash roll, or snare rush, or any build-up/wind-down clip that may "roll over" from near the end of your clip, to after the start of the next loop. Place a RolloverContainer and add 1 or more rollover clips beneath it, and edit the `crossover beat` with the beat number of the clip that should line up with the first beat after looping. If the clip is 9 beats long, and the apex of its climb, or timing of its impact, is on beat 5 - the number is 5. Remember, count from 0, otherwise it will be thrown off.
+
+![Example of rollover properties](https://i.imgur.com/NIsHJjk.png)
 
 ### Loading and hitting play
 

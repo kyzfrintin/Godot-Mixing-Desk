@@ -33,6 +33,8 @@ var repeats = 0
 
 var binds = []
 var params = []
+var rollover = null
+var rollover_point : int = 0
 
 signal beat
 signal bar
@@ -86,6 +88,14 @@ func init_song(track):
 	beats_in_bar = song.beats_in_bar
 	beats_in_sec = 60000.0/tempo
 	transition_beats = (beats_in_sec*song.transition_beats)/1000
+	for i in song.get_children():
+		if i.cont == "roll":
+			rollover = i
+			rollover_point = ((song.bars * song.beats_in_bar) - (i.crossover_beat - 1))
+			print(rollover_point)
+			break
+		else:
+			rollover = null
 
 #unloads a song
 func clear_song(track):
@@ -177,7 +187,7 @@ func play(song):
 		if i.cont == "ran":
 			randomize()
 			var rantrk = _get_rantrk(i)
-			if rand_range(0,1) <= songs[song].random_chance:
+			if rand_range(0,1) <= i.random_chance:
 				rantrk.play()
 		if i.cont == "seq":
 			var seqtrk = repeats
@@ -397,17 +407,12 @@ func stop(song):
 func _bar():
 	if can_bar:
 		can_bar = false
-		
 		if bar_tran:
 			if current_song_num != new_song:
 				_change_song(new_song)
 				emit_signal("song_changed")
 		#at end of song
 		if bar >= bars + 1:
-#			for i in songs[current_song_num].concats:
-#				for o in i.get_children():
-#					if o.is_playing():
-#						o.stop()
 			songs[current_song_num].concats.clear()
 			if play_mode == 1 and loop:
 				play(current_song_num)
@@ -429,6 +434,14 @@ func _beat():
 		emit_signal("bar", bar)
 	else:
 		b2bar += 1
+	if rollover != null:
+		if beat == rollover_point:
+			if rollover.get_child_count() > 1:
+				var roll = rollover.get_child(randi() % rollover.get_child_count())
+				print(roll.name)
+				roll.play()
+			else:
+				rollover.get_child(0).play()	
 	emit_signal("beat", (beat - 1) % int(bars * beats_in_bar) + 1)
 
 #gets a random track from a song and returns it
