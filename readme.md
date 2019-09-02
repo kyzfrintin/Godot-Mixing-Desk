@@ -83,9 +83,13 @@ You can also insert a clip in between the source and destination songs by callin
 MDM outputs beat and bar signals which can easily be connected to any other node in the scene. This way, you can time events in the game to the music. For example, a `yield(mdm, 'bar')` can delay actions until they're in sync with the next bar. MDM also outputs signals when a song ends, when the song is changed, and upon shuffling in a playlist. Here is a run-down of the signals and their connected variables:
 
 `bar(bar : int)
+
 beat(beat : int)
+
 end(song_num : int)
+
 shuffle(old_song_num : int, new_song_num : int)
+
 song_changed(old_song_num : int, new_song_num : int)`
 
 ---
