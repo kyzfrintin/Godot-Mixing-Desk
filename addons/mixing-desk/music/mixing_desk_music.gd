@@ -92,7 +92,6 @@ func init_song(track):
 		if i.cont == "roll":
 			rollover = i
 			rollover_point = ((song.bars * song.beats_in_bar) - (i.crossover_beat - 1))
-			print(rollover_point)
 			break
 		else:
 			rollover = null
@@ -146,7 +145,7 @@ func _iplay(track):
 	trk.play()
 	yield(trk, "finished")
 	trk.queue_free()
-
+	
 #initialise and play the song immediately
 func quickplay(song):
 	init_song(song)
@@ -160,7 +159,6 @@ func _songname_to_int(ref):
 		return ref
 
 func _trackname_to_int(song, ref):
-	_songname_to_int(song)
 	if typeof(ref) == TYPE_STRING:
 		return songs[song]._get_core().get_node(ref).get_index()
 	else:
@@ -235,10 +233,10 @@ func fadeout_below_layer(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer, songs[song]._get_core().get_child_count()):
-		fade_in(song, i)
+        fade_in(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-			fade_out(song, i)
+    	    fade_out(song, i)
 		if layer == 1:
 			fade_out(song, 0)
 			
@@ -247,10 +245,10 @@ func solo(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer + 1, songs[song]._get_core().get_child_count()):
-		fade_out(song, i)
+        fade_out(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-			fade_out(song, i)
+    	    fade_out(song, i)
 		if layer == 1:
 			fade_out(song, 0)
 
@@ -287,7 +285,7 @@ func toggle_mute(song, layer):
 #slowly bring in the specified layer
 func fade_in(song, layer):
 	song = _songname_to_int(song)
-#	layer = _trackname_to_int(track, layer)
+	layer = _trackname_to_int(song, layer)
 	var target = songs[song]._get_core().get_child(layer)
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
@@ -300,7 +298,7 @@ func fade_in(song, layer):
 #slowly take out the specified layer
 func fade_out(song, layer):
 	song = _songname_to_int(song)
-#	layer = _trackname_to_int(track, layer)
+	layer = _trackname_to_int(song, layer)
 	var target = songs[song]._get_core().get_child(layer)
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
@@ -310,14 +308,16 @@ func fade_out(song, layer):
 #fades a track in if silent, fades out if not
 func toggle_fade(song, layer):
 	song = _songname_to_int(song)
+	layer = _trackname_to_int(song, layer)
 	var target = songs[song]._get_core().get_child(layer)
 	if target.volume_db < 0:
 		fade_in(song, layer)
 	else:
 		fade_out(song, layer)
+
 #binds a track's volume to an object's parameter
 func bind_to_param(track,param):
-	track = _songname_to_int(track)
+	track = _trackname_to_int(current_song_num,track)
 	binds.append(track)
 	params.append(param)
 
@@ -441,7 +441,7 @@ func _beat():
 				print(roll.name)
 				roll.play()
 			else:
-				rollover.get_child(0).play()	
+				rollover.get_child(0).play()
 	emit_signal("beat", (beat - 1) % int(bars * beats_in_bar) + 1)
 
 #gets a random track from a song and returns it
