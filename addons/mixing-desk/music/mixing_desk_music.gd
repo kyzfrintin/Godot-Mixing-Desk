@@ -382,6 +382,7 @@ func queue_sequence(sequence : Array, type : String, on_end : String):
 func _change_song(song):
 	song = _songname_to_int(song)
 	clear_song(old_song)
+	emit_signal("song_changed", [old_song, new_song])
 	init_song(song)
 	for i in songs[old_song].get_children():
 		if i.cont == "core":
@@ -410,14 +411,13 @@ func _bar():
 		if bar_tran:
 			if current_song_num != new_song:
 				_change_song(new_song)
-				emit_signal("song_changed")
 		#at end of song
 		if bar >= bars + 1:
 			songs[current_song_num].concats.clear()
 			if play_mode == 1 and loop:
 				play(current_song_num)
 				repeats += 1
-			emit_signal("end")
+			emit_signal("end", current_song_num)
 		yield(get_tree().create_timer(0.5), "timeout")
 		can_bar = true
 	
@@ -426,7 +426,6 @@ func _beat():
 	if beat_tran:
 		if current_song_num != new_song:
 			_change_song(new_song)
-			emit_signal("song_changed", new_song)
 	if b2bar == beats_in_bar:
 		b2bar = 1
 		bar += 1
@@ -458,9 +457,9 @@ func shuffle_songs():
 		clear_song(current_song_num)
 	randomize()
 	var song = randi() % (songs.size() - 1)
+	emit_signal("shuffle", [current_song_num, song])
 	init_song(song)
 	play(song)
-	emit_signal("shuffle")
 	can_shuffle = true
 
 #called when the song finishes
