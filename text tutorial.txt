@@ -1,0 +1,127 @@
+1 - basics
+    - getting mixing desk
+    - importing audio for use
+    - setting up a simple looping song
+    - explain node properties (bpm, bars, time sig)
+    - touch on random tracks
+
+YT link: https://youtu.be/Zgs6mMF4rT4
+------
+
+This tutorial will cover the very simplest functions and applications of the Godot Mixing Desk for music.
+
+We will explore the steps necessary to simply get the MDM set up and working inside of a Godot project, as well as how to get a song playing. Some of the easier interactive components will be touched on, too.
+
+Firstly, you'll have to download the Mixing Desk into your project. You can do this either through the asset library, or directly from GitHub here: https://github.com/kyzfrintin/Godot-Mixing-Desk
+
+If you're downloading from GitHub, throw the 'addons' folder directly into the top level of your project, under 'res://'. Once it's in, check under project settings to see if the GMD is enabled, and enable it if not.
+
+Now Mixing Desk is enabled, you can add an MDM node directly into your project. The node itself has one exported property, 'play mode'. By default it is set to 1, which is loop. 0 is play once, and 2 is shuffle. Loop will work just fine for now. Now, directly under the MDM, add a "Song" node. Name it 'test' - this will be the name you use to refer to the song in code, if you don't want to use its index number (either will do).
+
+I have uploaded a small zip file of demo music for use in this tutorial. You can find it here: https://www.sendspace.com/file/703z5r
+
+Import these files and - this may seem odd - disable the loop property in the import menu.
+
+The song properties for this particular music are:
+
+Tempo - 120bpm
+Bars - 4
+Beats in bar - 4
+
+These first three properties are absolutely vital to make sure the song not only loops properly, but also to ensure that beat and bar signals are sent on time. This will come in useful later, when we want to transition between songs by beat and/or bar.
+
+Set random chance to 1 for a little demo later - this is simply the percentage chance of a random track playing, with 1 of course meaning a random track will always play. And transition beats is irrelevant for this tutorial. Definitely enable loop, though!
+
+MDM works by scanning the nodes for types of 'containers' - this is a feature shamelessly lifted straight from Wwise. Depending on the containers you use, MDM will play the files in different ways. For ordinary use - that is, playing all listed audio tracks at once - a CoreContainer is what we need. So place a CoreContainer under the Song node, and last but certainly not least, a regular old AudioStreamPlayer beneath that. We only need one core track for this demo. Load in the epiano.ogg track, and MDM is ready to be activated.
+
+The final step is to program the MDM to load and play the song 'test'. If you haven't already, create a script for your main scene node. This will work in either GDScript or VisualScript, so don't feel threatened by the need to code if you don't know GDScript. All we'll need to do in the script is refer to the MDM, and call the init_song() function. Pass through the string 'test' or the number '0', and follow it up with an identical call to the play() function - again, pass through either 'test' or '0'. This may seem fiddly, due to there being 2 function calls. It is this way simply because, sometimes, you may want to load the song before you play it.
+
+But now - viola! Test your scene, and the epiano track is now playing and looping. 'So what?' You might ask, 'I can loop an audio file with an AudioStreamPlayer alone!' Aha - but can you do this?
+
+Beneath your 'test' song node, add a RandomContainer. Throw in three AudioStreamPlayers beneath the container, and load the ranperc audio files into each respectively. And now, with no extra programming required, launch your scene again. On each playthrough, the MDM will pick a clip from the container at random to play alongside the core tracks, or track in this case.
+
+So, there you have it! Setting up the basics of the Mixing Desk for Music. We have a single looping track, with a few random overlays to play above it. You can have any number of core tracks under a core container, and they will all automatically play together. You can also have any number of random tracks, under any number of random containers, and each random container will be treated separately, so you can have a random container for percussion, one for melodies, and so on.
+
+------
+
+2 - transitions
+    - 'room songs'
+    - calling transitions in code
+    - fading tracks in and out
+    - intro/end segments
+
+YT link: https://youtu.be/tiwYqy4OfyI
+-----
+
+This tutorial will introduce the more complex backbone of Godot Mixing Desk for Music - the transitions.
+
+There are two types of transition - switching to another song (also known as horizontal re-sequencing) and adding in or removing layers of the current song (vertical re-mixing). MDM handles both of these types of transition quite easily, with handy functions for each.
+
+Like last time, I've provided some sample music to use in this tutorial, to demonstrate these very functions. You can download the sample music here: https://www.sendspace.com/file/dpqnrd
+
+Switching directly to another song is especially useful to mark states or areas in a game. For example, you may want one song to play inside a town, but a different song to play in a shop inside that town. Or you may want the music to change from ambient to battle, when the player enters a battle in your game. Both of these implementations may sound familiar if you've ever played a Pokémon game (or, really, one of most RPGs), and both implementations are easily supported by Mixing Desk.
+
+To demonstrate, let's first get a simple song set up in Godot. If you use the project from the last tutorial, then you'll have the epiano ready to go. You'll just need to add another track into the Core container. The "arp" included in the sample music will work nicely. If you run the scene now, you have both the epiano and arp playing together, with some random tracks thrown in. You can keep or delete the random tracks for now, they won't be important during this tutorial. The tracks for a second song are also included in the demo music, so go ahead and set these up in their own song/core container heirarchy under MDM.
+
+*Don't forget to include the properties of the song in the song node!*
+
+Now, we need something to trigger these two songs to fade in or out. Some buttons will be fine for now - create a button for the song itself, and two buttons to represent the tracks in the song, and connect their signals to your main script. You'll next need to do the same for the second song, and its two tracks. Once all that's done, all you'll need to do is, under the song_pressed functions, call the "queue_bar_transition" (or queue_beat_transition, whichever you like) function from MDM, and pass through the name or index of the song to change to. The song 1 button will, of course, transition to song 1 - and vice versa for song 2. Run your project now, and you'll see that, by pressing the song buttons, MDM changes perfectly musically between the songs - it waits for the current bar to finish, and carries on with the queued song as if it were written that way.
+
+Sometimes, however, you'll want to interject a shorter (or not) segment between your source and destination tracks. For this implementation, you'll want to use the "queue_sequence" function. It's just like queueing a bar or beat transition, with the slight added complexity of passing through three variables instead of one. Firstly is an array containing the names of the two tracks you want to play in order - the transition segment first, then the target track second. Next, a string of either "beat" or "bar", to define whether to transition on the next beat, or the next bar. Lastly, a string of either "play_once", "loop" or "shuffle" to decide the play mode of the target song. 
+
+To demonstrate this function, let's create a simple third song - let's creatively call it "test3". It'll be 1 bar long, and also at 120bpm, 4 beats per bar - you get the idea. Under its core container, add just one audiostream to play the "hats" audio track. Now, to show this off as an intro/end segment, just replace the "queue_bar_transition" function on the song 1 button with the "queue_sequence" function. For the sequence array, use ["Test3", "test"]. Choose "bar" for transition type, and "loop" for the on_end behaviour. As simply as that - you have intro and end segments! Run your scene and press the song buttons to see for yourself. The short hi hats clip is now played in between the transitions.  You can do the same with the song2 button, of course - just change the "test" name in the sequence array for "test2". This type of implementation is brilliant for when you want to add short flourishes at the start or end of an important music piece - for example, a battle track with distinctive "win" or "lose" music at the end, or a strong introduction that need not be repeated while the main music loops.
+
+For the track button connections, you'll want to call the "toggle_fade" function from MDM. It's as easy as queueing a bar/beat transition - just pass through the name or index of the song, and then the name or index of the track to fade in/out. Note that there are quite a few different ways to fade a track, and this is just one of them. Toggle_fade is like using a dimming lightswitch - it gradually goes on or off. Toggle_mute is an instant switch on or off. Mute/unmute funcs are just the same as toggle_mute, but are absolute directins rather than a toggle. Then you have fade_in and fade_out, which are the fade versions of the last 2 funcs. Lastly there is the magical arrangement tool, which is fadeout_below_layer() and its reverse twin, fadeout_above_layer(). These functions, as the name suggests, will fade all layers above or below the selected layer. This is useful for keeping your arrangement constantly moving with the action. Say you have 10 layers, with each added layer adding intensity to the arrangement, you could use fadeout_below_layer constantly to keep the music ebbing and flowing as the game builds and lowers in intensity.
+
+Well, there it is: the secret to transitioning both vertically and horizontally using Godot Mixing Desk. I hope this tutorial has helped you understand the trick to creating adaptive/procedural music with GMD. I'll see you next time, when we look at the more in-depth features of Mixing Desk, such as binding track volume to a game variable, concatenated tracks, and using the MDM signals to influence the game, or even other instances of MDM.
+
+-----
+
+3 - advanced features
+    - track param binds
+    - random/concat tracks for proc
+    - rollovers
+    - multiple MDM instances
+    - using beats/bars in-game
+
+YT link: https://youtu.be/a5eJy-092e0
+---
+
+In this tutorial, we'll be looking at the most advanced features of Mixing Desk. These are the parameter binds, procedural/randomised music, rollovers, MDM signalling and communication and connecting the MDM to the game to use beat and bar signals. We'll start with parameter binds, because it's probably the most complex feature, and it'll be good to get it out of the way.
+
+Firstly, you need a parameter to bind to - this can be just about anything. Distance between the player sprite and an enemy sprite, height of your character, amount of resources - anything that can have a numerical value attached, and has a fixed range between a minimum and a determined maximum. For this example, I'm going to use the height of the mouse cursor - the minimum in this case will be 0, and the maximum will be 600. To get things moving, I'll simply have to call the bind_to_param() function, pass in a track reference, and an initial value. I want to affect the epiano track, so I pass in "epiano1" for this value, and I'll also initialise it at 0.
+
+The volume value has to be normalised between 0 and 1 - 1 being full volume, and 0 being silent. To do this, you'll just have to divide the value by the maximum possible value. If the minimum is 0, leave it at that, but if the minimum is any higher, you'll also need to add this minimum to the value before dividing by max. For example:
+
+If the range of values is 0 - 100, the equation is `value / 100`.
+If the range is 50 - 100, the equation is `(value + 50) / 100`.
+
+This value needs to be fed to the mixing desk in _process, or whenever the value is updated, using the feed_param function. Pass in the bind reference number, which, for your first bind, will be 0, and the normalised value. The parameter binds are listed in order of initialisation, so the first will always be 0, second 1, and so on. In this case, it's the first bind, so the function call in process goes feed_param(0, vol) - this is, of course, after the simple equation of getting the mouse value and dividing it by the max.
+
+A further note - if you want the minimum value to be full volume, and the maximum value to be the minimum volume, you'll need to invert the value before normalising it. To do this, first multiply the value by -1, then add the max back to it. For instance, you might want to do this to fade in a tense underscore when getting close to an enemy. The equation would be as follows:
+
+`vol = ((distance * -1) + max_distance) / max_distance`
+
+Now let's look at random tracks more in depth. As was touched on in the first tutorial, you can have as many random containers as you like for any song. But what was not explained is how you can easily use this to have a song completely randomly generated. To do this, you can create your CoreContainer and fill it with only silence, the length of your song. Then add in the random containers, and seed them with all your potential tracks.
+
+Concat tracks are like random tracks, but are shorter and played in succession during the song's playtime. This is great for procedural generation of percussion, melody, and any other aspects of your song, by beat or measure or anything in between or besides. To use them, you need only fill up a concat container with short clips to be shuffled between. Note that they must be, at the very least, shorter than the song, but ideally less than half as long. They must also be at exact beat values for the rhythm to be consistent. You can fill it with percussion/melody loops at 2 beats, 3 beats, or any other beat value.
+
+Sequence tracks are, again, somewhat like random tracks. The difference is, they're played in the order that they're placed in the scene tree, from top to bottom, with each sequential loop of the song. Item 1 will be played first, item 2 second, and so on. This can save on memory - if you have a song that's 3 minutes long, but the backing is a 4 bar loop, with a soloist over the top, you can simply loop the 4 bar loop, and chop up the solo to be played sequentially over the top of it. Or, hell, even randomise it - but the option is there.
+
+Rollovers are short transitional clips that can ease the jolt of looping. A cymbal roll, white noise ramp, snare rush - any build-up/roll-off clip that can bridge the gap between the end and start of your loop. Like concats, they should ideally be at least less than half the length of your song, preferably shorter. All you need do is identify the beat for crossover (counting from 0), and add it as the `crossover_beat` in the rollover node's properties. If you want more than one potential rollover clip, to be randomised between, ensure that all of the clips have the same crossover beat.
+
+You can, of course, have multiple instances of MDM in your game. You can have them interact using signals and connections - perhaps one instance is for shuffling between a set of songs, while the other is for one shot segments, or situational loops. Because, after all, you don't want to shuffle in a group of songs that contains transitional segments. A one-shot, such as a victory fanfare, playing between ambient loops, could be extremely jarring, and thus you need each instance of MDM to only contain the grouping of tracks that is appropriate for its play mode.
+
+MDM emits 5 signals situationally:
+
+`beat [beat_number]`
+`bar [bar_number]`
+`song_changed [new_song]`
+`end`
+`shuffle`
+
+These signals can be connected into your game for use in many ways. One way is to update certain values per beat or bar - or trigger, defer, or manipulate actions based on the value of beat, bar and song - which we'll get to later. Another way this can be used is to communicate between instances of MDM. Perhaps you have one-shots in MDM1, while MDM2 is full of shuffle tracks. MDM2 will likely be playing most of the time, with MDM1 only needing to play once in a while. To switch between MDM instances by the bar, insert in your game's code a yield($MDM, "bar"), followed by a stop() call on MDM2, and a quickplay() call on MDM1, after the triggering event, which could be a victory, a loss, or any number of things. Then, on MDM1's end signal, you can easily tell MDM2 to continue playing.
+
+As briefly mentioned earlier, the beat and bar signals can be useful in their own right, without being related to musical transitions. For some nice game detail, showing off musicality, you can trigger animations, light changes, or any number of things with these signals. As an example, here is the musical beat making the Godot icon dance, and the bar changing its colour. As you can see in the code, it is just a case of connecting the signal, and programming the desired effect in the function.
+
+This concludes the advanced MDM tutorial, and the planned tutorial series. If you have any questions at all about the Mixing Desk, feel free to email me at kyz1610@gmail.com, or message me on Discord at Irmoz#8586
