@@ -7,7 +7,8 @@ var transition_beats
 var loop
 var can_shuffle = true
 
-export(int) var play_mode = 1
+enum play_style {play_once, loop, shuffle, endless}
+export(play_style) var play_mode
 
 onready var songs = get_children()
 
@@ -48,7 +49,7 @@ func _ready():
 	add_child(shuff)
 	shuff.one_shot = true
 	#yeahh
-	shuff.connect("timeout", self, "_shuffle_songs")
+	shuff.connect("timeout", self, "shuffle_songs")
 	for song in songs:
 		for i in song.get_children():
 			if i.cont == "core":
@@ -81,7 +82,6 @@ func init_song(track):
 	if song.muted_tracks.size() > 0:
 		for i in song.muted_tracks:
 			mute(current_song_num, i)
-	root.get_child(0).connect("finished", self, "_song_finished")
 	tempo = song.tempo
 	bars = song.bars
 	loop = song.loop
@@ -102,14 +102,13 @@ func clear_song(track):
 	players.clear()
 	binds.clear()
 	params.clear()
-	print('clearing song "' + str(songs[track].name) + '"')
+#	print('clearing song "' + str(songs[track].name) + '"')
 	var song = songs[track]._get_core()
 	var inum = 0
 	for i in song.get_children():
 		var bus = AudioServer.get_bus_index("layer" + str(inum))
 		AudioServer.remove_bus(bus)
 		inum += 1
-	song.get_child(0).disconnect("finished", self, "_song_finished")
 		
 #updates place in song and detects beats/bars
 func _process(delta):
@@ -179,7 +178,6 @@ func play(song):
 		playing = true
 	for i in songs[song].get_children():
 		if i.cont == "core":
-#			print('playing song "' + str(songs[song].name) + '"')
 			for o in i.get_children():
 				o.play()
 		if i.cont == "ran":
@@ -206,7 +204,6 @@ func play(song):
 #play short random tracks in sequence in 'song'
 func _play_concat(concat):
 	var rantrk = _get_rantrk(concat)
-	print(rantrk.name)
 	rantrk.play()
 	rantrk.connect("finished", self, "concat_fin", [concat])
 
@@ -324,7 +321,6 @@ func bind_to_param(track,param):
 #called externally. used to input a normalised value and convert to volume_db for bindings.
 func feed_param(param, val):
 	params[param] = (val*60) - 60
-#	print('fade val: ' + str(params[param]))
 
 #remove selected track's bindings
 func unbind_track(track):
@@ -340,7 +336,6 @@ func _fade_binds():
 			var num = binds.find(i)
 			var target = current_song.get_child(i)
 			target.volume_db = params[num]
-#			print('vol: ' + str(target.volume_db))
 
 #change to the specified song at the next bar
 func queue_bar_transition(song):
@@ -376,10 +371,15 @@ func queue_sequence(sequence : Array, type : String, on_end : String):
 		"loop":
 			play_mode = 1
 		"shuffle":
+			play_mode = 2
+		"endless":
 			play_mode = 3
 
 #unload and stops the current song, then initialises and plays the new one
 func _change_song(song):
+	if song == current_song_num:
+		play(song)
+		return
 	song = _songname_to_int(song)
 	clear_song(old_song)
 	emit_signal("song_changed", [old_song, new_song])
@@ -389,7 +389,7 @@ func _change_song(song):
 			if songs[old_song].transition_beats >= 1:
 				for o in i.get_child_count():
 					fade_out(old_song, o)
-		if 'ran' or 'seq' or 'concat' in i.cont:
+		if (i.cont == 'ran') or (i.cont == 'seq') or (i.cont == 'concat'):
 			for o in i.get_children():
 				o.stop()
 	play(song)
@@ -399,9 +399,8 @@ func stop(song):
 	song = _songname_to_int(song)
 	if playing:
 		playing = false
-		for i in songs[song].get_children():
-			for o in i.get_children():
-				o.stop()
+		for i in songs[song]._get_core().get_children():
+			i.stop()
 	clear_song(current_song_num)
 
 #called every bar
@@ -411,13 +410,22 @@ func _bar():
 		if bar_tran:
 			if current_song_num != new_song:
 				_change_song(new_song)
+			else:
+				play(new_song)
+		if bar == bars and play_mode == 3:
+			var rantrk = randi() % songs.size()
+			queue_bar_transition(rantrk)
 		#at end of song
 		if bar >= bars + 1:
 			songs[current_song_num].concats.clear()
-			if play_mode == 1 and loop:
-				play(current_song_num)
-				repeats += 1
 			emit_signal("end", current_song_num)
+			match play_mode:
+				1:
+					if loop:
+						play(current_song_num)
+						repeats += 1
+				2:
+					$shuffle_timer.start(rand_range(2,4))
 		yield(get_tree().create_timer(0.5), "timeout")
 		can_bar = true
 	
@@ -426,6 +434,8 @@ func _beat():
 	if beat_tran:
 		if current_song_num != new_song:
 			_change_song(new_song)
+		else:
+			play(new_song)
 	if b2bar == beats_in_bar:
 		b2bar = 1
 		bar += 1
@@ -437,7 +447,6 @@ func _beat():
 		if beat == rollover_point:
 			if rollover.get_child_count() > 1:
 				var roll = rollover.get_child(randi() % rollover.get_child_count())
-				print(roll.name)
 				roll.play()
 			else:
 				rollover.get_child(0).play()
@@ -452,18 +461,10 @@ func _get_rantrk(song):
 		
 #choose new song randomly
 func shuffle_songs():
-	if playing:
-		stop(current_song)
-		clear_song(current_song_num)
 	randomize()
-	var song = randi() % (songs.size() - 1)
+	var song = randi() % (songs.size())
+	if song == current_song_num:
+		song = randi() % (songs.size())
 	emit_signal("shuffle", [current_song_num, song])
-	init_song(song)
-	play(song)
-	can_shuffle = true
-
-#called when the song finishes
-func _song_finished():
-	if play_mode == 2 and can_shuffle:
-		$shuffle_timer.start(rand_range(0,2))
-		can_shuffle = false
+	clear_song(current_song_num)
+	quickplay(song)
