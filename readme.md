@@ -46,7 +46,7 @@ Once your nodetree is setup, you're all ready to play your music in Godot.
 
 First, pick a play mode. It's a property of the MDM node.
 
-¬[Play modes](https://i.imgur.com/miGJT8f.png)
+![Play modes](https://i.imgur.com/miGJT8f.png)
 
 > Play Once: as the name suggests, it plays a song once and then stops
 
