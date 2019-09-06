@@ -42,9 +42,6 @@ func end():
 func _play():
 	var ransnd = _get_ransnd()
 	_iplay(ransnd)
-	func _play():
-	var ransnd = _get_ransnd()
-	_iplay(ransnd)
 		
 func _get_ransnd(ran=true):
 	var children = get_child_count()
