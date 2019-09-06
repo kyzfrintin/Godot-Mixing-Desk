@@ -40,7 +40,7 @@ func _randomise(sound):
 	var dpitch = dpitches[sound.get_index()]
 	var newvol = (dvol + _range(volume_range))
 	var newpitch = (dpitch + _range(pitch_range))
-	sound.volume_db = newvol
+	sound.unit_db = newvol
 	sound.pitch_scale = newpitch
 	
 func _range(item : float) -> float:

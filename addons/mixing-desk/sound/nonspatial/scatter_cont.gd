@@ -22,6 +22,9 @@ func _iplay(sound):
 func begin(voices=5, tmin=1, tmax=5, ran=true):
 	var timeroot = Node.new()
 	timeroot.name = 'timeroot' + str(get_index())
+	if rand_range(0,1) > 0.7:
+		_play()
+	add_child(timeroot)
 	for i in voices:
 		var timer = Timer.new()
 		timer.name = str('scat_timer_' + str(i))
@@ -30,20 +33,18 @@ func begin(voices=5, tmin=1, tmax=5, ran=true):
 		timer.connect("timeout", self, "_scatter_timeout", [timer, tmin, tmax])
 		
 func _scatter_timeout(timer, tmin, tmax):
-	_play(1)
+	_play()
 	timer.start(rand_range(tmin, tmax))
 	
 func end():
 	timeroot.queue_free()
 	
-func _play(num, ran=true):
-	if num > 1:
-		for i in range(0, num):
-			var ransnd = _get_ransnd()
-			_iplay(ransnd)
-	else:
-		var ransnd = _get_ransnd()
-		_iplay(ransnd)
+func _play():
+	var ransnd = _get_ransnd()
+	_iplay(ransnd)
+	func _play():
+	var ransnd = _get_ransnd()
+	_iplay(ransnd)
 		
 func _get_ransnd(ran=true):
 	var children = get_child_count()

@@ -21,7 +21,7 @@ func _ready():
 		dpitches.append(i.pitch_scale)
 		dlocs.append(i.translation)
 	if autostart:
-		begin()
+		begin(voices, min_time, max_time, randomise)
 
 func _iplay(sound):
 	var snd = sound.duplicate()
@@ -33,6 +33,9 @@ func _iplay(sound):
 func begin(voices=5, tmin=1, tmax=5, ran=true):
 	var timeroot = Node.new()
 	timeroot.name = 'timeroot' + str(get_index())
+	if rand_range(0,1) > 0.7:
+		_play()
+	add_child(timeroot)
 	for i in voices:
 		var timer = Timer.new()
 		timer.name = str('scat_timer_' + str(i))

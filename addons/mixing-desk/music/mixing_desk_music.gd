@@ -4,7 +4,6 @@ var tempo
 var bars
 var beats_in_bar
 var transition_beats
-var loop
 var can_shuffle = true
 
 enum play_style {play_once, loop, shuffle, endless}
@@ -84,7 +83,6 @@ func init_song(track):
 			mute(current_song_num, i)
 	tempo = song.tempo
 	bars = song.bars
-	loop = song.loop
 	beats_in_bar = song.beats_in_bar
 	beats_in_sec = 60000.0/tempo
 	transition_beats = (beats_in_sec*song.transition_beats)/1000
@@ -421,9 +419,8 @@ func _bar():
 			emit_signal("end", current_song_num)
 			match play_mode:
 				1:
-					if loop:
-						play(current_song_num)
-						repeats += 1
+					play(current_song_num)
+					repeats += 1
 				2:
 					$shuffle_timer.start(rand_range(2,4))
 		yield(get_tree().create_timer(0.5), "timeout")
