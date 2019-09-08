@@ -135,11 +135,15 @@ Scattering sounds is great for ambience. Load up all the sounds you can imagine 
 Achieved by calling the scatter function once in _ready()!
 
 To scatter a group of sounds, arrange them nested in a container like usual.
-At the point you want to begin scattering - if for ambience, this will likely be `ready()` - simply call:
+If you want the sounds to begin scattering as soon as the scene is loaded, check `Autoplay` in the scatter sound container, and edit the properties in the inspector to how you'd like it.
 
-	_begin(voices, tmin, tmax, ran)
+![Scatter sound properties](https://i.imgur.com/6d2P3aK.png)
+
+If you'd prefer to begin scattering at a different time, simply call:
+
+	_begin(voices, min_time, max_time, ran)
 	
-This will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'tmin' and 'tmax'.
+Either method will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'min_time' and 'max_time'.
 At each timer's timeout, it will randomly play a nested sound and begin again, its timeout once more randomised.
 This will continue indefinitely, randomised timers calling randomised sounds, until you call `end()`. This will delete all the timers.
 
