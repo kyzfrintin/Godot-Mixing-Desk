@@ -21,7 +21,7 @@ func _ready():
 	for i in get_children():
 		dvols.append(i.volume_db)
 		dpitches.append(i.pitch_scale)
-		dlocs.append(i.translation)
+		dlocs.append(i.position)
 	if autostart:
 		play()
 	root = Node2D.new()
@@ -65,7 +65,7 @@ func _scatter_timeout(timer, min_time, max_time):
 	
 func end():
 	scattering = false
-	timeroot.queue_free()
+	$timeroot.queue_free()
 	
 func _scatter():
 	var ransnd = _get_ransnd()
@@ -88,7 +88,7 @@ func _randomise(sound):
 	var newloc = (dloc + Vector2(_range(scatter_range), _range(scatter_range)))
 	sound.volume_db = newvol
 	sound.pitch_scale = newpitch
-	sound.translation = newloc
+	sound.position = newloc
 	
 func _range(item : float) -> float:
 	return rand_range(-item,item)

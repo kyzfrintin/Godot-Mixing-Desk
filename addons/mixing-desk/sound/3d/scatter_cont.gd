@@ -65,7 +65,7 @@ func _scatter_timeout(timer, min_time, max_time):
 	
 func end():
 	scattering = false
-	timeroot.queue_free()
+	$timeroot.queue_free()
 	
 func _scatter():
 	var ransnd = _get_ransnd()
