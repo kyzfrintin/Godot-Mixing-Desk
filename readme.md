@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.6.0
+# Godot Mixing Desk 2.6.1
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -113,7 +113,7 @@ MDS is slightly different to MDM - there are still container nodes, but no paren
 - `RandomSoundContainer` plays 1 or more sounds nested within, chosen at random, the number of which is specified in the `play(num)` call, or in the sound number export variable.
 - `ScatterSoundContainer` will 'scatter' multiple sounds at random times, by use of 1 or more timers. More on scattering below.
 - `ConcatSoundContainer` plays a random sequence of nested sounds, the number of which is specified in the call, or in the export variable.
-- `MultiSoundContainer` can contain Poly, Random or Concat containers, and plays all nested sound within.
+- `MultiSoundContainer` can contain any of the other containers, or AudioStreamPlayers, and will play all nodes nested within.
 
 And, similar to the AudioStreamPlayers found natively in Godot, there is a Node (no position), 2D, and 3D type for each container.
 To play a container, simply call `play()`! 
