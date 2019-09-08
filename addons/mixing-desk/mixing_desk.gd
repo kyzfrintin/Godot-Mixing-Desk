@@ -12,6 +12,7 @@ func _enter_tree():
 	add_custom_type("RolloverContainer", "Node", preload("music/containers/rollover_cont.gd"), preload("music/song_icon.png"))
 	
 	#sound nodes - nonspatial
+	add_custom_type("MultiSoundContainer", "Node", preload("sound/multi_sound.gd"), preload("sound/snd_icon.png"))
 	add_custom_type("PolySoundContainer", "Node", preload("sound/nonspatial/polysound.gd"), preload("sound/snd_icon.png"))
 	add_custom_type("RanSoundContainer", "Node", preload("sound/nonspatial/ran_cont.gd"), preload("sound/snd_icon.png"))
 	add_custom_type("ScatterSoundContainer", "Node", preload("sound/nonspatial/scatter_cont.gd"), preload("sound/snd_icon.png"))
@@ -40,6 +41,7 @@ func _exit_tree():
 	remove_custom_type("RolloverContainer")
 	
 	#sound nodes - nonspatial
+	remove_custom_type("MultiSoundContainer")
 	remove_custom_type("PolysoundContainer")
 	remove_custom_type("RanSoundContainer")
 	remove_custom_type("ScatterSoundContainer")

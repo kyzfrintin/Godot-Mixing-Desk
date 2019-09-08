@@ -3,7 +3,7 @@ extends Node
 var dvols = []
 var dpitches = []
 var timeroot
-
+var root
 export var volume_range = 1.0
 export var pitch_range = 1.0
 
@@ -11,17 +11,28 @@ func _ready():
 	for i in get_children():
 		dvols.append(i.volume_db)
 		dpitches.append(i.pitch_scale)
+	root = Node.new()
+	add_child(root)
+	root.name = "root"
 
 func _iplay(sound):
 	var snd = sound.duplicate()
-	sound.add_child(snd)
+	root.add_child(snd)
 	snd.play()
-	yield(snd, "finished")
+	#yield(snd, "finished")
+	snd.connect("finished", self, "_snd_finished", [snd])
+	#snd.queue_free()
+
+func _snd_finished(snd):
+	snd.disconnect("finished",self,"_snd_finished")
 	snd.queue_free()
 	
 func begin(voices=5, tmin=1, tmax=5, ran=true):
 	var timeroot = Node.new()
 	timeroot.name = 'timeroot' + str(get_index())
+	if rand_range(0,1) > 0.7:
+		_play()
+	add_child(timeroot)
 	if rand_range(0,1) > 0.7:
 		_play()
 	add_child(timeroot)
@@ -45,7 +56,7 @@ func _play():
 		
 func _get_ransnd(ran=true):
 	var children = get_child_count()
-	var chance = randi() % children
+	var chance = randi() % children - 2
 	var ransnd = get_child(chance)
 	if ran:
 		_randomise_pitch_and_vol(ransnd)

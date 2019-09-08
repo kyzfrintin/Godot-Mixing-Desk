@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.5.1
+# Godot Mixing Desk 2.6.0
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -110,17 +110,19 @@ The MDS is a fully-featured sound-playing plugin, allowing procedural playback o
 MDS is slightly different to MDM - there are still container nodes, but no parent Mixing Desk. There are 4 kinds of MDS container:
 
 - `PolySoundContainer` plays all sounds nested within.
-- `RandomSoundContainer` plays 1 or more sounds nested within, chosen at random, the number of which is specified in the `play(num)` call.
+- `RandomSoundContainer` plays 1 or more sounds nested within, chosen at random, the number of which is specified in the `play(num)` call, or in the sound number export variable.
 - `ScatterSoundContainer` will 'scatter' multiple sounds at random times, by use of 1 or more timers. More on scattering below.
-- `ConcatSoundContainer` plays a random sequence of nested sounds, the number of which is specified in the call.
+- `ConcatSoundContainer` plays a random sequence of nested sounds, the number of which is specified in the call, or in the export variable.
+- `MultiSoundContainer` can contain Poly, Random or Concat containers, and plays all nested sound within.
 
 And, similar to the AudioStreamPlayers found natively in Godot, there is a Node (no position), 2D, and 3D type for each container.
 To play a container, simply call `play()`! 
 
 ![A PolySoundContainer](https://i.imgur.com/xkDToeA.png)
 
-Also note that each container two export variables - volume range, and pitch range. This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
+Also note that each container has three export variables - volume range, and pitch range, and sound number (which we will come to in a moment). This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
 For instance, an audioplayer set to -10db at a pitch scale of 1, under a container with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
+The sound number is only relevant for random containers and concat containers. This is the number of random sounds to play in the `play()` call.
 
 ![Volume and pitch range](https://i.imgur.com/h3fhaZr.png)
 
