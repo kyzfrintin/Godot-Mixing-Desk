@@ -68,14 +68,11 @@ func init_song(track):
 	repeats= 0
 	for i in root.get_children():
 		var bus = AudioServer.get_bus_count()
-		AudioServer.add_bus(bus)
-		AudioServer.set_bus_name(bus,"layer" + str(inum))
-		AudioServer.set_bus_send(bus, "Music")
 		if song.fading_out:
 			i.get_child(0).stop(i)
 			song.fading_out = false
 		i.set_volume_db(default_vol)
-		i.set_bus("layer" + str(inum))
+		i.set_bus("Music")
 		players.append(i)
 		inum += 1
 	if song.muted_tracks.size() > 0:
@@ -315,6 +312,8 @@ func bind_to_param(track,param):
 	track = _trackname_to_int(current_song_num,track)
 	binds.append(track)
 	params.append(param)
+	feed_param(binds.find(param),param)
+	_fade_binds()
 
 #called externally. used to input a normalised value and convert to volume_db for bindings.
 func feed_param(param, val):

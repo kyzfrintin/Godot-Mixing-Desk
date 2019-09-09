@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.6.2
+# Godot Mixing Desk 2.6.3
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -139,9 +139,7 @@ If you want the sounds to begin scattering as soon as the scene is loaded, check
 
 ![Scatter sound properties](https://i.imgur.com/M8BCvRW.png)
 
-If you'd prefer to begin scattering at a different time, simply call:
-
-	_begin(voices, min_time, max_time, ran, timeout)
+If you'd prefer to begin scattering at a different time, simply call play(), like any other sound container!
 	
 Either method will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'min_time' and 'max_time'.
 At each timer's timeout, it will randomly play a nested sound and begin again, its timeout once more randomised.
