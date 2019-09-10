@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.6.4
+# Godot Mixing Desk 2.7.0
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.

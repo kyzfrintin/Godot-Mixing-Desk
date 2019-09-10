@@ -31,8 +31,6 @@ var old_song
 var new_song = 0
 var repeats = 0
 
-var binds = []
-var params = []
 var rollover = null
 var rollover_point : int = 0
 
@@ -95,8 +93,6 @@ func init_song(track):
 func clear_song(track):
 	track = _songname_to_int(track)
 	players.clear()
-	binds.clear()
-	params.clear()
 #	print('clearing song "' + str(songs[track].name) + '"')
 	var song = songs[track]._get_core()
 	var inum = 0
@@ -113,7 +109,6 @@ func _process(delta):
 	if playing:
 		time = current_song.get_child(0).get_playback_position()
 		beat = int(floor(((time/beats_in_sec) * 1000.0) + 1.0))
-		_fade_binds()
 		if beat != last_beat && (beat - 1) % int(bars * beats_in_bar) + 1 != last_beat:
 			_beat()
 		last_beat = beat
@@ -190,6 +185,15 @@ func play(song):
 			if repeats < 1:
 				_play_concat(i)
 			songs[song].concats.append(i)
+		if i.cont == "autofade":
+			i.process = true
+			match i.play_style:
+				0:
+					var chance = i.get_child_count()
+					i.get_child(chance).play()
+				1:
+					for o in i.get_children():
+						o.play()
 	
 	if bar_tran:
 		bar_tran = false
@@ -307,36 +311,6 @@ func toggle_fade(song, layer):
 	else:
 		fade_out(song, layer)
 
-#binds a track's volume to an object's parameter
-func bind_to_param(track,param):
-	track = _trackname_to_int(current_song_num,track)
-	binds.append(track)
-	params.append(param)
-	feed_param(binds.find(param),param)
-	_fade_binds()
-
-#called externally. used to input a normalised value and convert to volume_db for bindings.
-func feed_param(param, val):
-	params[param] = (val*60) - 60
-
-#remove selected track's bindings
-func unbind_track(track):
-	track = _songname_to_int(track)
-	var bind = binds.find(track,0)
-	binds.remove(bind)
-	params.remove(bind)
-
-#fade track volume to match bound parameter
-func _fade_binds():
-	if binds.size() > 0:
-		for i in binds:
-			var num = binds.find(i)
-			var target = current_song.get_child(i)
-			if round(target.volume_db) != round(params[num]):
-				print('fading')
-				var vol : float = lerp(target.volume_db, params[num], 0.2)
-				target.volume_db = vol
-
 #change to the specified song at the next bar
 func queue_bar_transition(song):
 	song = _songname_to_int(song)
@@ -389,9 +363,11 @@ func _change_song(song):
 			if songs[old_song].transition_beats >= 1:
 				for o in i.get_child_count():
 					fade_out(old_song, o)
-		if (i.cont == 'ran') or (i.cont == 'seq') or (i.cont == 'concat'):
+		if (i.cont == 'ran') or (i.cont == 'seq') or (i.cont == 'concat') or (i.cont == 'autofade'):
 			for o in i.get_children():
 				o.stop()
+			if i.cont == "autofade":
+				i.process = false
 	play(song)
 
 #stops playing
