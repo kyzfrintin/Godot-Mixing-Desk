@@ -38,6 +38,8 @@ Use a ConcatContainer for a group of short tracks, particularly percussion, that
 
 Rollovers are semi-transitions within a loop. Think of a crash roll, or snare rush, or any build-up/wind-down clip that may "roll over" from near the end of your clip, to after the start of the next loop. Place a RolloverContainer and add 1 or more rollover clips beneath it, and edit the `crossover beat` with the beat number of the clip that should line up with the first beat after looping. If the clip is 9 beats long, and the apex of its climb, or timing of its impact, is on beat 5 - the number is 5. Remember, count from 0, otherwise it will be thrown off.
 
+
+
 ![Example of rollover properties](https://i.imgur.com/NIsHJjk.png)
 
 ### Loading and hitting play
@@ -70,7 +72,7 @@ MDM can fade individual tracks in and out using the `fade_in(track)` or `fade_ou
 
 [Video Example](https://streamable.com/csjyi)
 
-To control an individual track's volume constantly based on a parameter, however, is only slightly more tricky. The `bind_to_param(track,param)` is called to initialise the process. Of course, 'track' refers to which musical layer to control. 'Param' is the initial value to initialise with. For example, you may use it to fade a layer in and out over distance. To keep this up, you will need to call the `feed_param(param,val)` function in a process function in your game's code. 'Param' is the index of the parameter you wish to modulate, which will be in the order which you set up the parameters. If it is the first, then it would be index 0. 'Val' is the value to send to MDM to affect the volume. This has to be a normalised value between 0 and 1 - 0 being silent, 1 being full volume. To achieve this, simply divide the current value by the max possible value - for example, the max range from an enemy at which to apply tension.
+To control an individual track's volume constantly based on a parameter, however, is only slightly more tricky. An AutofadeContainer will automatically change the volume of its child audio tracks to match the state of a selected variable. This can be done quite simply by dropping in the aforementioned container, and editing the properties to suit. Use `All` play style if you want all the tracks to play, `random` if you want a randomly selected single track to play. Check `toggle` if it is a simple true/false value for toggling the track on. `Target Node` is the node that contains the desired value, and `target property` is the variable you wish to use for volume modulation. Min/max range is self-explanatory - the range of values to use for modulation. Check invert if it is a value that should *increase* the volume as the value *decreases* - distance, for instance.
 
 ### **Horizontal Resequencing**
 MDM consistently keeps track of beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `queue_beat_transition(track)` or `queue_bar_transition(track)` functions.
