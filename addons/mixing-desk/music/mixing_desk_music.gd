@@ -332,7 +332,10 @@ func _fade_binds():
 		for i in binds:
 			var num = binds.find(i)
 			var target = current_song.get_child(i)
-			target.volume_db = params[num]
+			if round(target.volume_db) != round(params[num]):
+				print('fading')
+				var vol : float = lerp(target.volume_db, params[num], 0.2)
+				target.volume_db = vol
 
 #change to the specified song at the next bar
 func queue_bar_transition(song):
@@ -454,7 +457,7 @@ func _get_rantrk(song):
 	var chance = randi() % song.get_child_count()
 	var rantrk = song.get_child(chance)
 	return rantrk
-		
+
 #choose new song randomly
 func shuffle_songs():
 	randomize()
