@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.7.0
+# Godot Mixing Desk 2.7.1
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -72,7 +72,9 @@ MDM can fade individual tracks in and out using the `fade_in(track)` or `fade_ou
 
 [Video Example](https://streamable.com/csjyi)
 
-To control an individual track's volume constantly based on a parameter, however, is only slightly more tricky. An AutofadeContainer will automatically change the volume of its child audio tracks to match the state of a selected variable. This can be done quite simply by dropping in the aforementioned container, and editing the properties to suit. Use `All` play style if you want all the tracks to play, `random` if you want a randomly selected single track to play. Check `toggle` if it is a simple true/false value for toggling the track on. `Target Node` is the node that contains the desired value, and `target property` is the variable you wish to use for volume modulation. Min/max range is self-explanatory - the range of values to use for modulation. Check invert if it is a value that should *increase* the volume as the value *decreases* - distance, for instance.
+To control an individual track's volume constantly based on a parameter, however, is only slightly more tricky. An AutofadeContainer will automatically change the volume of its child audio tracks to match the state of a selected variable. This can be done quite simply by dropping in the aforementioned container, and editing the properties to suit. Use `All` play style if you want all the tracks to play, `random` if you want a randomly selected single track to play. Check `toggle` if it is a simple true/false value for toggling the track on. `target_node` is the node that contains the desired value, and `target_property` is the variable you wish to use for volume modulation. Min/max range is self-explanatory - the range of values to use for modulation. Check invert if it is a value that should *increase* the volume as the value *decreases* - distance, for instance. Lastly, the `track_speed` is the number by which to increment volume to match the property value. Higher values mean quicker tracking.
+
+![Example of AutofadeContainer properties](https://i.imgur.com/4bSK21O.png)
 
 ### **Horizontal Resequencing**
 MDM consistently keeps track of beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `queue_beat_transition(track)` or `queue_bar_transition(track)` functions.

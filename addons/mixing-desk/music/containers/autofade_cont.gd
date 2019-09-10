@@ -9,6 +9,7 @@ export(String) var target_property
 export(float) var min_range
 export(float) var max_range
 export(bool) var invert
+export(float) var track_speed
 
 var param
 var process
@@ -39,13 +40,19 @@ func _process(delta):
 				
 func _fade_to(target, vol):
 	var is_match
+	var above
 	if target.volume_db > vol:
 		var sum = vol - target.volume_db
 		is_match = sum > -1
+		above = false
 	else:
 		var sum = target.volume_db - vol
 		is_match = sum > -1
+		above = true
+	print(above)
 	if !is_match:
-		var new_vol : float = lerp(target.volume_db, vol, 0.2)
-#		print('fading to ' + str(new_vol))
-		target.volume_db = new_vol
+		print(target.volume_db)
+		if above:
+			target.volume_db += track_speed
+		else:
+			target.volume_db -= track_speed
