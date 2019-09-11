@@ -49,7 +49,6 @@ func _fade_to(target, vol):
 		var sum = target.volume_db - vol
 		is_match = sum > -1
 		above = true
-	print(above)
 	if !is_match:
 		print(target.volume_db)
 		if above:
