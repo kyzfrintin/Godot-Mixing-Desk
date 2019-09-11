@@ -1,5 +1,7 @@
 extends Node
 
+enum play_mode {additive, single, pad}
+export(play_mode) var play_style
 export(int) var layer_min
 export(int) var layer_max
 export(bool) var automate = false
@@ -27,12 +29,18 @@ func _process(delta):
 			num += max_range
 			num /= (max_range - min_range)
 		num *= (get_child_count())
-	var layer = clamp(floor(num), 0, get_child_count())
-	if pad != 0:
-		layer_min = layer - pad
-		layer_max = layer + pad
-	else:
-		layer_max = layer
+		var layer = clamp(floor(num), 0, get_child_count())
+		match play_style:
+			0:
+				layer_max = layer
+			1:
+				if layer != 0:
+					layer_max = layer
+					layer_min = layer - 1
+			2:
+				if pad != 0:
+					layer_min = layer - pad
+					layer_max = layer + pad
 	#below range
 	for i in range(0, layer_min):
 		_fade_to(get_child(i), -60)
