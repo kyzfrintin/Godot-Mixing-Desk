@@ -54,8 +54,8 @@ func _ready():
 					var tween = Tween.new()
 					tween.name = 'Tween'
 					o.add_child(tween)
-	autoplay = str(autoplay)
-	if autoplay != null:
+	if get_node(autoplay) != self:
+		autoplay = str(autoplay)
 		quickplay(autoplay)
 				
 #loads a song and gets ready to play
