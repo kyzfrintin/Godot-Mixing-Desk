@@ -13,7 +13,6 @@ onready var songs = get_children()
 
 const default_vol = 0
 
-var players = []
 var time = 0.0
 var beat = 1.0
 var last_beat = -1
@@ -71,7 +70,6 @@ func init_song(track):
 			song.fading_out = false
 		i.set_volume_db(default_vol)
 		i.set_bus("Music")
-		players.append(i)
 		inum += 1
 	if song.muted_tracks.size() > 0:
 		for i in song.muted_tracks:
@@ -89,18 +87,6 @@ func init_song(track):
 		else:
 			rollover = null
 
-#unloads a song
-func clear_song(track):
-	track = _songname_to_int(track)
-	players.clear()
-#	print('clearing song "' + str(songs[track].name) + '"')
-	var song = songs[track]._get_core()
-	var inum = 0
-	for i in song.get_children():
-		var bus = AudioServer.get_bus_index("layer" + str(inum))
-		AudioServer.remove_bus(bus)
-		inum += 1
-		
 #updates place in song and detects beats/bars
 func _process(delta):
 	if suppress_beat > 0:
@@ -186,7 +172,6 @@ func play(song):
 				_play_concat(i)
 			songs[song].concats.append(i)
 		if i.cont == "autofade":
-			i.process = true
 			match i.play_style:
 				0:
 					var chance = i.get_child_count()
@@ -194,6 +179,9 @@ func play(song):
 				1:
 					for o in i.get_children():
 						o.play()
+		if i.cont == "autolayer":
+			for o in i.get_children():
+				o.play()
 	
 	if bar_tran:
 		bar_tran = false
@@ -229,7 +217,7 @@ func fadeout_below_layer(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer, songs[song]._get_core().get_child_count()):
-        fade_in(song, i)
+		fade_in(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
     	    fade_out(song, i)
@@ -355,7 +343,6 @@ func _change_song(song):
 		play(song)
 		return
 	song = _songname_to_int(song)
-	clear_song(old_song)
 	emit_signal("song_changed", [old_song, new_song])
 	init_song(song)
 	for i in songs[old_song].get_children():
@@ -366,8 +353,6 @@ func _change_song(song):
 		if (i.cont == 'ran') or (i.cont == 'seq') or (i.cont == 'concat') or (i.cont == 'autofade'):
 			for o in i.get_children():
 				o.stop()
-			if i.cont == "autofade":
-				i.process = false
 	play(song)
 
 #stops playing
@@ -377,7 +362,6 @@ func stop(song):
 		playing = false
 		for i in songs[song]._get_core().get_children():
 			i.stop()
-	clear_song(current_song_num)
 
 #called every bar
 func _bar():
@@ -441,5 +425,4 @@ func shuffle_songs():
 	if song == current_song_num:
 		song = randi() % (songs.size())
 	emit_signal("shuffle", [current_song_num, song])
-	clear_song(current_song_num)
 	quickplay(song)

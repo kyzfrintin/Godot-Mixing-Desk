@@ -14,10 +14,11 @@ export(bool) var invert
 export(float) var track_speed
 
 var cont = "autolayer"
-var process = false
 
-func _process(delta):
-	if !process: return
+func _ready():
+	get_node("../..").connect("beat", self, "_update")
+
+func _update(beat):
 	var num : float
 	if automate:
 		num = get_node(target_node).get(target_property)

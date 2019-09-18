@@ -12,10 +12,11 @@ export(bool) var invert
 export(float) var track_speed
 
 var param
-var process
 
-func _process(delta):
-	if !process: return
+func _ready():
+	get_node("../..").connect("beat", self, "_update")
+
+func _update(beat):
 	param = get_node(target_node).get(target_property)
 	if !toggle:
 		var vol : float
@@ -50,7 +51,7 @@ func _fade_to(target, vol):
 		is_match = sum > -1
 		above = true
 	if !is_match:
-		print(target.volume_db)
+#		print(target.volume_db)
 		if above:
 			target.volume_db += track_speed
 		else:
