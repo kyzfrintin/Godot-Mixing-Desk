@@ -8,6 +8,7 @@ var can_shuffle = true
 
 enum play_style {play_once, loop, shuffle, endless}
 export(play_style) var play_mode
+export(NodePath) var autoplay
 
 onready var songs = get_children()
 
@@ -53,6 +54,9 @@ func _ready():
 					var tween = Tween.new()
 					tween.name = 'Tween'
 					o.add_child(tween)
+	autoplay = str(autoplay)
+	if autoplay != null:
+		quickplay(autoplay)
 				
 #loads a song and gets ready to play
 func init_song(track):
@@ -70,6 +74,7 @@ func init_song(track):
 			song.fading_out = false
 		i.set_volume_db(default_vol)
 		i.set_bus("Music")
+		players.append(i)
 		inum += 1
 	if song.muted_tracks.size() > 0:
 		for i in song.muted_tracks:
@@ -343,6 +348,7 @@ func _change_song(song):
 		play(song)
 		return
 	song = _songname_to_int(song)
+	clear_song(old_song)
 	emit_signal("song_changed", [old_song, new_song])
 	init_song(song)
 	for i in songs[old_song].get_children():
@@ -362,6 +368,7 @@ func stop(song):
 		playing = false
 		for i in songs[song]._get_core().get_children():
 			i.stop()
+	clear_song(current_song_num)
 
 #called every bar
 func _bar():
@@ -425,4 +432,5 @@ func shuffle_songs():
 	if song == current_song_num:
 		song = randi() % (songs.size())
 	emit_signal("shuffle", [current_song_num, song])
+	clear_song(current_song_num)
 	quickplay(song)

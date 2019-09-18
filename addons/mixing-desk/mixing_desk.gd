@@ -41,9 +41,7 @@ func _exit_tree():
 	remove_custom_type("SeqContainer")
 	remove_custom_type("ConcatContainer")
 	remove_custom_type("RolloverContainer")
-	remove_custom_type("AutoFadeContainer")
-	remove_custom_type("AutoLayerContainer")
-
+	remove_custom_type("AutofadeContainer")
 	
 	#sound nodes - nonspatial
 	remove_custom_type("MultiSoundContainer")
