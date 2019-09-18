@@ -79,7 +79,13 @@ To control an track's (or group of tracks') volume constantly based on a paramet
 The AutoLayerContainer works in a similar way, though treats its contained layers as a an arrangement in series of intensity. Use this container to fade in tracks according to an integer value, depending on the play mode you choose. With `additive`, you can fade in all tracks below a certain number, and fade them out above. With `single`, you can choose to fade in only a single one of the tracks. With `pad`, you can fade in tracks around the chosen number, by the pad number specified. That can either be done automatically, similarly to the AutoFadeContainer, by choosing a node and naming its property, and denoting the range of values to be expected.
 
 ### **Horizontal Resequencing**
-MDM consistently keeps track of beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. This is easily achieved using the `queue_beat_transition(track)` or `queue_bar_transition(track)` functions.
+
+MDM consistently keeps track of beats and bars, and output signals accordingly. Aligning with this functionality is the ability to switch between songs on the fly, either on the beat or on the bar. A code-less approach is achieved using the auto-transition properties in the Song node itself. You can bind a song to an in-game signal. Just enable auto-transiiton, point the song to the right node in your scene, enter the name of the signal, and finally choose a transition type - beat or bar. When the signal is emitted, MDM will transition to the song at the specified musical demarcation. In the screenshot below, the song will play on the next bar when the level node emits the `combat_begin` signal.
+
+![Auto-transition example](https://i.imgur.com/vJdWMGj.png)
+
+In your game's code, however, it is rather simple to queue a transition more specifically. Wherever you need to queue a transition in code, you can easily do this using the `queue_beat_transition(song)` or `queue_bar_transition(song)` functions. Just as in `play()`, the `song` argument is the name o r index of the song to transition to.
+
 You can also insert a clip in between the source and destination songs by calling `queue_sequence(sequence, type, on_end)`. The `sequence` variable is an array of two songnames; the first being the intervening clip, and the second being the destination song. `type` is a string, either "beat" or "bar", and denotes which signal to wait for before transitioning. Lastly, `on_end` is the play_mode of the final track, and can be either "play_once", "loop", or "shuffle".
 
 [Video Example](https://streamable.com/1cx2w)
