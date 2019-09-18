@@ -17,10 +17,10 @@ The MDM was designed to make adaptive,interactive music easier to design within 
 
 **Core Tracks**
 
-Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed under a "CoreContainer", which plays all the audio nodes under it by default. As for the other nodes, they are overlays, which we will come to shortly.
+Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed under a "CoreContainer", which plays all the audio nodes under it by default. As for the other nodes, they are overlays, and the blue-outlined nodes are AutoContainers, which we will come to shortly.
 
 ### You *must* fill in the properties in the song node!
-![Typical properties](https://i.imgur.com/vcSbd10.png)
+![Typical properties](https://i.imgur.com/tUt97MF.png)
 
 If you don't know the tempo of the music you're using, ask the composer. If you don't know the composer, check the website where you downloaded the music, or the readme in the sample pack you downloaded. If in doubt, try out BPM detection software such as here: https://www.conversion-tool.com/bpmdetector/?lang=en
 Similar process for bars and the other properties.
@@ -48,7 +48,7 @@ Once your nodetree is setup, you're all ready to play your music in Godot.
 
 First, pick a play mode. It's a property of the MDM node.
 
-![Play modes](https://i.imgur.com/qPhDtZb.png)
+![Play modes](https://i.imgur.com/3QqUAoT.png)
 
 > Play Once: as the name suggests, it plays a song once and then stops
 
@@ -60,7 +60,7 @@ First, pick a play mode. It's a property of the MDM node.
 
 	note: all vertical/horizontal adaptive features are available in all play modes!
 
-Now, in your scene, simply call `init_song(song)` to load the track ready to play.
+To have a song play first thing, you can easily set the `autoplay` export variable in MDM. Choose which song you'd like to autoplay, and you're ready to go. Otherwise, you can easily call it in code at the appropriate moment for your song to begin. To do this, simply call `init_song(song)` to load the track ready to play.
 Then, call `play(song)` - track in both cases being either the name of the song node you wish to play, or its index, counting from 0. Either will work, though names are easier for us humans to remember, while index numbers are easier to do maths on - it's your call. To quickly initialise and play in one, call `quickplay(song)`.
 
 ### Adapting the music
