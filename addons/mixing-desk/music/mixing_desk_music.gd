@@ -65,7 +65,6 @@ func init_song(track):
 	var root = song._get_core()
 	current_song_num = track
 	current_song = songs[track]._get_core()
-	var inum = 0
 	repeats= 0
 	for i in root.get_children():
 		var bus = AudioServer.get_bus_count()
@@ -74,8 +73,6 @@ func init_song(track):
 			song.fading_out = false
 		i.set_volume_db(default_vol)
 		i.set_bus("Music")
-		players.append(i)
-		inum += 1
 	if song.muted_tracks.size() > 0:
 		for i in song.muted_tracks:
 			mute(current_song_num, i)
@@ -344,21 +341,20 @@ func queue_sequence(sequence : Array, type : String, on_end : String):
 
 #unload and stops the current song, then initialises and plays the new one
 func _change_song(song):
-	if song == current_song_num:
-		play(song)
-		return
+	old_song = current_song_num
 	song = _songname_to_int(song)
-	clear_song(old_song)
-	emit_signal("song_changed", [old_song, new_song])
-	init_song(song)
-	for i in songs[old_song].get_children():
-		if i.cont == "core":
-			if songs[old_song].transition_beats >= 1:
-				for o in i.get_child_count():
-					fade_out(old_song, o)
-		if (i.cont == 'ran') or (i.cont == 'seq') or (i.cont == 'concat') or (i.cont == 'autofade'):
-			for o in i.get_children():
-				o.stop()
+	if song != current_song_num:
+		emit_signal("song_changed", [old_song, song])
+		init_song(song)
+		for i in songs[old_song].get_children():
+			if i.cont == "core":
+				if songs[old_song].transition_beats >= 1:
+					for o in i.get_child_count():
+						fade_out(old_song, o)
+			elif i.cont != "rollover":
+				for o in i.get_children():
+					if o.playing:
+						o.stop()
 	play(song)
 
 #stops playing
@@ -368,7 +364,6 @@ func stop(song):
 		playing = false
 		for i in songs[song]._get_core().get_children():
 			i.stop()
-	clear_song(current_song_num)
 
 #called every bar
 func _bar():
@@ -379,9 +374,6 @@ func _bar():
 				_change_song(new_song)
 			else:
 				play(new_song)
-		if bar == bars and play_mode == 3:
-			var rantrk = randi() % songs.size()
-			queue_bar_transition(rantrk)
 		#at end of song
 		if bar >= bars + 1:
 			songs[current_song_num].concats.clear()
@@ -392,6 +384,8 @@ func _bar():
 					repeats += 1
 				2:
 					$shuffle_timer.start(rand_range(2,4))
+				3:
+					shuffle_songs()
 		yield(get_tree().create_timer(0.5), "timeout")
 		can_bar = true
 	
@@ -430,7 +424,10 @@ func shuffle_songs():
 	randomize()
 	var song = randi() % (songs.size())
 	if song == current_song_num:
-		song = randi() % (songs.size())
+		if song == 0:
+			song += 1
+		elif song == songs.size() - 1:
+			song -= 1
 	emit_signal("shuffle", [current_song_num, song])
-	clear_song(current_song_num)
-	quickplay(song)
+	new_song = song
+	_change_song(song)
