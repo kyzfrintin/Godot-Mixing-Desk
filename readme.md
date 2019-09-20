@@ -9,7 +9,7 @@ That's where Mixing Desk comes in. A modular plugin, allowing for procedural aud
 
 # Mixing Desk: Music
 
-The MDM was designed to make adaptive,interactive music easier to design within Godot.
+The MDM was designed to make adaptive, interactive music easier to design within Godot. You contain songs within `song` nodes, each with their own individual properties and with any number of modular components. You can do anything between looping a single audio track, to creating a procedurally generated soundtrack completely dictated by the actions of your game, and with random elements spawned by chance.
 
 ### Setting up MDM
 
@@ -65,7 +65,7 @@ Then, call `play(song)` - track in both cases being either the name of the song 
 
 ### Adapting the music
 
-Based on implementations of interactive music in [FMOD](https://www.fmod.com/) and [Wwise](https://www.audiokinetic.com/products/wwise/),  the MDM neatly covers the two major branches of adaptive music outlined by [Michael Sweet](https://www.designingmusicnow.com/2016/06/13/advantages-disadvantages-common-interactive-music-techniques-used-video-games/).
+Based on implementations of interactive music in [FMOD](https://www.fmod.com/) and [Wwise](https://www.audiokinetic.com/products/wwise/),  the MDM neatly covers the two major branches of adaptive music outlined by [Michael Sweet](https://www.designingmusicnow.com/2016/06/13/advantages-disadvantages-common-interactive-music-techniques-used-video-games/). 
 
 ### **Vertical Remixing/Layering**
 MDM can fade individual tracks in and out using the `fade_in(track)` or `fade_out(track)` functions. It can also fade multiple tracks in/out at once with the `mute_below_layer(track)` and `mute_above_layer(track)` functions. Fading and muting both have toggles, too - `toggle_fade(song, track)` and `toggle_mute(song, track)`. To begin a track with a base layer only, the `start_alone(track, layer)` function can be used.
@@ -121,7 +121,7 @@ The MDS is a fully-featured sound-playing plugin, allowing procedural playback o
 
 ### Setting up MDS
 
-MDS is slightly different to MDM - there are still container nodes, but no parent Mixing Desk. There are 4 kinds of MDS container:
+MDS is slightly different to MDM - there are still container nodes, but no parent Mixing Desk. There are five kinds of MDS container:
 
 - `PolySoundContainer` plays all sounds nested within.
 - `RandomSoundContainer` plays 1 or more sounds nested within, chosen at random, the number of which is specified in the `play(num)` call, or in the sound number export variable.
