@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.8.3
+# Godot Mixing Desk 2.8.5
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -116,7 +116,7 @@ song_changed(old_song_num : int, new_song_num : int)
 
 # Mixing Desk: Sound
 
-The MDS is a fully-featured sound-playing plugin, allowing procedural playback of multiple layered and combined sounds through the gratuitous use of the _iplay(sound) function!
+The MDS is a fully-featured sound-playing plugin, allowing procedural playback of multiple layered and combined sounds through the use of handy containers that each treat their nested sounds in a different way. But there's no need to remember any special functions - just like AudioStreamPlayers, all MDS sound contianers can be started and stopped using `play()` and `stop()`. They can, of course, also be autostarted using the export variable `autoplay`.
 
 
 ### Setting up MDS
@@ -134,11 +134,11 @@ To play a container, simply call `play()`!
 
 ![A PolySoundContainer](https://i.imgur.com/xkDToeA.png)
 
-Also note that each container has three export variables - volume range, and pitch range, and sound number (which we will come to in a moment). This is the randomisation range of those respective properties, and is relative to the volume and pitch of the nested sounds.
+Also note that each container has four export variables - autoplay, volume and pitch ranges, and sound number (which we will come to in a moment). Autoplay, as the name suggests, plays the sound the moment it is added to the scene. This is useful for bullets and other items that should make a sound on appearance. The volume and pitch ranges are the randomisation ranges of those respective properties, and is relative to the volume and pitch of the nested sounds.
 For instance, an audioplayer set to -10db at a pitch scale of 1, under a container with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
 The sound number is only relevant for random containers and concat containers. This is the number of random sounds to play in the `play()` call.
 
-![Volume and pitch range](https://i.imgur.com/h3fhaZr.png)
+![Volume and pitch range](https://i.imgur.com/zLym5JH.png)
 
 ### Sound scattering
 
@@ -157,9 +157,9 @@ If you'd prefer to begin scattering at a different time, simply call play(), lik
 	
 Either method will generate 'voices' number of timers, the timeouts of each being determined randomly between the floats 'min_time' and 'max_time'.
 At each timer's timeout, it will randomly play a nested sound and begin again, its timeout once more randomised.
-This will continue indefinitely, randomised timers calling randomised sounds, until you call `end()`. This will delete all the timers.
+This will continue indefinitely, randomised timers calling randomised sounds, until you call `stop()`. This will delete all the timers.
 `Timeout` is the number of seconds after which to end scattering. Set to 0 if you want scattering to continue indefinitely.
 
 ---
 
-Feel free to contact me here on Github with any questions, or on Discord at Irmoz#8586.
+Feel free to contact me here on Github with any questions, or on Discord at irmoz#8586.

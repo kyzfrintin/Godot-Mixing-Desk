@@ -3,6 +3,7 @@ extends Node
 var dvols = []
 var dpitches = []
 var root
+export var autoplay : bool
 export var volume_range : float
 export var pitch_range : float
 export var sound_number : int
@@ -14,6 +15,12 @@ func _ready():
 	root = Node.new()
 	add_child(root)
 	root.name = "root"
+	if autoplay:
+		play()
+
+func stop():
+	for i in root.get_children():
+		i.queue_free()
 
 func _iplay(sound):
 	var snd = sound.duplicate()

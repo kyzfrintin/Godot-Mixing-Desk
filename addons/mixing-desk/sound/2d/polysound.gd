@@ -3,6 +3,7 @@ extends Node2D
 var dvols = []
 var dpitches = []
 var root
+export var autoplay : bool
 export var volume_range : float
 export var pitch_range : float
 
@@ -13,6 +14,12 @@ func _ready():
 	root = Node2D.new()
 	add_child(root)
 	root.name = "root"
+	if autoplay:
+		play()
+
+func stop():
+	for i in root.get_children():
+		i.queue_free()
 
 func _iplay(sound):
 	var snd = sound.duplicate()

@@ -19,11 +19,11 @@ func _ready():
 	for i in get_children():
 		dvols.append(i.volume_db)
 		dpitches.append(i.pitch_scale)
-	if autostart:
-		play()
 	root = Node.new()
 	add_child(root)
 	root.name = "root"
+	if autostart:
+		play()
 
 func _iplay(sound):
 	var snd = sound.duplicate()
@@ -42,23 +42,23 @@ func play():
 	var timeroot = Node.new()
 	timeroot.name = 'timeroot'
 	add_child(timeroot)
-	if rand_range(0,1) > 0.7:
-		_scatter()
 	for i in voices:
 		var timer = Timer.new()
 		timer.name = str('scat_timer_' + str(i))
 		timeroot.add_child(timer)
 		timer.start(rand_range(min_time,max_time))
 		timer.connect("timeout", self, "_scatter_timeout", [timer, min_time, max_time])
+	if rand_range(0,1) > 0.7:
+		_scatter()
 	if timeout != 0:
 		yield(get_tree().create_timer(timeout), "timeout")
-		end()
+		stop()
 		
 func _scatter_timeout(timer, min_time, max_time):
 	_scatter()
 	timer.start(rand_range(min_time, max_time))
 	
-func end():
+func stop():
 	scattering = false
 	$timeroot.queue_free()
 	
