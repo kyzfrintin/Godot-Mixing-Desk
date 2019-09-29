@@ -6,7 +6,7 @@ var dlocs = []
 var timeroot
 var root
 var scattering : bool = false
-
+export(NodePath) var spawn_node
 export var autostart : bool = true
 export var volume_range : float = 1.0
 export var pitch_range : float= 1.0
@@ -22,14 +22,22 @@ func _ready():
 		dvols.append(i.unit_db)
 		dpitches.append(i.pitch_scale)
 		dlocs.append(i.translation)
-	root = Spatial.new()
-	add_child(root)
-	root.name = "root"
+	if spawn_node:
+		if typeof(spawn_node) == TYPE_NODE_PATH:
+			root = get_node(spawn_node)
+		elif typeof(spawn_node) == TYPE_OBJECT:
+			root = spawn_node
+	else:
+		root = Node2D.new()
+		add_child(root)
+		root.name = "root"
 	if autostart:
 		play()
 	
 func _iplay(sound):
 	var snd = sound.duplicate()
+	if spawn_node:
+		snd.translation = global_transform.origin
 	root.add_child(snd)
 	snd.play()
 	snd.set_script(preload("res://addons/mixing-desk/sound/3d/spawn_sound.gd"))

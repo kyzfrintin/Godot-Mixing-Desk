@@ -20,7 +20,10 @@ func _ready():
 		dvols.append(i.volume_db)
 		dpitches.append(i.pitch_scale)
 	if spawn_node:
-		root = get_node(spawn_node)
+		if typeof(spawn_node) == TYPE_NODE_PATH:
+			root = get_node(spawn_node)
+		elif typeof(spawn_node) == TYPE_OBJECT:
+			root = spawn_node
 	else:
 		root = Node2D.new()
 		add_child(root)

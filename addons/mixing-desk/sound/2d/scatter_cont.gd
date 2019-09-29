@@ -23,7 +23,10 @@ func _ready():
 		dpitches.append(i.pitch_scale)
 		dlocs.append(i.position)
 	if spawn_node:
-		root = get_node(spawn_node)
+		if typeof(spawn_node) == TYPE_NODE_PATH:
+			root = get_node(spawn_node)
+		elif typeof(spawn_node) == TYPE_OBJECT:
+			root = spawn_node
 	else:
 		root = Node2D.new()
 		add_child(root)
@@ -33,6 +36,8 @@ func _ready():
 	
 func _iplay(sound):
 	var snd = sound.duplicate()
+	if spawn_node:
+		snd.position = global_position
 	root.add_child(snd)
 	snd.play()
 	snd.set_script(preload("res://addons/mixing-desk/sound/2d/spawn_sound.gd"))
