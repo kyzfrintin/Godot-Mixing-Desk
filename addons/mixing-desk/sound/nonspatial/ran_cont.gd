@@ -31,6 +31,7 @@ func _iplay(sound):
 	root.add_child(snd)
 	snd.play()
 	snd.set_script(preload("res://addons/mixing-desk/sound/nonspatial/spawn_sound.gd"))
+	snd.setup()
 
 func play(num=0, ran=true):
 	if num == 0:

@@ -1,6 +1,6 @@
 extends AudioStreamPlayer2D
 
-func _ready():
+func setup():
 	connect("finished", self, "finished")
 	
 func finished():

@@ -30,6 +30,7 @@ func _iplay(sound):
 	root.add_child(snd)
 	snd.play()
 	snd.set_script(preload("res://addons/mixing-desk/sound/3d/spawn_sound.gd"))
+	snd.setup()
 	
 func play(ran=true):
 	for i in get_children():

@@ -36,6 +36,7 @@ func _iplay(sound):
 	root.add_child(snd)
 	snd.play()
 	snd.set_script(preload("res://addons/mixing-desk/sound/2d/spawn_sound.gd"))
+	snd.setup()
 
 func play():
 	if scattering: 

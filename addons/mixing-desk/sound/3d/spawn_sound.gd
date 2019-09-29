@@ -1,6 +1,6 @@
 extends AudioStreamPlayer3D
 
-func _ready():
+func setup():
 	connect("finished", self, "finished")
 	
 func finished():
