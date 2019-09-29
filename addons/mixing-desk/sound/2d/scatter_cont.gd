@@ -6,7 +6,7 @@ var dlocs = []
 var timeroot
 var root
 var scattering : bool = false
-
+export(NodePath) var spawn_node
 export var autostart : bool = true
 export var volume_range : float = 1.0
 export var pitch_range : float= 1.0
@@ -22,9 +22,12 @@ func _ready():
 		dvols.append(i.volume_db)
 		dpitches.append(i.pitch_scale)
 		dlocs.append(i.position)
-	root = Node2D.new()
-	add_child(root)
-	root.name = "root"
+	if spawn_node:
+		root = get_node(spawn_node)
+	else:
+		root = Node2D.new()
+		add_child(root)
+		root.name = "root"
 	if autostart:
 		play()
 	
@@ -32,13 +35,7 @@ func _iplay(sound):
 	var snd = sound.duplicate()
 	root.add_child(snd)
 	snd.play()
-	#yield(snd, "finished")
-	snd.connect("finished", self, "_snd_finished", [snd])
-	#snd.queue_free()
-
-func _snd_finished(snd):
-	snd.disconnect("finished",self,"_snd_finished")
-	snd.queue_free()
+	snd.set_script(preload("res://addons/mixing-desk/sound/2d/spawn_sound.gd"))
 
 func play():
 	if scattering: 
@@ -73,7 +70,11 @@ func _scatter():
 		
 func _get_ransnd(ran=true):
 	var children = get_child_count()
-	var chance = randi() % (children - 2)
+	var chance
+	if spawn_node:
+		chance = randi() % (children - 1)
+	else:
+		chance = randi() % (children - 2)
 	var ransnd = get_child(chance)
 	if ran:
 		_randomise(ransnd)

@@ -26,13 +26,7 @@ func _iplay(sound):
 	var snd = sound.duplicate()
 	root.add_child(snd)
 	snd.play()
-	#yield(snd, "finished")
-	snd.connect("finished", self, "_snd_finished", [snd])
-	#snd.queue_free()
-
-func _snd_finished(snd):
-	snd.disconnect("finished",self,"_snd_finished")
-	snd.queue_free()
+	snd.set_script(preload("res://addons/mixing-desk/sound/3d/spawn_sound.gd"))
 	
 func play(num=0, ran=true):
 	if num == 0:

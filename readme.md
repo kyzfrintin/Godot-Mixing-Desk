@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.8.5
+# Godot Mixing Desk 2.9.0
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -117,6 +117,7 @@ song_changed(old_song_num : int, new_song_num : int)
 # Mixing Desk: Sound
 
 The MDS is a fully-featured sound-playing plugin, allowing procedural playback of multiple layered and combined sounds through the use of handy containers that each treat their nested sounds in a different way. But there's no need to remember any special functions - just like AudioStreamPlayers, all MDS sound contianers can be started and stopped using `play()` and `stop()`. They can, of course, also be autostarted using the export variable `autoplay`.
+Each SoundContainer has similar properties, but they behave in different ways. For example, all containers have the option to randomise pitch and volume, and will all play instanced (to alleviate sound-replay fatigue which is so common when repeating the same sound effect over and over). They also all have the option to spawn under a different node, using the `spawn-node` export. Their behaviour is, as noted, the key difference. Their functions are detailed below.
 
 
 ### Setting up MDS
@@ -138,7 +139,7 @@ Also note that each container has four export variables - autoplay, volume and p
 For instance, an audioplayer set to -10db at a pitch scale of 1, under a container with volume range set to 2 and pitch range set to 0.3, will range between the volumes of -12 and -8 db, and the pitch scales of -0.7 and 1.3.
 The sound number is only relevant for random containers and concat containers. This is the number of random sounds to play in the `play()` call.
 
-![Volume and pitch range](https://i.imgur.com/zLym5JH.png)
+![Volume and pitch range](https://i.imgur.com/7wHUErS.png)
 
 ### Sound scattering
 
@@ -151,7 +152,7 @@ Achieved by calling the scatter function once in _ready()!
 To scatter a group of sounds, arrange them nested in a container like usual.
 If you want the sounds to begin scattering as soon as the scene is loaded, check `Autoplay` in the scatter sound container, and edit the properties in the inspector to how you'd like it.
 
-![Scatter sound properties](https://i.imgur.com/M8BCvRW.png)
+![Scatter sound properties](https://i.imgur.com/WcLjKvA.png)
 
 If you'd prefer to begin scattering at a different time, simply call play(), like any other sound container!
 	

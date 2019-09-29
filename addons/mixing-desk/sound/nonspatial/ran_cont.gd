@@ -3,6 +3,7 @@ extends Node
 var dvols = []
 var dpitches = []
 var root
+export(NodePath) var spawn_node
 export var autoplay : bool
 export var volume_range : float
 export var pitch_range : float
@@ -12,9 +13,12 @@ func _ready():
 	for i in get_children():
 		dvols.append(i.volume_db)
 		dpitches.append(i.pitch_scale)
-	root = Node.new()
-	add_child(root)
-	root.name = "root"
+	if spawn_node:
+		root = get_node(spawn_node)
+	else:
+		root = Node2D.new()
+		add_child(root)
+		root.name = "root"
 	if autoplay:
 		play()
 
@@ -26,13 +30,7 @@ func _iplay(sound):
 	var snd = sound.duplicate()
 	root.add_child(snd)
 	snd.play()
-	#yield(snd, "finished")
-	snd.connect("finished", self, "_snd_finished", [snd])
-	#snd.queue_free()
-
-func _snd_finished(snd):
-	snd.disconnect("finished",self,"_snd_finished")
-	snd.queue_free()
+	snd.set_script(preload("res://addons/mixing-desk/sound/nonspatial/spawn_sound.gd"))
 
 func play(num=0, ran=true):
 	if num == 0:
