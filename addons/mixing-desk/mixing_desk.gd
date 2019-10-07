@@ -21,7 +21,7 @@ func _enter_tree():
 	add_custom_type("ConcatSoundContainer", "Node", preload("sound/nonspatial/concat_cont.gd"), preload("sound/snd_icon.png"))
 
 	#sound nodes - 2d
-	add_custom_type("MultiSoundContainer2D", "Node2D", preload("sound/2D/multi_sound.gd"), preload("sound/snd_icon.png"))
+	add_custom_type("MultiSoundContainer2D", "Node2D", preload("sound/2d/multi_sound.gd"), preload("sound/snd_icon.png"))
 	add_custom_type("PolySoundContainer2D", "Node2D", preload("sound/2d/polysound.gd"), preload("sound/snd_icon.png"))
 	add_custom_type("RanSoundContainer2D", "Node2D", preload("sound/2d/ran_cont.gd"), preload("sound/snd_icon.png"))
 	add_custom_type("ScatterSoundContainer2D", "Node2D", preload("sound/2d/scatter_cont.gd"), preload("sound/snd_icon.png"))

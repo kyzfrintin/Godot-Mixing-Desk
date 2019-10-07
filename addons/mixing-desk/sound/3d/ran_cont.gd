@@ -51,7 +51,7 @@ func play(num=0, ran=true):
 		
 func _get_ransnd(ran=true):
 	var children = get_child_count()
-	var chance = randi() % children - 1
+	var chance = randi() % (children - 1)
 	var ransnd = get_child(chance)
 	if ran:
 		_randomise(ransnd)
