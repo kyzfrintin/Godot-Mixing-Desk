@@ -52,7 +52,7 @@ First, pick a play mode. It's a property of the MDM node.
 
 > Play Once: as the name suggests, it plays a song once and then stops
 
-> Loop: loop a song until you decide to stop or transition to another
+> Loop: loop the currently playing song until you decide to stop or transition to another, which will then loop
 
 > Shuffle: play a song, silence for a moment, then play another
 
@@ -76,7 +76,7 @@ To control an track's (or group of tracks') volume constantly based on a paramet
 
 ![Example of AutoFadeContainer properties](https://i.imgur.com/khsoOCF.png)
 
-The AutoLayerContainer works in a similar way, though treats its contained layers as a an arrangement in series of intensity. Use this container to fade in tracks according to an integer value, depending on the play mode you choose. With `additive`, you can fade in all tracks below a certain number, and fade them out above. With `single`, you can choose to fade in only a single one of the tracks. With `pad`, you can fade in tracks around the chosen number, by the pad number specified. That can either be done automatically, similarly to the AutoFadeContainer, by choosing a node and naming its property, and denoting the range of values to be expected.
+The AutoLayerContainer works in a similar way, though treats its contained layers as a an arrangement in series of intensity. Use this container to fade in tracks according to an integer value, depending on the play mode you choose. With `additive`, you can fade in all tracks below a certain number, and fade them out above. With `single`, you can choose to fade in only a single one of the tracks. With `pad`, you can fade in tracks around the chosen number, by the pad number specified. That can either be done automatically, similarly to the AutoFadeContainer, by choosing a node and naming its property, and denoting the range of values to be expected, or manually through code, by changing the values of `layer_min` and `layer_max`.
 
 ![AutoLayerContainer properties](https://i.imgur.com/ATowf9n.png)
 
