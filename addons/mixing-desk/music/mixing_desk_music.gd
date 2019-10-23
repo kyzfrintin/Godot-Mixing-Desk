@@ -383,6 +383,9 @@ func _bar():
 			emit_signal("end", current_song_num)
 			match play_mode:
 				1:
+					bar = 1
+					beat = 1
+					last_beat = -1
 					repeats += 1
 				2:
 					$shuffle_timer.start(rand_range(2,4))
