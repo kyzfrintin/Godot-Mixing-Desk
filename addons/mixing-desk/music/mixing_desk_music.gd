@@ -157,6 +157,8 @@ func play(song):
 	for i in songs[song].get_children():
 		if i.cont == "core":
 			for o in i.get_children():
+				if play_mode == 1:
+					o.stream.loop = true
 				o.play()
 		if i.cont == "ran":
 			randomize()
@@ -222,7 +224,7 @@ func fadeout_below_layer(song, layer):
 		fade_in(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-    	    fade_out(song, i)
+			fade_out(song, i)
 		if layer == 1:
 			fade_out(song, 0)
 			
@@ -231,10 +233,10 @@ func solo(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
 	for i in range(layer + 1, songs[song]._get_core().get_child_count()):
-        fade_out(song, i)
+		fade_out(song, i)
 	if layer > 0:
 		for i in range(0, layer - 1):
-    	    fade_out(song, i)
+			fade_out(song, i)
 		if layer == 1:
 			fade_out(song, 0)
 
@@ -364,6 +366,7 @@ func stop(song):
 		playing = false
 		for i in songs[song]._get_core().get_children():
 			i.stop()
+			i.stream.loop = false
 
 #called every bar
 func _bar():
@@ -380,7 +383,6 @@ func _bar():
 			emit_signal("end", current_song_num)
 			match play_mode:
 				1:
-					play(current_song_num)
 					repeats += 1
 				2:
 					$shuffle_timer.start(rand_range(2,4))
