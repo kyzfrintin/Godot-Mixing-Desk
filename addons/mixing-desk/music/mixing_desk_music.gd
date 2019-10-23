@@ -160,6 +160,10 @@ func play(song):
 				if play_mode == 1:
 					o.stream.loop = true
 				o.play()
+	_play_overlays(song)
+
+func _play_overlays(song):
+	for i in songs[song].get_children():
 		if i.cont == "ran":
 			randomize()
 			var rantrk = _get_rantrk(i)
@@ -387,6 +391,7 @@ func _bar():
 					beat = 1
 					last_beat = -1
 					repeats += 1
+					_play_overlays(current_song_num)
 				2:
 					$shuffle_timer.start(rand_range(2,4))
 				3:
