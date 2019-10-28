@@ -45,7 +45,9 @@ func _ready():
 	shuff.name = 'shuffle_timer'
 	add_child(shuff)
 	shuff.one_shot = true
-	#yeahh
+	var root = Node.new()
+	root.name = "root"
+	add_child(root)
 	shuff.connect("timeout", self, "shuffle_songs")
 	for song in songs:
 		for i in song.get_children():
@@ -100,8 +102,6 @@ func _process(delta):
 		if beat != last_beat && (beat - 1) % int(bars * beats_in_bar) + 1 != last_beat:
 			_beat()
 		last_beat = beat
-			
-			
 
 #start a song with only one track playing
 func start_alone(song, layer):
@@ -114,14 +114,23 @@ func start_alone(song, layer):
 	current_song.get_child(layer).set_volume_db(default_vol)
 	play(song)
 
-#play in isolation - to be integrated
+#play in isolation
 func _iplay(track):
-	track = _songname_to_int(track)
 	var trk = track.duplicate()
-	track.add_child(trk)
+	get_node("root").add_child(trk)
 	trk.play()
-	yield(trk, "finished")
+	trk.connect("finished", self, "_overlay_finished", [trk])
+
+#kills overlays when finished
+func _overlay_finished(trk):
 	trk.queue_free()
+
+#stop and kill all overlays
+func stop_overlays():
+	for i in get_node("root").get_children():
+		i.stop()
+		i.queue_free()
+
 	
 #initialise and play the song immediately
 func quickplay(song):
@@ -130,8 +139,7 @@ func quickplay(song):
 
 #check if ref is string or int
 func _songname_to_int(ref):
-	if typeof(ref) == TYPE_STRING:
-		return get_node(ref).get_index()
+	if typeof(ref) == TYPE_STRING:		return get_node(ref).get_index()
 	else:
 		return ref
 
@@ -168,13 +176,13 @@ func _play_overlays(song):
 			randomize()
 			var rantrk = _get_rantrk(i)
 			if rand_range(0,1) <= i.random_chance:
-				rantrk.play()
+				_iplay(rantrk)
 		if i.cont == "seq":
 			var seqtrk = repeats
 			if repeats == i.get_child_count():
 				seqtrk = 0
 				repeats = 0
-			i.get_child(seqtrk).play()
+			_iplay(.get_child(seqtrk))
 		if i.cont == "concat":
 			if repeats < 1:
 				_play_concat(i)
@@ -371,6 +379,7 @@ func stop(song):
 		for i in songs[song]._get_core().get_children():
 			i.stop()
 			i.stream.loop = false
+		stop_overlays()
 
 #called every bar
 func _bar():
