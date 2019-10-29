@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.10.0
+# Godot Mixing Desk 2.10.1
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -54,11 +54,13 @@ First, pick a play mode. It's a property of the MDM node.
 
 > Play Once: as the name suggests, it plays a song once and then stops
 
-> Loop: loop the currently playing song until you decide to stop or transition to another, which will then loop
+> Loop One: loop the currently playing song until you decide to stop or transition to another, which will then loop
 
 > Shuffle: play a song, silence for a moment, then play another
 
-> Endless: seamlessly shuffle between all songs in the MDM instance
+> Endless Shuffle: seamlessly shuffle between all songs in the MDM instance
+
+> Endless Loop: Loop the whole playlist without gaps in between
 
 	note: all vertical/horizontal adaptive features are available in all play modes!
 

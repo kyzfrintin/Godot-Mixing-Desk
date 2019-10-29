@@ -6,7 +6,7 @@ var beats_in_bar
 var transition_beats
 var can_shuffle = true
 
-enum play_style {play_once, loop, shuffle, endless}
+enum play_style {play_once, loop_one, shuffle, endless_shuffle, endless_loop}
 export(play_style) var play_mode
 export(NodePath) var autoplay
 
@@ -169,6 +169,7 @@ func play(song):
 					o.stream.loop = true
 				o.play()
 	_play_overlays(song)
+	print('playing ' + get_child(current_song_num).name)
 
 func _play_overlays(song):
 	for i in songs[song].get_children():
@@ -405,6 +406,11 @@ func _bar():
 					$shuffle_timer.start(rand_range(2,4))
 				3:
 					shuffle_songs()
+				4:
+					if current_song_num == (get_child_count() - 3):
+						_change_song(0)
+					else:
+						_change_song(current_song_num + 1)
 		yield(get_tree().create_timer(0.5), "timeout")
 		can_bar = true
 	
