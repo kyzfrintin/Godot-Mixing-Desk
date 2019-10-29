@@ -118,6 +118,9 @@ func start_alone(song, layer):
 func _iplay(track):
 	var trk = track.duplicate()
 	get_node("root").add_child(trk)
+	var twe = Tween.new()
+	twe.name = "Tween"
+	trk.add_child(twe)
 	trk.play()
 	trk.connect("finished", self, "_overlay_finished", [trk])
 
@@ -125,13 +128,17 @@ func _iplay(track):
 func _overlay_finished(trk):
 	trk.queue_free()
 
-#stop and kill all overlays
-func stop_overlays():
+#fade out overlays
+func _stop_overlays():
 	for i in get_node("root").get_children():
-		i.stop()
-		i.queue_free()
+		i.get_node("Tween").interpolate_property(i, "volume_db", i.volume_db, -60, transition_beats, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		i.get_node("Tween").start()
+		i.get_node("Tween").connect("tween_completed", self, "_overlay_faded", [i])
 
-	
+#delete overlay on fade
+func _overlay_faded(object, key, overlay):
+	overlay.queue_free()
+		
 #initialise and play the song immediately
 func quickplay(song):
 	init_song(song)
@@ -369,6 +376,7 @@ func _change_song(song):
 				for o in i.get_children():
 					if o.playing:
 						o.stop()
+	_stop_overlays()
 	play(song)
 
 #stops playing
@@ -379,7 +387,7 @@ func stop(song):
 		for i in songs[song]._get_core().get_children():
 			i.stop()
 			i.stream.loop = false
-		stop_overlays()
+		_stop_overlays()
 
 #called every bar
 func _bar():
