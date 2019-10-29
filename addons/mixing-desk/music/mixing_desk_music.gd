@@ -169,7 +169,6 @@ func play(song):
 					o.stream.loop = true
 				o.play()
 	_play_overlays(song)
-	print('playing ' + get_child(current_song_num).name)
 
 func _play_overlays(song):
 	for i in songs[song].get_children():
