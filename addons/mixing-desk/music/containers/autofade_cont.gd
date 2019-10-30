@@ -9,7 +9,7 @@ export(String) var target_property
 export(float) var min_range
 export(float) var max_range
 export(bool) var invert
-export(float) var track_speed
+export(float, 0.0, 1.0) var track_speed
 
 var param
 
@@ -38,21 +38,26 @@ func _update(beat):
 		else:
 			for i in get_children():
 				_fade_to(i, -60)
-				
+
+func _check_equal(a : float,b : float):
+	var aa = floor(a)
+	var bb = floor(b)
+	return (aa == bb)
+
 func _fade_to(target, vol):
 	var is_match
-	var above
-	if target.volume_db > vol:
-		var sum = vol - target.volume_db
-		is_match = sum > -1
-		above = false
-	else:
-		var sum = target.volume_db - vol
-		is_match = sum > -1
-		above = true
+	var cvol = target.volume_db
+	var sum = vol - cvol
+	is_match = _check_equal(cvol,vol)
 	if !is_match:
-#		print(target.volume_db)
-		if above:
-			target.volume_db += track_speed
-		else:
-			target.volume_db -= track_speed
+		cvol = lerp(cvol,vol,track_speed)
+		print('fading to ' + str(vol) + ', currently ' + str(cvol))
+		target.volume_db = cvol
+	else:
+		if vol == 0:
+			if cvol != vol:
+				target.volume_db = 0
+				print('full volume')
+		elif cvol != vol:
+			print('faded - now at ' + str(vol))
+			target.volume_db = vol

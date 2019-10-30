@@ -69,12 +69,10 @@ func init_song(track):
 	current_song = songs[track]._get_core()
 	repeats= 0
 	for i in root.get_children():
-		var bus = AudioServer.get_bus_count()
 		if song.fading_out:
 			i.get_child(0).stop(i)
 			song.fading_out = false
 		i.set_volume_db(default_vol)
-		i.set_bus("Music")
 	if song.muted_tracks.size() > 0:
 		for i in song.muted_tracks:
 			mute(current_song_num, i)

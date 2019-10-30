@@ -15,11 +15,15 @@ export(bool) var auto_transition
 export(NodePath) var auto_signal_node
 export(String) var auto_signal
 export(String, "Beat", "Bar") var transition_type
+export(String) var bus = "Music"
 
 func _ready():
 	if auto_transition:
 		var sig_node = get_node(auto_signal_node)
 		sig_node.connect(auto_signal, self, "_transition", [transition_type])
+	for i in get_children():
+		for o in i.get_children():
+			o.set_bus(bus)
 
 func _transition(type):
 	match type:
