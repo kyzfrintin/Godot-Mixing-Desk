@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.10.3
+# Godot Mixing Desk 2.10.4
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -22,10 +22,12 @@ The MDM was designed to make adaptive, interactive music easier to design within
 Create a MixingDeskMusic, and place Song nodes for each of your songs, similar to in the image above. As you can see, the main song files are placed under a "CoreContainer", which plays all the audio nodes under it by default. As for the other nodes, they are overlays, and the blue-outlined nodes are AutoContainers, which we will come to shortly.
 
 ### You *must* fill in the properties in the song node!
-![Typical properties](https://i.imgur.com/tUt97MF.png)
+![Typical properties](https://i.imgur.com/PgILEsy.png)
 
 If you don't know the tempo of the music you're using, ask the composer. If you don't know the composer, check the website where you downloaded the music, or the readme in the sample pack you downloaded. If in doubt, try out BPM detection software such as here: https://www.conversion-tool.com/bpmdetector/?lang=en
-Similar process for bars and the other properties.
+Similar process for bars and beats in bar - but beats in bar will, most of the time, be 4, sometimes 3.
+Transition beats is how long the fadeout should be when changing song or stopping. And auto-transition is useful for a codeless approach to adaptive music: point the song at the node which contains the desired signal, name the signal, and the song will be queued for transition when the signal is emitted. Transition type can be either beat or bar.
+Each song can also be routed to its own bus, if desired. By default, it is set to "Music". Mixing Desk will automatically create the named bus if it does not exist, upon running the game, and route the audio to that bus. If this bus isn't "Music", the bus will be routed to "Music".
 
 
 ### Overlays (random, sequence, concat and rollover tracks)

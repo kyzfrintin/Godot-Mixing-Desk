@@ -59,6 +59,9 @@ func _ready():
 	if get_node(autoplay) != self:
 		autoplay = str(autoplay)
 		quickplay(autoplay)
+	if AudioServer.get_bus_index("Music") == -1:
+		AudioServer.add_bus(AudioServer.bus_count)
+		AudioServer.set_bus_name(AudioServer.bus_count - 1, "Music")
 				
 #loads a song and gets ready to play
 func init_song(track):

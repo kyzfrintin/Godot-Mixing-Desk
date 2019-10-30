@@ -21,6 +21,12 @@ func _ready():
 	if auto_transition:
 		var sig_node = get_node(auto_signal_node)
 		sig_node.connect(auto_signal, self, "_transition", [transition_type])
+	var busnum = AudioServer.get_bus_index(bus)
+	if busnum == -1:
+		var new_bus = AudioServer.add_bus(AudioServer.bus_count)
+		AudioServer.set_bus_name(AudioServer.bus_count - 1, bus)
+		if bus != "Music":
+			AudioServer.set_bus_send(AudioServer.get_bus_index(bus),"Music")
 	for i in get_children():
 		for o in i.get_children():
 			o.set_bus(bus)

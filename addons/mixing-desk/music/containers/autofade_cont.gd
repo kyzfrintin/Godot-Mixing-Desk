@@ -51,7 +51,6 @@ func _fade_to(target, vol):
 	is_match = _check_equal(cvol,vol)
 	if !is_match:
 		cvol = lerp(cvol,vol,track_speed)
-		print('fading to ' + str(vol) + ', currently ' + str(cvol))
 		target.volume_db = cvol
 	else:
 		if vol == 0:
@@ -59,5 +58,4 @@ func _fade_to(target, vol):
 				target.volume_db = 0
 				print('full volume')
 		elif cvol != vol:
-			print('faded - now at ' + str(vol))
 			target.volume_db = vol
