@@ -70,6 +70,7 @@ func init_song(track):
 	var root = song._get_core()
 	current_song_num = track
 	current_song = songs[track]._get_core()
+	current_song.get_child(0).connect("finished", self, "_core_finished")
 	repeats= 0
 	for i in root.get_children():
 		if song.fading_out:
@@ -173,8 +174,6 @@ func play(song):
 	for i in songs[song].get_children():
 		if i.cont == "core":
 			for o in i.get_children():
-				if play_mode == 1:
-					o.stream.loop = true
 				o.play()
 	_play_overlays(song)
 
@@ -365,6 +364,7 @@ func queue_sequence(sequence : Array, type : String, on_end : String):
 func _change_song(song):
 	old_song = current_song_num
 	song = _songname_to_int(song)
+	current_song.get_child(0).disconnect("finished", self, "_core_finished")
 	if song != current_song_num:
 		emit_signal("song_changed", [old_song, song])
 		init_song(song)
@@ -383,12 +383,36 @@ func _change_song(song):
 #stops playing
 func stop(song):
 	song = _songname_to_int(song)
+	current_song.get_child(0).disconnect("finished", self, "_core_finished")
 	if playing:
 		playing = false
 		for i in songs[song]._get_core().get_children():
 			i.stop()
 			i.stream.loop = false
 		_stop_overlays()
+
+#when the core loop finishes its loop
+func _core_finished():
+	songs[current_song_num].concats.clear()
+	emit_signal("end", current_song_num)
+	match play_mode:
+		1:
+			bar = 1
+			beat = 1
+			last_beat = -1
+			repeats += 1
+			play(current_song_num)
+		2:
+			$shuffle_timer.start(rand_range(2,4))
+		3:
+			shuffle_songs()
+		4:
+			var new_song
+			if current_song_num == (get_child_count() - 3):
+				new_song = 0
+			else:
+				new_song = current_song_num + 1
+			_change_song(new_song)
 
 #called every bar
 func _bar():
@@ -399,26 +423,6 @@ func _bar():
 				_change_song(new_song)
 			else:
 				play(new_song)
-		#at end of song
-		if bar >= bars + 1:
-			songs[current_song_num].concats.clear()
-			emit_signal("end", current_song_num)
-			match play_mode:
-				1:
-					bar = 1
-					beat = 1
-					last_beat = -1
-					repeats += 1
-					_play_overlays(current_song_num)
-				2:
-					$shuffle_timer.start(rand_range(2,4))
-				3:
-					shuffle_songs()
-				4:
-					if current_song_num == (get_child_count() - 3):
-						_change_song(0)
-					else:
-						_change_song(current_song_num + 1)
 		yield(get_tree().create_timer(0.5), "timeout")
 		can_bar = true
 	

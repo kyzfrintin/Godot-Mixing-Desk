@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.10.4
+# Godot Mixing Desk 2.10.5
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -11,7 +11,7 @@ That's where Mixing Desk comes in. A modular plugin, allowing for procedural aud
 
 The MDM was designed to make adaptive, interactive music easier to design within Godot. You contain songs within `song` nodes, each with their own individual properties and with any number of modular components. You can do anything between looping a single audio track, to creating a procedurally generated soundtrack completely dictated by the actions of your game, and with random elements spawned by chance.
 
->NOTE: MDM will currently only support OGG Vorbis audio. Also, ensure you import the files with `loop` disabled, whether or not you wish to loop these files. MDM will detect your play_mode and set them to loop, or not loop, accordingly. Additionbally, for looping tracks, double-check that they are exact loops, otherwise it will not work as desired.
+>NOTE: Ensure that your audio files, whether they are intended to loop or not, are imported with `loop` disabled. MDM handles looping in its own way, and auto-looping tracks will mess things up!
 
 ### Setting up MDM
 

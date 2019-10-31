@@ -52,19 +52,23 @@ func _update(beat):
 	for i in range(layer_max + 1, get_child_count()):
 		_fade_to(get_child(i), -60)
 
+func _check_equal(a : float,b : float):
+	var aa = floor(a)
+	var bb = floor(b)
+	return (aa == bb)
+
 func _fade_to(target, vol):
 	var is_match
-	var above
-	if target.volume_db > vol:
-		var sum = vol - target.volume_db
-		is_match = sum > -1
-		above = false
-	else:
-		var sum = target.volume_db - vol
-		is_match = sum > -1
-		above = true
+	var cvol = target.volume_db
+	var sum = vol - cvol
+	is_match = _check_equal(cvol,vol)
 	if !is_match:
-		if above:
-			target.volume_db += track_speed
-		else:
-			target.volume_db -= track_speed
+		cvol = lerp(cvol,vol,track_speed)
+		target.volume_db = cvol
+	else:
+		if vol == 0:
+			if cvol != vol:
+				target.volume_db = 0
+				print('full volume')
+		elif cvol != vol:
+			target.volume_db = vol
