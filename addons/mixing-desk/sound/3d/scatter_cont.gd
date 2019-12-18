@@ -3,6 +3,7 @@ extends Spatial
 var dvols = []
 var dpitches = []
 var dlocs = []
+var soundlist = []
 var timeroot
 var root
 var scattering : bool = false
@@ -22,6 +23,7 @@ func _ready():
 		dvols.append(i.unit_db)
 		dpitches.append(i.pitch_scale)
 		dlocs.append(i.translation)
+		soundlist.append(i)
 	if spawn_node:
 		if typeof(spawn_node) == TYPE_NODE_PATH:
 			root = get_node(spawn_node)
@@ -75,9 +77,8 @@ func _scatter():
 	_iplay(ransnd)
 		
 func _get_ransnd(ran=true):
-	var children = get_child_count()
-	var chance = randi() % (children - 2)
-	var ransnd = get_child(chance)
+	var chance = randi() % soundlist.size()
+	var ransnd = soundlist[chance]
 	if ran:
 		_randomise(ransnd)
 	return ransnd

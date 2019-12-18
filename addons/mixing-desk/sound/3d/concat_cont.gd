@@ -2,6 +2,7 @@ extends Spatial
 
 var dvols = []
 var dpitches = []
+var soundlist = []
 var root
 export(NodePath) var spawn_node
 export var autoplay : bool
@@ -13,6 +14,7 @@ func _ready():
 	for i in get_children():
 		dvols.append(i.unit_db)
 		dpitches.append(i.pitch_scale)
+		soundlist.append(i)
 	if spawn_node:
 		if typeof(spawn_node) == TYPE_NODE_PATH:
 			root = get_node(spawn_node)
@@ -48,9 +50,8 @@ func play(num=0):
 		yield(ransnd, "finished")
 		
 func _get_ransnd(ran=true):
-	var children = get_child_count()
-	var chance = randi() % children - 1
-	var ransnd = get_child(chance)
+	var chance = randi() % soundlist.size()
+	var ransnd = soundlist[chance]
 	if ran:
 		_randomise_pitch_and_vol(ransnd)
 	return ransnd

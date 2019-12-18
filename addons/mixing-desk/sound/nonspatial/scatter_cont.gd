@@ -2,6 +2,7 @@ extends Node
 
 var dvols = []
 var dpitches = []
+var soundlist = []
 var timeroot
 var root
 var scattering : bool = false
@@ -19,6 +20,7 @@ func _ready():
 	for i in get_children():
 		dvols.append(i.volume_db)
 		dpitches.append(i.pitch_scale)
+		soundlist.append(i)
 	if spawn_node:
 		if typeof(spawn_node) == TYPE_NODE_PATH:
 			root = get_node(spawn_node)
@@ -70,9 +72,8 @@ func _scatter():
 	_iplay(ransnd)
 		
 func _get_ransnd():
-	var children = get_child_count()
-	var chance = randi() % (children - 2)
-	var ransnd = get_child(chance)
+	var chance = randi() % soundlist.size()
+	var ransnd = soundlist[chance]
 	if randomise:
 		_randomise_pitch_and_vol(ransnd)
 	return ransnd
