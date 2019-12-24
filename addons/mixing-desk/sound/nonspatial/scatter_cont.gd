@@ -60,7 +60,7 @@ func play():
 		timeouttimer.wait_time= timeout
 		add_child(timeouttimer)
 		timeouttimer.start()
-		timeouttimer.connect("timeout", "stop")
+		timeouttimer.connect("timeout", self, "stop")
 		
 func _scatter_timeout(timer, min_time, max_time):
 	_scatter()
