@@ -1,6 +1,7 @@
 extends Node
 
 enum play_mode {additive, single, pad}
+var num = 0.0
 export(play_mode) var play_style
 export(int) var layer_min
 export(int) var layer_max
@@ -19,12 +20,11 @@ func _ready():
 	get_node("../..").connect("beat", self, "_update")
 
 func _update(beat):
-	var num : float
 	if automate:
 		num = get_node(target_node).get(target_property)
 		if !invert:
-			num = num + min_range
-			num /= max_range
+			num -= min_range
+			num /= (max_range - min_range)
 		else:
 			num *= -1
 			num += max_range
