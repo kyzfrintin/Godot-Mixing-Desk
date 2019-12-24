@@ -61,8 +61,11 @@ func play():
 	if rand_range(0,1) > 0.7:
 		_scatter()
 	if timeout != 0:
-		yield(get_tree().create_timer(timeout), "timeout")
-		stop()
+		var timeouttimer = Timer.new()
+		timeouttimer.wait_time= timeout
+		add_child(timeouttimer)
+		timeouttimer.start()
+		timeouttimer.connect("timeout", "stop")
 		
 func _scatter_timeout(timer, min_time, max_time):
 	_scatter()
@@ -70,7 +73,8 @@ func _scatter_timeout(timer, min_time, max_time):
 	
 func stop():
 	scattering = false
-	$timeroot.queue_free()
+	if has_node("timeroot"):
+		$timeroot.queue_free()
 	
 func _scatter():
 	var ransnd = _get_ransnd()
