@@ -20,6 +20,7 @@ func _ready():
 	get_node("../..").connect("beat", self, "_update")
 
 func _update(beat):
+	var layer = layer_max
 	if automate:
 		num = get_node(target_node).get(target_property)
 		if !invert:
@@ -30,27 +31,31 @@ func _update(beat):
 			num += max_range
 			num /= (max_range - min_range)
 		num *= (get_child_count())
-		var layer = clamp(floor(num), 0, get_child_count())
-		match play_style:
-			0:
+		layer = clamp(floor(num), 0, get_child_count())
+	match play_style:
+		0:
+			layer_min = -1
+			layer_max = layer
+		1:
+			if layer != 0:
 				layer_max = layer
-			1:
-				if layer != 0:
-					layer_max = layer
-					layer_min = layer - 1
-			2:
-				if pad != 0:
-					layer_min = layer - pad
-					layer_max = layer + pad
-	#below range
-	for i in range(0, layer_min):
-		_fade_to(get_child(i), -60)
-	#range
-	for i in range(layer_min, layer_max):
-		_fade_to(get_child(i), 0)
-	#above range
-	for i in range(layer_max + 1, get_child_count()):
-		_fade_to(get_child(i), -60)
+				layer_min = layer - 1
+		2:
+			if pad != 0:
+				layer_min = layer - pad
+				layer_max = layer + pad
+	_fade_layers()
+
+func _fade_layers():
+	for i in get_children():
+		var child = (i.get_index())
+		if child != -1:
+			if child <= layer_min:
+				_fade_to(i,-60)
+			if (child > layer_min) and (child <= layer_max):
+				_fade_to(i,0)
+			if child > layer_max:
+				_fade_to(i,-60)
 
 func _check_equal(a : float,b : float):
 	var aa = floor(a)

@@ -58,7 +58,8 @@ func _ready():
 					o.add_child(tween)
 	if get_node(autoplay) != self:
 		autoplay = str(autoplay)
-		quickplay(autoplay)
+		if !playing:
+			quickplay(autoplay)
 	if AudioServer.get_bus_index("Music") == -1:
 		AudioServer.add_bus(AudioServer.bus_count)
 		AudioServer.set_bus_name(AudioServer.bus_count - 1, "Music")
