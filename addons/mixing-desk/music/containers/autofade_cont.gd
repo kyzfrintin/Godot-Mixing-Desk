@@ -12,12 +12,14 @@ export(bool) var invert
 export(float, 0.0, 1.0) var track_speed
 
 var param
+var target
 
 func _ready():
 	get_node("../..").connect("beat", self, "_update")
+	target = get_node(target_node)
 
 func _update(beat):
-	param = get_node(target_node).get(target_property)
+	param = target.get(target_property)
 	if !toggle:
 		var vol : float
 		if !invert:
@@ -39,16 +41,11 @@ func _update(beat):
 			for i in get_children():
 				_fade_to(i, -60)
 
-func _check_equal(a : float,b : float):
-	var aa = floor(a)
-	var bb = floor(b)
-	return (aa == bb)
-
 func _fade_to(target, vol):
 	var is_match
 	var cvol = target.volume_db
 	var sum = vol - cvol
-	is_match = _check_equal(cvol,vol)
+	is_match = abs(cvol-vol) < .01
 	if !is_match:
 		cvol = lerp(cvol,vol,track_speed)
 		target.volume_db = cvol
