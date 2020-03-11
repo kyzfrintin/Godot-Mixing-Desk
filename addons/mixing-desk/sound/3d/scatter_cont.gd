@@ -30,7 +30,7 @@ func _ready():
 		elif typeof(spawn_node) == TYPE_OBJECT:
 			root = spawn_node
 	else:
-		root = Node2D.new()
+		root = Spatial.new()
 		add_child(root)
 		root.name = "root"
 	if autostart:
@@ -39,7 +39,7 @@ func _ready():
 func _iplay(sound):
 	var snd = sound.duplicate()
 	if spawn_node:
-		snd.translation = global_transform.origin
+		snd.global_transform.origin = global_transform.origin
 	root.add_child(snd)
 	snd.play()
 	snd.set_script(preload("res://addons/mixing-desk/sound/3d/spawn_sound.gd"))
@@ -49,7 +49,7 @@ func play():
 	if scattering:
 		return
 	scattering = true
-	var timeroot = Node.new()
+	timeroot = Node.new()
 	timeroot.name = 'timeroot' + str(get_index())
 	add_child(timeroot)
 	for i in voices:
@@ -63,6 +63,7 @@ func play():
 	if timeout != 0:
 		var timeouttimer = Timer.new()
 		timeouttimer.wait_time= timeout
+		timeouttimer.name = "Timeout"
 		add_child(timeouttimer)
 		timeouttimer.start()
 		timeouttimer.connect("timeout", self, "stop")
@@ -72,9 +73,9 @@ func _scatter_timeout(timer, min_time, max_time):
 	timer.start(rand_range(min_time, max_time))
 	
 func stop():
-	scattering = false
-	if has_node("timeroot"):
-		$timeroot.queue_free()
+	if scattering:
+		scattering = false
+		timeroot.call_deferred("queue_free")
 	
 func _scatter():
 	var ransnd = _get_ransnd()

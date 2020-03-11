@@ -10,8 +10,8 @@ func _ready():
 		play()
 
 func play():
-    for i in get_children():
-        i.play()
+	for i in get_children():
+		i.play()
 
 func stop():
 	for i in get_children():

@@ -10,15 +10,16 @@ export var pitch_range : float
 
 func _ready():
 	for i in get_children():
-		dvols.append(i.unit_db)
-		dpitches.append(i.pitch_scale)
+		if i.get("unit_db") != null:
+			dvols.append(i.unit_db)
+			dpitches.append(i.pitch_scale)
 	if spawn_node:
 		if typeof(spawn_node) == TYPE_NODE_PATH:
 			root = get_node(spawn_node)
 		elif typeof(spawn_node) == TYPE_OBJECT:
 			root = spawn_node
 	else:
-		root = Node2D.new()
+		root = Spatial.new()
 		add_child(root)
 		root.name = "root"
 	if autoplay:
@@ -30,9 +31,9 @@ func stop():
 	
 func _iplay(sound):
 	var snd = sound.duplicate()
-	if spawn_node:
-		snd.translation = global_transform.origin
 	root.add_child(snd)
+	if spawn_node:
+		snd.global_transform.origin = global_transform.origin
 	snd.play()
 	snd.set_script(preload("res://addons/mixing-desk/sound/3d/spawn_sound.gd"))
 	snd.setup()
