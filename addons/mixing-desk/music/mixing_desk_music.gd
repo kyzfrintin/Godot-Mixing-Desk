@@ -8,7 +8,8 @@ var can_shuffle = true
 
 enum play_style {play_once, loop_one, shuffle, endless_shuffle, endless_loop}
 export(play_style) var play_mode
-export(NodePath) var autoplay
+export(bool) var autoplay = false
+export(NodePath) var autoplay_song
 
 onready var songs = get_children()
 
@@ -56,10 +57,9 @@ func _ready():
 					var tween = Tween.new()
 					tween.name = 'Tween'
 					o.add_child(tween)
-	if get_node(autoplay) != self:
-		autoplay = str(autoplay)
+	if autoplay:
 		if !playing:
-			quickplay(autoplay)
+			quickplay(str(autoplay_song))
 	if AudioServer.get_bus_index("Music") == -1:
 		AudioServer.add_bus(AudioServer.bus_count)
 		AudioServer.set_bus_name(AudioServer.bus_count - 1, "Music")
