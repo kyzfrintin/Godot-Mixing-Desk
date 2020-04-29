@@ -198,7 +198,7 @@ func _play_overlays(song):
 		if i.cont == "autofade":
 			match i.play_style:
 				0:
-					var chance = i.get_child_count()
+					var chance = randi() % i.get_child_count()
 					i.get_child(chance).play()
 				1:
 					for o in i.get_children():

@@ -23,14 +23,14 @@ func _update(beat):
 	if !toggle:
 		var vol : float
 		if !invert:
-			vol = param + min_range
-			vol /= max_range
+			vol -= min_range
+			vol /= (max_range - min_range)
 		else:
 			vol = param * -1
 			vol += max_range
 			vol /= (max_range - min_range)
-		vol = (vol*60) - 60
-		vol = clamp(vol,-60,0)
+		vol = (vol*65) - 65
+		vol = clamp(vol,-65,0)
 		for i in get_children():
 			_fade_to(i, vol)
 	else:
@@ -39,20 +39,24 @@ func _update(beat):
 				_fade_to(i, 0)
 		else:
 			for i in get_children():
-				_fade_to(i, -60)
+				_fade_to(i, -65)
+
+func is_equal(a : float,b : float):
+	return int(a) == int(b)
 
 func _fade_to(target, vol):
 	var is_match
 	var cvol = target.volume_db
-	var sum = vol - cvol
-	is_match = abs(cvol-vol) < .01
+	is_match = is_equal(cvol,vol)
 	if !is_match:
-		cvol = lerp(cvol,vol,track_speed)
+		if cvol > vol:
+			cvol -= 1
+		else:
+			cvol = lerp(cvol,vol,track_speed)
 		target.volume_db = cvol
 	else:
 		if vol == 0:
 			if cvol != vol:
 				target.volume_db = 0
-				print('full volume')
 		elif cvol != vol:
 			target.volume_db = vol
