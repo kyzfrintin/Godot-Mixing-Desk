@@ -1,4 +1,4 @@
-# Godot Mixing Desk 2.12.0
+# Godot Mixing Desk 2.12.1
 
 The Mixing Desk is a complete audio solution for the Godot Engine.
 Godot already ships with some awesome audio capabilities - namely the bus system which is so intuitive for audio.
@@ -29,12 +29,17 @@ Similar process for bars and beats in bar - but beats in bar will, most of the t
 Transition beats is how long the fadeout should be when changing song or stopping. And auto-transition is useful for a codeless approach to adaptive music: point the song at the node which contains the desired signal, name the signal, and the song will be queued for transition when the signal is emitted. Transition type can be either beat or bar.
 Each song can also be routed to its own bus, if desired. By default, it is set to "Music". Mixing Desk will automatically create the named bus if it does not exist, upon running the game, and route the audio to that bus. If this bus isn't "Music", the bus will be routed to "Music".
 
+>TIP: All full-length tracks (I.E. all tracks but Concat and Rollover) may extend over the bar length of the track, allowing reverb/delay/decay tails. This ensures smoother looping with instruments that sound out after the play is finished.
+
+![This export is fine!](https://i.imgur.com/ASV8hpl.png)
+
+>TIP cont'd: Such as the above image - you may export your tracks beyond the actual length, to allow instruments to decay. Mixing Desk copies the tracks and plays, then deletes the copies. No awkward repeat cutoffs!
 
 ### Overlays (random, sequence, concat and rollover tracks)
 
 ![Example of an overlay setup](https://i.imgur.com/Uccm4IV.png)
 
-Overlays are set up in much the same way as core tracks. Create a RandomContainer, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of the RandomContainer's `random_chance` - if the random number generated each time song plays is lower than the value of `random_chance`, the track plays.
+Overlays are set up in much the same way as core tracks. Create a RandomContainer, and a random track from that folder will be played on each repeat, with a slight chance of no track playing depending on the value of the RandomContainer's `random_chance` - if the random number generated (between 0 and 1) each time song plays is lower than the value of `random_chance`, the track plays.
 	
 SeqContainers play the audio nodes in order, from top to bottom, and over again. Overlays must be equal length or shorter than the corresponding core tracks.
 

@@ -15,6 +15,7 @@ onready var songs = get_children()
 
 const default_vol = 0
 
+var ref_track : Object
 var time = 0.0
 var beat = 1.0
 var last_beat = -1
@@ -71,7 +72,6 @@ func init_song(track):
 	var root = song._get_core()
 	current_song_num = track
 	current_song = songs[track]._get_core()
-	current_song.get_child(0).connect("finished", self, "_core_finished")
 	repeats= 0
 	for i in root.get_children():
 		if song.fading_out:
@@ -100,7 +100,7 @@ func _process(delta):
 		suppress_beat -= delta
 		return
 	if playing:
-		time = current_song.get_child(0).get_playback_position()
+		time = ref_track.get_playback_position()
 		beat = int(floor(((time/beats_in_sec) * 1000.0) + 1.0))
 		if beat != last_beat && (beat - 1) % int(bars * beats_in_bar) + 1 != last_beat:
 			_beat()
@@ -125,10 +125,11 @@ func _iplay(track):
 	twe.name = "Tween"
 	trk.add_child(twe)
 	trk.play()
-	trk.connect("finished", self, "_overlay_finished", [trk])
+	trk.connect("finished", self, "_track_finished", [trk])
+	return trk
 
 #kills overlays when finished
-func _overlay_finished(trk):
+func _track_finished(trk):
 	trk.queue_free()
 
 #fade out overlays
@@ -167,15 +168,20 @@ func play(song):
 	beat = 1
 	last_beat = -1
 	suppress_beat = beats_in_sec / 1000.0 * 0.5
+	for i in songs[song].get_children():
+		if i.cont == "core":
+			var first = true
+			for o in i.get_children():
+				var newtrk = _iplay(o)
+				if first:
+					ref_track = newtrk
+					first = false
 	if !playing:
 		last_beat = 1
 		emit_signal("bar", bar)
 		_beat()
 		playing = true
-	for i in songs[song].get_children():
-		if i.cont == "core":
-			for o in i.get_children():
-				o.play()
+					
 	_play_overlays(song)
 
 func _play_overlays(song):
@@ -365,7 +371,6 @@ func queue_sequence(sequence : Array, type : String, on_end : String):
 func _change_song(song):
 	old_song = current_song_num
 	song = _songname_to_int(song)
-	current_song.get_child(0).disconnect("finished", self, "_core_finished")
 	if song != current_song_num:
 		emit_signal("song_changed", [old_song, song])
 		init_song(song)
@@ -384,7 +389,6 @@ func _change_song(song):
 #stops playing
 func stop(song):
 	song = _songname_to_int(song)
-	current_song.get_child(0).disconnect("finished", self, "_core_finished")
 	if playing:
 		playing = false
 		for i in songs[song]._get_core().get_children():
@@ -448,6 +452,8 @@ func _beat():
 				roll.play()
 			else:
 				rollover.get_child(0).play()
+	if beat == (bars*beats_in_bar + 1):
+		_core_finished()
 	emit_signal("beat", (beat - 1) % int(bars * beats_in_bar) + 1)
 
 #gets a random track from a song and returns it
