@@ -7,8 +7,8 @@ export(int) var layer_max
 export(bool) var automate = false
 export(NodePath) var target_node
 export(String) var target_property
-export(float) var min_range
-export(float) var max_range
+export(float) var min_range = 0.0
+export(float) var max_range = 1.0
 export(int) var pad = 0
 export(bool) var invert
 export(float) var track_speed
@@ -43,11 +43,10 @@ func _set_layers_values():
 		num = target.get(target_property)
 		if !invert:
 			num -= min_range
-			num /= (max_range - min_range)
 		else:
 			num *= -1
 			num += max_range
-			num /= (max_range - min_range)
+		num /= abs(max_range - min_range)
 		num *= (get_child_count())
 		t_layer = clamp(floor(num), -1, get_child_count() - 1)
 	match play_style:

@@ -6,8 +6,8 @@ export(play_type) var play_style
 export var toggle : bool = false
 export(NodePath) var target_node
 export(String) var target_property
-export(float) var min_range
-export(float) var max_range
+export(float) var min_range = 0.0
+export(float) var max_range = 1.0
 export(bool) var invert
 export(float, 0.0, 1.0) var track_speed
 
@@ -46,14 +46,13 @@ func init_volume():
 				i.volume_db = -65
 
 func _get_range_vol() -> float:
-	var vol: float
+	var vol: float = param
 	if !invert:
 		vol -= min_range
-		vol /= (max_range - min_range)
 	else:
-		vol = param * -1
+		vol *= -1
 		vol += max_range
-		vol /= (max_range - min_range)
+	vol /= abs(max_range - min_range)
 	vol = (vol*65) - 65
 	vol = clamp(vol,-65,0)
 
