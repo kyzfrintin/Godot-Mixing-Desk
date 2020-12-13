@@ -17,29 +17,47 @@ var target
 func _ready():
 	get_node("../..").connect("beat", self, "_update")
 	target = get_node(target_node)
+	init_volume()
 
 func _update(beat):
 	param = target.get(target_property)
 	if !toggle:
-		var vol : float
-		if !invert:
-			vol -= min_range
-			vol /= (max_range - min_range)
-		else:
-			vol = param * -1
-			vol += max_range
-			vol /= (max_range - min_range)
-		vol = (vol*65) - 65
-		vol = clamp(vol,-65,0)
+		var vol := _get_range_vol()
 		for i in get_children():
 			_fade_to(i, vol)
 	else:
-		if param:
-			for i in get_children():
+		for i in get_children():
+			if param:
 				_fade_to(i, 0)
-		else:
-			for i in get_children():
+			else:
 				_fade_to(i, -65)
+				
+func init_volume():
+	param = target.get(target_property)
+	if !toggle:
+		var vol := _get_range_vol()
+		for i in get_children():
+			i.volume_db = vol
+	else:
+		for i in get_children():
+			if param:
+				i.volume_db = 0
+			else:
+				i.volume_db = -65
+
+func _get_range_vol() -> float:
+	var vol: float
+	if !invert:
+		vol -= min_range
+		vol /= (max_range - min_range)
+	else:
+		vol = param * -1
+		vol += max_range
+		vol /= (max_range - min_range)
+	vol = (vol*65) - 65
+	vol = clamp(vol,-65,0)
+
+	return vol
 
 func is_equal(a : float,b : float):
 	return int(a) == int(b)
