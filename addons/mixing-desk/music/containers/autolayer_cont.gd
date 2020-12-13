@@ -67,7 +67,10 @@ func _fade_to(target, vol):
 	is_match = is_equal(vol,cvol)
 	if !is_match:
 		if cvol > vol:
-			cvol -= 1
+			if track_speed < 1.0:
+				cvol -= 1.5 / (1.0 - track_speed )
+			else:
+				cvol = vol
 		else:
 			cvol = lerp(cvol,vol,track_speed)
 		target.volume_db = cvol
