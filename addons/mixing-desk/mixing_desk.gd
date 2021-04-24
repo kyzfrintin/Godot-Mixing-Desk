@@ -5,6 +5,7 @@ func _enter_tree():
 	#music nodes
 	add_custom_type("MixingDeskMusic", "Node", preload("music/mixing_desk_music.gd"), preload("music/mdm_icon.png"))
 	add_custom_type("Song", "Node", preload("music/song.gd"), preload("music/icons/song_icon.png"))
+	add_custom_type("TransitionSong", "Node", preload("music/transition_song.gd"), preload("music/icons/tran_song_icon.png"))
 	add_custom_type("CoreContainer", "Node", preload("music/containers/core_cont.gd"), preload("music/icons/core_cont_icon.png"))
 	add_custom_type("RandomContainer", "Node", preload("music/containers/ran_cont.gd"), preload("music/icons/ran_cont_icon.png"))
 	add_custom_type("SeqContainer", "Node", preload("music/containers/seq_cont.gd"), preload("music/icons/seq_cont_icon.png"))
@@ -38,6 +39,7 @@ func _exit_tree():
 	#music nodes
 	remove_custom_type("MixingDeskMusic")
 	remove_custom_type("Song")
+	remove_custom_type("TransitionSong")
 	remove_custom_type("CoreContainer")
 	remove_custom_type("RandomContainer")
 	remove_custom_type("SeqContainer")

@@ -43,6 +43,9 @@ signal shuffle
 signal song_changed
 
 func _ready():
+	for i in songs:
+		if i.ignore:
+			songs.remove(songs.find(i))
 	var shuff = Timer.new()
 	shuff.name = 'shuffle_timer'
 	add_child(shuff)
@@ -400,24 +403,34 @@ func stop(song):
 func _core_finished():
 	songs[current_song_num].concats.clear()
 	emit_signal("end", current_song_num)
-	match play_mode:
-		1:
-			bar = 1
-			beat = 1
-			last_beat = -1
-			repeats += 1
-			play(current_song_num)
-		2:
-			$shuffle_timer.start(rand_range(2,4))
-		3:
-			shuffle_songs()
-		4:
-			var new_song
-			if current_song_num == (get_child_count() - 3):
-				new_song = 0
+	match get_current_song().song_type:
+		"standard":
+			match play_mode:
+				1:
+					bar = 1
+					beat = 1
+					last_beat = -1
+					repeats += 1
+					play(current_song_num)
+				2:
+					$shuffle_timer.start(rand_range(2,4))
+				3:
+					shuffle_songs()
+				4:
+					var new_song
+					if current_song_num == (get_child_count() - 3):
+						new_song = 0
+					else:
+						new_song = current_song_num + 1
+					_change_song(new_song)
+		"transition":
+			var t = get_current_song().target_song
+			var desk = t.get_parent()
+			if desk == self:
+				_change_song(t.name)
 			else:
-				new_song = current_song_num + 1
-			_change_song(new_song)
+				stop()
+				desk.quickplay(t.name)
 
 #called every bar
 func _bar():
@@ -456,6 +469,9 @@ func _beat():
 		_core_finished()
 	emit_signal("beat", (beat - 1) % int(bars * beats_in_bar) + 1)
 
+func get_current_song():
+	return get_child(current_song_num)
+
 #gets a random track from a song and returns it
 func _get_rantrk(song):
 	song = _songname_to_int(song)
@@ -466,12 +482,10 @@ func _get_rantrk(song):
 #choose new song randomly
 func shuffle_songs():
 	randomize()
-	var song = randi() % (songs.size())
-	if song == current_song_num:
-		if song == 0:
-			song += 1
-		elif song == songs.size() - 1:
-			song -= 1
-	emit_signal("shuffle", [current_song_num, song])
-	new_song = song
+	var list = songs
+	list.remove(list.find(get_child(current_song_num)))
+	var song_num = randi() % (list.size() - 1)
+	var song = get_child(song_num).name
+	emit_signal("shuffle", [current_song_num, get_node(song).get_index()])
+	new_song = get_node(song).get_index()
 	_change_song(song)
