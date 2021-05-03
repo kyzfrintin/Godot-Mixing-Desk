@@ -429,7 +429,7 @@ func _core_finished():
 			if desk == self:
 				_change_song(t.name)
 			else:
-				stop()
+				stop(current_song_num)
 				desk.quickplay(t.name)
 
 #called every bar
