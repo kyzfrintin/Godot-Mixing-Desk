@@ -300,6 +300,7 @@ func unmute(song, layer):
 func toggle_mute(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
+	var target = songs[song]._get_core().get_child(layer)
 	if target.volume_db < 0:
 		unmute(song, layer)
 	else:
@@ -334,6 +335,7 @@ func fade_out(song, layer):
 func toggle_fade(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
+	var target = songs[song]._get_core().get_child(layer)
 	if target.volume_db < 0:
 		fade_in(song, layer)
 	else:
