@@ -7,6 +7,7 @@ var fading_out : bool = false
 var fading_in : bool = false
 var muted_tracks = []
 var concats : Array
+var playing = false
 
 #external properties
 export(int) var tempo

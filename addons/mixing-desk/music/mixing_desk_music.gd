@@ -16,6 +16,7 @@ onready var songs = get_children()
 const default_vol = 0
 
 var ref_track : Object
+var playing_tracks = []
 var time = 0.0
 var beat = 1.0
 var last_beat = -1
@@ -70,6 +71,9 @@ func _ready():
 				
 #loads a song and gets ready to play
 func init_song(track):
+	if playing:
+		get_child(current_song_num).playing = false
+	playing_tracks.clear()
 	track = _songname_to_int(track)
 	var song = songs[track]
 	var root = song._get_core()
@@ -166,6 +170,7 @@ func _trackname_to_int(song, ref):
 #play a song
 func play(song):
 	song = _songname_to_int(song)
+	get_child(song).playing = true
 	time = 0
 	bar = 1
 	beat = 1
@@ -176,6 +181,7 @@ func play(song):
 			var first = true
 			for o in i.get_children():
 				var newtrk = _iplay(o)
+				playing_tracks.append(newtrk)
 				if first:
 					ref_track = newtrk
 					first = false
@@ -184,7 +190,6 @@ func play(song):
 		emit_signal("bar", bar)
 		_beat()
 		playing = true
-					
 	_play_overlays(song)
 
 func _play_overlays(song):
@@ -273,7 +278,8 @@ func solo(song, layer):
 func mute(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song]._get_core().get_child(layer)
+	songs[song]._get_core().get_child(layer).volume_db = -65.0
+	var target = playing_tracks[layer]
 	target.set_volume_db(-60.0)
 	var pos = songs[song].muted_tracks.find(layer)
 	if pos == null:
@@ -283,17 +289,17 @@ func mute(song, layer):
 func unmute(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song]._get_core().get_child(layer)
+	songs[song]._get_core().get_child(layer).volume_db = 0
+	var target = playing_tracks[layer]
 	target.set_volume_db(default_vol)
 	var pos = songs[song].muted_tracks.find(layer)
 	if pos != -1:
 		songs[song].muted_tracks.remove(pos)
 
-#mutes a track if not mutes, or vice versa
+#mutes a track if not muted, or vice versa
 func toggle_mute(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song]._get_core().get_child(layer)
 	if target.volume_db < 0:
 		unmute(song, layer)
 	else:
@@ -303,7 +309,8 @@ func toggle_mute(song, layer):
 func fade_in(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song]._get_core().get_child(layer)
+	songs[song]._get_core().get_child(layer).volume_db = default_vol
+	var target = playing_tracks[layer]
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
 	tween.interpolate_property(target, 'volume_db', in_from, default_vol, transition_beats, Tween.TRANS_QUAD, Tween.EASE_OUT)
@@ -316,17 +323,17 @@ func fade_in(song, layer):
 func fade_out(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song]._get_core().get_child(layer)
+	songs[song]._get_core().get_child(layer).volume_db = -65.0
+	var target = playing_tracks[layer]
 	var tween = target.get_node("Tween")
 	var in_from = target.get_volume_db()
-	tween.interpolate_property(target, 'volume_db', in_from, -60.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
+	tween.interpolate_property(target, 'volume_db', in_from, -65.0, transition_beats, Tween.TRANS_SINE, Tween.EASE_OUT)
 	tween.start()
 
 #fades a track in if silent, fades out if not
 func toggle_fade(song, layer):
 	song = _songname_to_int(song)
 	layer = _trackname_to_int(song, layer)
-	var target = songs[song]._get_core().get_child(layer)
 	if target.volume_db < 0:
 		fade_in(song, layer)
 	else:
@@ -392,6 +399,7 @@ func _change_song(song):
 #stops playing
 func stop(song):
 	song = _songname_to_int(song)
+	get_child(song).playing = false
 	if playing:
 		playing = false
 		for i in songs[song]._get_core().get_children():
