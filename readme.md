@@ -7,7 +7,7 @@ But for some more advanced features, a bit of coding is required.
 
 That's where Mixing Desk comes in. A modular plugin, allowing for procedural audio and adaptive music in games, with just a couple of nodes and a line of code for each implementation.
 
-![Donate](https://www.paypal.com/donate/?business=5FCFJRRRKQ256&no_recurring=0&item_name=Godot+Mixing+Desk+is+developed+with+love+for+free%2C+but+your+support+would+be+greatly+appreciated.&currency_code=GBP)
+[Donate](https://www.paypal.com/donate/?business=5FCFJRRRKQ256&no_recurring=0&item_name=Godot+Mixing+Desk+is+developed+with+love+for+free%2C+but+your+support+would+be+greatly+appreciated.&currency_code=GBP)
 
 # Mixing Desk: Music
 
